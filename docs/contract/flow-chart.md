@@ -1,6 +1,6 @@
-# Contract Design
+# Contract - Flow Chart
 
-This document describes the contract design for the bounty system.
+This flow chart describes the contract design for the system.
 
 ```mermaid
 flowchart

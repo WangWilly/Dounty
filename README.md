@@ -2,7 +2,9 @@
 
 A tool to incentivize developers to contribute to open source projects by rewarding them with bounties. Like the ticketing system in JIRA, but with bounties. Users open bounties for issues they want to see fixed on Github, and developers can claim them. Once the issue is fixed, the developer gets the bounty.
 
-## Case study
+<details>
+
+<summary>Case studies</summary>
 
 - BountySource
     - 🤔 https://www.reddit.com/r/opensource/comments/1d5v1uk/bountysource_is_dead/
@@ -23,12 +25,24 @@ A tool to incentivize developers to contribute to open source projects by reward
     - https://explorer.gitcoin.co/#/projects
     - 🏳️ https://x.com/gitcoin/status/1870127565911785924
 
+</details>
+
 ## Design
 
-- [Contract design](docs/contract.md)
-    - [Notes for on-chain program](docs/on-chain.md)
+### On-chain program
+
+- [Flow chart for the design](docs/contract/flow-chart.md)
+- [Notes for on-chain program](docs/contract/notes.md)
+
+### Client side (TBD)
+
+### Browser extension (TBD)
+
+### Server side (TBD)
 
 ## Setup
+
+### On-chain program
 
 The rust toolchain is required to build the project. The following commands will install the rust toolchain and the required dependencies.
 
@@ -87,17 +101,16 @@ anchor init [new-workspace-name]
 
 ## TODOs
 
-- Cryptocurrency agnostic payable
-- Chrome extension to detect issues on Github and open bounties
-- Refer this: https://github.com/ac12644/Crypto-Charity/tree/main
-- Mint a contribution/skill NFT for each bounty (can put to resume)
-- Mint community impact NFT for each donation
-- Analyze the impact of bounties on open source projects
-- Will use the [Solana](./docs/on-chain.md) blockchain for this project
+- [ ] Cryptocurrency agnostic payable
+- [ ] Chrome extension to detect issues on Github and open bounties
+- [ ] Mint a contribution/skill NFT for each bounty (can put to resume)
+- [ ] Mint community impact NFT for each donation
+- [ ] Analyze the impact of bounties on open source projects
 
-## Misc
+## MISC
 
-Reading list:
+### Reading list
+
 - 😊
     - [ ] [solana-labs/dapp-scaffold](https://github.com/solana-labs/dapp-scaffold/)
     - [ ] 🤔 https://solana.stackexchange.com/questions/9352/dynamically-use-pda-with-transfer-hooks

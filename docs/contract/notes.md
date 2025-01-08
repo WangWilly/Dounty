@@ -1,4 +1,4 @@
-# Notes for on-chain program
+# Contract - Notes
 
 ## Studies
 
