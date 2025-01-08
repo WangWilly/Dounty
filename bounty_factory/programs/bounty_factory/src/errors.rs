@@ -22,4 +22,6 @@ pub enum ErrorCode {
     WrongOwner,
     #[msg("Wrong url")]
     WrongUrl,
+    #[msg("Illegal close")]
+    IllegalClose,
 }
