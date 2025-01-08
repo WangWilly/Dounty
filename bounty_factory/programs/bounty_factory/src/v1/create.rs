@@ -10,7 +10,13 @@ use crate::models::BountyV1;
 pub struct CreateV1Acc<'info> {
     #[account(mut)]
     pub owner: Signer<'info>,
-    #[account(init, payer = owner, space = BountyV1::INIT_SPACE, seeds = [b"bounty", owner.key().as_ref(), url.as_bytes()], bump)]
+    #[account(
+        init,
+        payer = owner,
+        space = BountyV1::INIT_SPACE,
+        seeds = [b"bounty", owner.key().as_ref(), url.as_bytes()],
+        bump,
+    )]
     pub bounty: Account<'info, BountyV1>,
     pub system_program: Program<'info, System>,
 }

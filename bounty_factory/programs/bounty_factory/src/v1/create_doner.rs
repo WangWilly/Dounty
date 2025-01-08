@@ -10,9 +10,19 @@ use crate::models::{BountyV1, DonerV1};
 pub struct CreateDonerV1Acc<'info> {
     #[account(mut)]
     pub doner: Signer<'info>,
-    #[account(init, payer = doner, space = DonerV1::INIT_SPACE, seeds = [b"doner", doner.key().as_ref(), bounty.key().as_ref()], bump)]
+    #[account(
+        init,
+        payer = doner,
+        space = DonerV1::INIT_SPACE,
+        seeds = [b"doner", doner.key().as_ref(), bounty.key().as_ref()],
+        bump,
+    )]
     pub doner_account: Account<'info, DonerV1>,
-    #[account(mut, seeds = [b"bounty", bounty.owner.key().as_ref(), bounty.url.as_bytes()], bump = bounty.bump)]
+    #[account(
+        mut,
+        seeds = [b"bounty", bounty.owner.key().as_ref(), bounty.url.as_bytes()],
+        bump = bounty.bump,
+    )]
     pub bounty: Account<'info, BountyV1>,
     pub system_program: Program<'info, System>,
 }
@@ -42,7 +52,6 @@ pub fn create_doner_v1_impl(
 
     ////////////////////////////////////////////////////////////////////////////
     // Spent from the balance of an account it does not own
-
     // Create the transfer instruction
     let from_account = ctx.accounts.doner.to_account_info();
     let to_account = ctx.accounts.bounty.to_account_info();

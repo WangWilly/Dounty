@@ -44,34 +44,16 @@ pub fn issue_v1_impl(ctx: Context<IssueV1Acc>) -> Result<()> {
 
     let commissioners: HashSet<Pubkey> = bounty.commissioners.iter().cloned().collect();
     if commissioners.contains(&ctx.accounts.assignee.key) {
-        return Err(ErrorCode::WrongAssignee.into());
+        return Err(ErrorCode::IllegalAsignee.into());
     }
-
-    let mut agreed_num = 0;
+    let mut agreed_num: usize = 0;
     if commissioners.contains(&ctx.accounts.commissioner1.key) {
         agreed_num += 1;
     }
-    if let Some(commissioner2) = &ctx.accounts.commissioner2 {
-        if commissioners.contains(&commissioner2.key) {
-            agreed_num += 1;
-        }
-    }
-    if let Some(commissioner3) = &ctx.accounts.commissioner3 {
-        if commissioners.contains(&commissioner3.key) {
-            agreed_num += 1;
-        }
-    }
-    if let Some(commissioner4) = &ctx.accounts.commissioner4 {
-        if commissioners.contains(&commissioner4.key) {
-            agreed_num += 1;
-        }
-    }
-    if let Some(commissioner5) = &ctx.accounts.commissioner5 {
-        if commissioners.contains(&commissioner5.key) {
-            agreed_num += 1;
-        }
-    }
-
+    in_commission(&ctx.accounts.commissioner2, &commissioners, &mut agreed_num);
+    in_commission(&ctx.accounts.commissioner3, &commissioners, &mut agreed_num);
+    in_commission(&ctx.accounts.commissioner4, &commissioners, &mut agreed_num);
+    in_commission(&ctx.accounts.commissioner5, &commissioners, &mut agreed_num);
     if agreed_num < commissioner_num / 2 + 1 {
         return Err(ErrorCode::NotEnoughCommission.into());
     }
@@ -92,4 +74,14 @@ pub fn issue_v1_impl(ctx: Context<IssueV1Acc>) -> Result<()> {
     ctx.accounts.bounty.donation = 0;
 
     Ok(())
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+fn in_commission<'info>(examee: &Option<Signer<'info>>, commissioners: &HashSet<Pubkey>, agreed_num: &mut usize) {
+    if let Some(examee) = examee {
+        if commissioners.contains(&examee.key) {
+            *agreed_num += 1;
+        }
+    }
 }

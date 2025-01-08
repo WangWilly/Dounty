@@ -24,4 +24,6 @@ pub enum ErrorCode {
     WrongUrl,
     #[msg("Illegal close")]
     IllegalClose,
+    #[msg("Illegal asignee")]
+    IllegalAsignee,
 }

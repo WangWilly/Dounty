@@ -9,7 +9,11 @@ use crate::models::BountyV1;
 pub struct UpdateV1Acc<'info> {
     #[account(mut)]
     pub owner: Signer<'info>,
-    #[account(mut, seeds = [b"bounty", owner.key().as_ref(), bounty.url.as_bytes()], bump = bounty.bump)]
+    #[account(
+        mut,
+        seeds = [b"bounty", owner.key().as_ref(), bounty.url.as_bytes()],
+        bump = bounty.bump,
+    )]
     pub bounty: Account<'info, BountyV1>,
 }
 
