@@ -10,11 +10,11 @@ use crate::models::BountyV1;
 #[derive(Accounts)]
 pub struct IssueV1Acc<'info> {
     #[account(mut)]
-    pub comminssioner1: Signer<'info>,
-    pub comminssioner2: Option<Signer<'info>>,
-    pub comminssioner3: Option<Signer<'info>>,
-    pub comminssioner4: Option<Signer<'info>>,
-    pub comminssioner5: Option<Signer<'info>>,
+    pub commissioner1: Signer<'info>,
+    pub commissioner2: Option<Signer<'info>>,
+    pub commissioner3: Option<Signer<'info>>,
+    pub commissioner4: Option<Signer<'info>>,
+    pub commissioner5: Option<Signer<'info>>,
     #[account(mut, seeds = [b"bounty", bounty.owner.key().as_ref(), bounty.url.as_bytes()], bump = bounty.bump)]
     pub bounty: Account<'info, BountyV1>,
     #[account(mut)]
@@ -42,32 +42,32 @@ pub fn issue_v1_impl(ctx: Context<IssueV1Acc>) -> Result<()> {
         return Err(ErrorCode::EvenCommissioners.into());
     }
 
-    let comminssioners: HashSet<Pubkey> = bounty.commissioners.iter().cloned().collect();
-    if comminssioners.contains(&ctx.accounts.assignee.key) {
+    let commissioners: HashSet<Pubkey> = bounty.commissioners.iter().cloned().collect();
+    if commissioners.contains(&ctx.accounts.assignee.key) {
         return Err(ErrorCode::WrongAssignee.into());
     }
 
     let mut agreed_num = 0;
-    if comminssioners.contains(&ctx.accounts.comminssioner1.key) {
+    if commissioners.contains(&ctx.accounts.commissioner1.key) {
         agreed_num += 1;
     }
-    if let Some(comminssioner2) = &ctx.accounts.comminssioner2 {
-        if comminssioners.contains(&comminssioner2.key) {
+    if let Some(commissioner2) = &ctx.accounts.commissioner2 {
+        if commissioners.contains(&commissioner2.key) {
             agreed_num += 1;
         }
     }
-    if let Some(comminssioner3) = &ctx.accounts.comminssioner3 {
-        if comminssioners.contains(&comminssioner3.key) {
+    if let Some(commissioner3) = &ctx.accounts.commissioner3 {
+        if commissioners.contains(&commissioner3.key) {
             agreed_num += 1;
         }
     }
-    if let Some(comminssioner4) = &ctx.accounts.comminssioner4 {
-        if comminssioners.contains(&comminssioner4.key) {
+    if let Some(commissioner4) = &ctx.accounts.commissioner4 {
+        if commissioners.contains(&commissioner4.key) {
             agreed_num += 1;
         }
     }
-    if let Some(comminssioner5) = &ctx.accounts.comminssioner5 {
-        if comminssioners.contains(&comminssioner5.key) {
+    if let Some(commissioner5) = &ctx.accounts.commissioner5 {
+        if commissioners.contains(&commissioner5.key) {
             agreed_num += 1;
         }
     }

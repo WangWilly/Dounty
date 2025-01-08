@@ -44,6 +44,7 @@ describe("bounty_factory", () => {
 
   const wallet1 = anchor.Wallet.local();
   const wallet2 = Keypair.generate();
+  const otherWallets = [Keypair.generate(), Keypair.generate(), Keypair.generate()];
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -54,7 +55,7 @@ describe("bounty_factory", () => {
       // console.log("Balance (sol):", balance / LAMPORTS_PER_SOL);
       if (balance < 3 * LAMPORTS_PER_SOL) {
         await connection.requestAirdrop(wallet1.publicKey, 3 * LAMPORTS_PER_SOL);
-        await new Promise(resolve => setTimeout(resolve, 10000)); // Wait for airdrop to complete
+        // await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for airdrop to complete
       }
     }
     {
@@ -62,7 +63,17 @@ describe("bounty_factory", () => {
       // console.log("Balance (sol):", balance / LAMPORTS_PER_SOL);
       if (balance < 3 * LAMPORTS_PER_SOL) {
         await connection.requestAirdrop(wallet2.publicKey, 3 * LAMPORTS_PER_SOL);
-        await new Promise(resolve => setTimeout(resolve, 10000)); // Wait for airdrop to complete
+        // await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for airdrop to complete
+      }
+    }
+    {
+      for (const w of otherWallets) {
+        const balance = await connection.getBalance(w.publicKey);
+        // console.log("Balance (sol):", balance / LAMPORTS_PER_SOL);
+        if (balance < 3 * LAMPORTS_PER_SOL) {
+          await connection.requestAirdrop(w.publicKey, 3 * LAMPORTS_PER_SOL);
+          // await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for airdrop to complete
+        }
       }
     }
   });
@@ -71,7 +82,7 @@ describe("bounty_factory", () => {
 
   it("should complete the life cycle of a bounty in a simple commission case", async () => {
     const title = "Test Bounty";
-    const url = "https://test.com";
+    const url = "https://test1.com";
 
     const [bountyPda, _bountyPdaBump] = PublicKey.findProgramAddressSync(
       [
@@ -140,7 +151,7 @@ describe("bounty_factory", () => {
     ////////////////////////////////////////////////////////////////////////////
     // Arrange
     const issueV1AccFail = {
-      comminssioner1: wallet1.publicKey,
+      commissioner1: wallet1.publicKey,
       bounty: bountyPda,
       assignee: wallet2.publicKey,
       systemProgram: SystemProgram.programId,
@@ -264,7 +275,7 @@ describe("bounty_factory", () => {
     ////////////////////////////////////////////////////////////////////////////
     // Arrange
     const issueV1Acc = {
-      comminssioner1: wallet1.publicKey,
+      commissioner1: wallet1.publicKey,
       bounty: bountyPda,
       assignee: wallet2.publicKey,
       systemProgram: SystemProgram.programId,
@@ -315,5 +326,282 @@ describe("bounty_factory", () => {
       );
       expect(errorHappened).to.be.true;
     }
+  });
+
+  //////////////////////////////////////////////////////////////////////////////
+
+  it("should issue a bounty in a multiple commission case", async () => {
+    const title = "Test Bounty";
+    const url = "https://test2.com";
+
+    const [bountyPda, _bountyPdaBump] = PublicKey.findProgramAddressSync(
+      [
+        anchor.utils.bytes.utf8.encode("bounty"),
+        wallet1.publicKey.toBuffer(),
+        anchor.utils.bytes.utf8.encode(url),
+      ],
+      pBountryFactory.programId
+    );
+
+    // Create a bounty
+    ////////////////////////////////////////////////////////////////////////////
+    // Arrange
+    const createV1Acc = {
+      owner: wallet1.publicKey,
+      bounty: bountyPda,
+      systemProgram: SystemProgram.programId,
+    }
+    const commissioners = otherWallets.map(w => w.publicKey);
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Act
+    await errorHandling(
+      pBountryFactory.methods.createV1(title, url, commissioners, wallet2.publicKey)
+        .accountsPartial(createV1Acc)
+        .signers([wallet1.payer])
+        .rpc()
+    );
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Assert
+    {
+      const bounty = await pBountryFactory.account.bountyV1.fetch(bountyPda);
+      expect(bounty.title).to.equal(title);
+      expect(bounty.url).to.equal(url);
+      expect(bounty.owner.toString()).to.equal(wallet1.publicKey.toString());
+      expect(bounty.asignee.toString()).to.equal(wallet2.publicKey.toString());
+    }
+
+    // Issue a bounty (fail for the wrong commissioner)
+    ////////////////////////////////////////////////////////////////////////////
+    // Arrange
+    const issueV1AccFail1 = {
+      commissioner1: wallet1.publicKey,
+      bounty: bountyPda,
+      assignee: wallet2.publicKey,
+      systemProgram: SystemProgram.programId,
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Act & Assert
+    {
+      const errorHappened = await expectError(
+        pBountryFactory.methods.issueV1()
+          .accountsPartial(issueV1AccFail1)
+          .signers([wallet1.payer])
+          .rpc()
+      );
+      expect(errorHappened).to.be.true;
+    }
+
+    // Issue a bounty (fail for not enough commissioners)
+    ////////////////////////////////////////////////////////////////////////////
+    // Arrange
+    const issueV1AccFail2 = {
+      commissioner1: otherWallets[0].publicKey,
+      bounty: bountyPda,
+      assignee: wallet2.publicKey,
+      systemProgram: SystemProgram.programId,
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Act & Assert
+    {
+      const errorHappened = await expectError(
+        pBountryFactory.methods.issueV1()
+          .accountsPartial(issueV1AccFail2)
+          .signers([otherWallets[0]])
+          .rpc()
+      );
+      expect(errorHappened).to.be.true;
+    }
+
+    // Issue a bounty (fail for the wrong assignee)
+    ////////////////////////////////////////////////////////////////////////////
+    // Arrange
+    const issueV1AccFail3 = {
+      commissioner1: otherWallets[0].publicKey,
+      bounty: bountyPda,
+      assignee: wallet1.publicKey,
+      systemProgram: SystemProgram.programId,
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Act & Assert
+    {
+      const errorHappened = await expectError(
+        pBountryFactory.methods.issueV1()
+          .accountsPartial(issueV1AccFail3)
+          .signers([otherWallets[0]])
+          .rpc()
+      );
+      expect(errorHappened).to.be.true;
+    }
+
+    // Issue a bounty
+    ////////////////////////////////////////////////////////////////////////////
+    // Arrange
+    const issueV1Acc = {
+      commissioner1: otherWallets[0].publicKey,
+      commissioner2: otherWallets[1].publicKey,
+      bounty: bountyPda,
+      assignee: wallet2.publicKey,
+      systemProgram: SystemProgram.programId,
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Act
+    await errorHandling(
+      pBountryFactory.methods.issueV1()
+        .accountsPartial(issueV1Acc)
+        .signers([otherWallets[0], otherWallets[1]])
+        .rpc()
+    );
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Assert
+    {
+      const bounty = await pBountryFactory.account.bountyV1.fetch(bountyPda);
+      expect(bounty.donation.toNumber()).to.equal(0);
+    }
+  });
+
+  //////////////////////////////////////////////////////////////////////////////
+
+  it("should issue a bounty w/ all commissioners", async () => {
+    const title = "Test Bounty";
+    const url = "https://test3.com";
+
+    const [bountyPda, _bountyPdaBump] = PublicKey.findProgramAddressSync(
+      [
+        anchor.utils.bytes.utf8.encode("bounty"),
+        wallet1.publicKey.toBuffer(),
+        anchor.utils.bytes.utf8.encode(url),
+      ],
+      pBountryFactory.programId
+    );
+
+    // Create a bounty
+    ////////////////////////////////////////////////////////////////////////////
+    // Arrange
+    const createV1Acc = {
+      owner: wallet1.publicKey,
+      bounty: bountyPda,
+      systemProgram: SystemProgram.programId,
+    }
+    const commissioners = otherWallets.map(w => w.publicKey);
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Act
+    await errorHandling(
+      pBountryFactory.methods.createV1(title, url, commissioners, wallet2.publicKey)
+        .accountsPartial(createV1Acc)
+        .signers([wallet1.payer])
+        .rpc()
+    );
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Assert
+    {
+      const bounty = await pBountryFactory.account.bountyV1.fetch(bountyPda);
+      expect(bounty.title).to.equal(title);
+      expect(bounty.url).to.equal(url);
+      expect(bounty.owner.toString()).to.equal(wallet1.publicKey.toString());
+      expect(bounty.asignee.toString()).to.equal(wallet2.publicKey.toString());
+    }
+
+    // Issue a bounty
+    ////////////////////////////////////////////////////////////////////////////
+    // Arrange
+    const issueV1Acc = {
+      commissioner1: otherWallets[0].publicKey,
+      commissioner2: otherWallets[1].publicKey,
+      commissioner3: otherWallets[2].publicKey,
+      bounty: bountyPda,
+      assignee: wallet2.publicKey,
+      systemProgram: SystemProgram.programId,
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Act
+    await errorHandling(
+      pBountryFactory.methods.issueV1()
+        .accountsPartial(issueV1Acc)
+        .signers([otherWallets[0], otherWallets[1], otherWallets[2]])
+        .rpc()
+    );
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Assert
+    {
+      const bounty = await pBountryFactory.account.bountyV1.fetch(bountyPda);
+      expect(bounty.donation.toNumber()).to.equal(0);
+    }
+  });
+
+  //////////////////////////////////////////////////////////////////////////////
+
+  it("should not issue a bounty w/ even number of commissioners", async () => {
+    const title = "Test Bounty";
+    const url = "https://test4.com";
+
+    const [bountyPda, _bountyPdaBump] = PublicKey.findProgramAddressSync(
+      [
+        anchor.utils.bytes.utf8.encode("bounty"),
+        wallet1.publicKey.toBuffer(),
+        anchor.utils.bytes.utf8.encode(url),
+      ],
+      pBountryFactory.programId
+    );
+
+    // Create a bounty
+    ////////////////////////////////////////////////////////////////////////////
+    // Arrange
+    const createV1Acc = {
+      owner: wallet1.publicKey,
+      bounty: bountyPda,
+      systemProgram: SystemProgram.programId,
+    }
+    const commissioners = otherWallets.slice(0, 2).map(w => w.publicKey);
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Act
+    await errorHandling(
+      pBountryFactory.methods.createV1(title, url, commissioners, wallet2.publicKey)
+        .accountsPartial(createV1Acc)
+        .signers([wallet1.payer])
+        .rpc()
+    );
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Assert
+    {
+      const bounty = await pBountryFactory.account.bountyV1.fetch(bountyPda);
+      expect(bounty.title).to.equal(title);
+      expect(bounty.url).to.equal(url);
+      expect(bounty.owner.toString()).to.equal(wallet1.publicKey.toString());
+      expect(bounty.asignee.toString()).to.equal(wallet2.publicKey.toString());
+    }
+
+    // Issue a bounty
+    ////////////////////////////////////////////////////////////////////////////
+    // Arrange
+    const issueV1Acc = {
+      commissioner1: otherWallets[0].publicKey,
+      commissioner2: otherWallets[1].publicKey,
+      bounty: bountyPda,
+      assignee: wallet2.publicKey,
+      systemProgram: SystemProgram.programId,
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Act & Assert
+    const errorHappened = await expectError(
+      pBountryFactory.methods.issueV1()
+        .accountsPartial(issueV1Acc)
+        .signers([otherWallets[0], otherWallets[1]])
+        .rpc()
+    );
+    expect(errorHappened).to.be.true;
   });
 });
