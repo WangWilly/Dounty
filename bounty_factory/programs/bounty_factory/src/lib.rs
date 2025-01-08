@@ -37,6 +37,10 @@ pub mod bounty_factory {
         issue_v1_impl(ctx)
     }
 
+    pub fn close_v1(_ctx: Context<CloseV1Acc>) -> Result<()> {
+        Ok(())
+    }
+
     pub fn create_doner_v1(
         ctx: Context<CreateDonerV1Acc>,
         donation: u64,

@@ -22,6 +22,16 @@ async function errorHandlingTemplate<T>(connection: anchor.web3.Connection, prom
   }
 }
 
+async function expectError<T>(promise: Promise<T>): Promise<boolean> {
+  try {
+    await promise;
+    return false;
+  } catch (error) {
+    // console.log("Caught error:", error);
+    return true;
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 describe("bounty_factory", () => {
@@ -59,7 +69,7 @@ describe("bounty_factory", () => {
 
   //////////////////////////////////////////////////////////////////////////////
 
-  it("A bounty", async () => {
+  it("should complete the life cycle of a bounty in a simple commission case", async () => {
     const title = "Test Bounty";
     const url = "https://test.com";
 
@@ -126,6 +136,28 @@ describe("bounty_factory", () => {
       expect(bounty.title).to.equal(newTitle);
     }
 
+    // Issue a bounty (fail)
+    ////////////////////////////////////////////////////////////////////////////
+    // Arrange
+    const issueV1AccFail = {
+      comminssioner1: wallet1.publicKey,
+      bounty: bountyPda,
+      assignee: wallet2.publicKey,
+      systemProgram: SystemProgram.programId,
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Act & Assert
+    {
+      const errorHappened = await expectError(
+        pBountryFactory.methods.issueV1()
+          .accountsPartial(issueV1AccFail)
+          .signers([wallet1.payer])
+          .rpc()
+      );
+      expect(errorHappened).to.be.true;
+    }
+
     // Donate to a bounty
     ////////////////////////////////////////////////////////////////////////////
     // Arrange
@@ -183,13 +215,34 @@ describe("bounty_factory", () => {
       expect(bounty.donation.toNumber()).to.equal(donation.toNumber());
     }
 
+    // Close a bounty (fail)
+    ////////////////////////////////////////////////////////////////////////////
+    // Arrange
+    const closeV1Acc1 = {
+      owner: wallet1.publicKey,
+      bounty: bountyPda,
+      systemProgram: SystemProgram.programId,
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Act & Assert
+    {
+      const errorHappened = await expectError(
+        pBountryFactory.methods.closeV1()
+          .accountsPartial(closeV1Acc1)
+          .signers([wallet1.payer])
+          .rpc()
+      );
+      expect(errorHappened).to.be.true;
+    }
+
     // Assign a bounty
     ////////////////////////////////////////////////////////////////////////////
     // Arrange
     const updateV1Acc2 = {
       owner: wallet1.publicKey,
       bounty: bountyPda,
-    }
+    };
 
     ////////////////////////////////////////////////////////////////////////////
     // Act
@@ -234,6 +287,33 @@ describe("bounty_factory", () => {
       
       const bountyBalance = await connection.getBalance(bountyPda);
       expect(bountyBalance).to.equal(bountyInitBalance);
+    }
+
+    // Close a bounty
+    ////////////////////////////////////////////////////////////////////////////
+    // Arrange
+    const closeV1Acc2 = {
+      owner: wallet1.publicKey,
+      bounty: bountyPda,
+      systemProgram: SystemProgram.programId,
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Act
+    await errorHandling(
+      pBountryFactory.methods.closeV1()
+        .accountsPartial(closeV1Acc2)
+        .signers([wallet1.payer])
+        .rpc()
+    );
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Assert
+    {
+      const errorHappened = await expectError(
+        pBountryFactory.account.bountyV1.fetch(bountyPda)
+      );
+      expect(errorHappened).to.be.true;
     }
   });
 });

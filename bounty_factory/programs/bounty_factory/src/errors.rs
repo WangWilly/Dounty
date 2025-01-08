@@ -18,6 +18,8 @@ pub enum ErrorCode {
     EvenCommissioners,
     #[msg("Wrong assignee")]
     WrongAssignee,
+    #[msg("Wrong owner")]
+    WrongOwner,
     #[msg("Wrong url")]
     WrongUrl,
 }

@@ -40,6 +40,9 @@ pub fn create_doner_v1_impl(
     doner_account.message = message;
     doner_account.bump = ctx.bumps.doner_account;
 
+    ////////////////////////////////////////////////////////////////////////////
+    // Spent from the balance of an account it does not own
+
     // Create the transfer instruction
     let from_account = ctx.accounts.doner.to_account_info();
     let to_account = ctx.accounts.bounty.to_account_info();

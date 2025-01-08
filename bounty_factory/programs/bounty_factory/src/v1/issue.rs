@@ -18,8 +18,7 @@ pub struct IssueV1Acc<'info> {
     #[account(mut, seeds = [b"bounty", bounty.owner.key().as_ref(), bounty.url.as_bytes()], bump = bounty.bump)]
     pub bounty: Account<'info, BountyV1>,
     #[account(mut)]
-    /// CHECK: The assignee should be the same as the bounty asignee
-    pub assignee: UncheckedAccount<'info>,
+    pub assignee: SystemAccount<'info>,
     pub system_program: Program<'info, System>,
 }
 
@@ -43,8 +42,7 @@ pub fn issue_v1_impl(ctx: Context<IssueV1Acc>) -> Result<()> {
         return Err(ErrorCode::EvenCommissioners.into());
     }
 
-    let comminssioners: HashSet<Pubkey> =
-        bounty.commissioners.iter().cloned().collect();
+    let comminssioners: HashSet<Pubkey> = bounty.commissioners.iter().cloned().collect();
     if comminssioners.contains(&ctx.accounts.assignee.key) {
         return Err(ErrorCode::WrongAssignee.into());
     }
@@ -78,11 +76,14 @@ pub fn issue_v1_impl(ctx: Context<IssueV1Acc>) -> Result<()> {
         return Err(ErrorCode::NotEnoughCommission.into());
     }
 
-    let donation = ctx
+    let donation = ctx.accounts.bounty.donation;
+    if **ctx
         .accounts
         .bounty
-        .donation;
-    if **ctx.accounts.bounty.to_account_info().try_borrow_lamports()? < donation {
+        .to_account_info()
+        .try_borrow_lamports()?
+        < donation
+    {
         return Err(ErrorCode::NotEnoughLamports.into());
     }
 
