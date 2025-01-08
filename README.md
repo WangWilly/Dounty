@@ -25,10 +25,85 @@ A tool to incentivize developers to contribute to open source projects by reward
 
 ## Design
 
-- [Contract Design](docs/contract.md)
+- [Contract design](docs/contract.md)
+    - [Notes for on-chain program](docs/on-chain.md)
+
+## Setup
+
+The rust toolchain is required to build the project. The following commands will install the rust toolchain and the required dependencies.
+
+<details>
+<summary>📌 Install instructions</summary>
+
+```bash
+# Install the rust toolchain
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+Installing using Anchor version manager
+```bash
+# Install the Anchor version manager
+cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+
+# Install the build dependencies
+sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+
+# Check the version of Anchor
+solana --version
+
+# Install the latest version of Anchor
+avm install latest
+
+# Check the version of Anchor
+anchor --version
+```
+
+</details>
+
+<details>
+<summary>📌 Common commands</summary>
+
+```bash
+solana config get # Get the current Solana cluster configuration
+solana config set --url https://api.devnet.solana.com # Set the Solana cluster configuration
+solana balance # Get the balance of the current wallet
+solana airdrop 2 ~/.config/solana/id.json # Airdrop 1 SOL to the current wallet
+solana address # Get the public key of the current wallet
+solana keygen new --outfile ~/.config/solana/id.json # Generate a new keypair
+
+solana transfer 1 [public-key] # Transfer 1 SOL to the specified public key
+solana transfer --allow-unfunded-recipient 1 [public-key] # Transfer 1 SOL to the specified public key even if it's unfunded
+solana transfer --allow-unfunded-recipient 1 [public-key] --from ~/.config/solana/id.json # Transfer 1 SOL from the current wallet to the specified public key even if it's unfunded
+
+# https://docs.anza.xyz/cli/usage#solana-logs
+solana logs --url localhost
+
+# Initialize a new project
+anchor init [new-workspace-name]
+```
+
+</details>
+
 
 ## TODOs
 
 - Cryptocurrency agnostic payable
 - Chrome extension to detect issues on Github and open bounties
 - Refer this: https://github.com/ac12644/Crypto-Charity/tree/main
+- Mint a contribution/skill NFT for each bounty (can put to resume)
+- Mint community impact NFT for each donation
+- Analyze the impact of bounties on open source projects
+- Will use the [Solana](./docs/on-chain.md) blockchain for this project
+
+## Misc
+
+Reading list:
+- 😊
+    - [ ] [solana-labs/dapp-scaffold](https://github.com/solana-labs/dapp-scaffold/)
+    - [ ] 🤔 https://solana.stackexchange.com/questions/9352/dynamically-use-pda-with-transfer-hooks
+    - [ ] https://github.com/wormholelabs-xyz/example-queries-solana-pda
+- 🙂
+    - [ ] [My journey into web3](https://lorisleiva.com/my-journey-into-web-3)
+    - [ ] https://www.quicknode.com/guides/solana-development/solidity/solang-get-started
+- 🤨
+    - [ ] https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/assigning-issues-and-pull-requests-to-other-github-users

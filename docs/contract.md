@@ -54,7 +54,3 @@ flowchart
 
     Bounty -- (7) Transfers the bounty to the BountyTaker --> BountyTaker
 ```
-
-## Misc
-
-- https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/assigning-issues-and-pull-requests-to-other-github-users
