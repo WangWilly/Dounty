@@ -10,20 +10,22 @@ A tool to incentivize developers to contribute to open source projects by reward
     - 🤔 https://www.reddit.com/r/opensource/comments/1d5v1uk/bountysource_is_dead/
     - https://github.com/bountysource
     - https://github.com/bountysource/core/issues/1586
-- Fiver
+- 🥵 Fiver
     - https://www.fiverr.com/?source=top_navd
 - Liberapay is a platform that allows users to donate money to open source projects. It is similar to Patreon, but for open source projects. (https://www.patreon.com/)
     - https://en.liberapay.com/
 - Kickstarter
     - https://www.kickstarter.com/discover/categories/technology/software
-- Upwork
+- 🥵 Upwork
     - https://www.upwork.com/hire/javascript-developers/
-- Gitpay
+- 🥵 Gitpay
     - https://gitpay.me/#/
 - Gitcoin
     - https://gitcoin.co/
     - https://explorer.gitcoin.co/#/projects
     - 🏳️ https://x.com/gitcoin/status/1870127565911785924
+- 🥵 https://www.reddit.com/r/github/comments/11bu8p3/how_to_find_issues_with_bounties_on_github/
+- 🥵 https://github.com/disclose/bug-bounty-platforms
 
 </details>
 
@@ -115,6 +117,7 @@ anchor init [new-workspace-name]
     - [ ] [solana-labs/dapp-scaffold](https://github.com/solana-labs/dapp-scaffold/)
     - [ ] 🤔 https://solana.stackexchange.com/questions/9352/dynamically-use-pda-with-transfer-hooks
     - [ ] https://github.com/wormholelabs-xyz/example-queries-solana-pda
+    - [x] https://stackoverflow.com/questions/70150946/systemprogramcreateaccount-data-size-limited-to-10240-in-inner-instructions
 - 🙂
     - [ ] [My journey into web3](https://lorisleiva.com/my-journey-into-web-3)
     - [ ] https://www.quicknode.com/guides/solana-development/solidity/solang-get-started
