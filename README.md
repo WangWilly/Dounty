@@ -38,7 +38,14 @@ A tool to incentivize developers to contribute to open source projects by reward
 
 ### Client side (TBD)
 
+- https://lorisleiva.com/create-a-solana-dapp-from-scratch/scaffolding-the-frontend
+
 ### Browser extension (TBD)
+
+- https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world
+- https://medium.com/@tharshita13/creating-a-chrome-extension-with-react-a-step-by-step-guide-47fe9bab24a1
+- https://www.reddit.com/r/chrome_extensions/comments/1ccfmzj/advice_on_howif_i_should_be_building_a_chrome/
+- https://medium.com/@5tigerjelly/creating-a-chrome-extension-with-react-and-vite-boilerplate-provided-db3d14473bf6
 
 ### Server side (TBD)
 
@@ -123,3 +130,6 @@ anchor init [new-workspace-name]
     - [ ] https://www.quicknode.com/guides/solana-development/solidity/solang-get-started
 - 🤨
     - [ ] https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/assigning-issues-and-pull-requests-to-other-github-users
+
+https://www.digitalocean.com/community/tutorials/typescript-new-project
+https://blog.nrwl.io/adding-nx-to-an-existing-monorepo-by-running-one-command-426fa519d943
