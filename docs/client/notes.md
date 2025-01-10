@@ -96,3 +96,4 @@ Generative AI is experimental.
 - https://stackoverflow.com/questions/59988667/typescript-react-fcprops-confusion
 - 📌 https://github.com/anza-xyz/wallet-adapter/blob/master/APP.md
 - https://lorisleiva.com/create-a-solana-dapp-from-scratch/integrating-with-solana-wallets
+- 📌 https://github.com/vercel/next.js/discussions/62861
