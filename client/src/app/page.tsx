@@ -1,6 +1,6 @@
 // Code: Dounty (c) 2025
 // License: MIT
-import Image from 'next/image'
+import Image from "next/image";
 
 ////////////////////////////////////////////////////////////////////////////////
 

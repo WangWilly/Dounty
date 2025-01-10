@@ -2,11 +2,19 @@
 import { useState } from "react";
 
 import * as anchor from "@coral-xyz/anchor";
-import { SystemProgram, PublicKey, TransactionMessage, VersionedTransaction } from "@solana/web3.js";
-import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import {
+  SystemProgram,
+  PublicKey,
+  TransactionMessage,
+  VersionedTransaction,
+} from "@solana/web3.js";
+import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
 import { useAnchorProvider } from "@/components/solana_provider";
-import { getBountyFactoryProgram, BOUNTY_FACTORY_PROGRAM_ID } from "@/components/anchor/bounty_factory";
+import {
+  getBountyFactoryProgram,
+  BOUNTY_FACTORY_PROGRAM_ID,
+} from "@/components/anchor/bounty_factory";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -23,16 +31,22 @@ export default function CreatePage() {
 
   const { publicKey, signTransaction, sendTransaction } = useWallet();
   if (!publicKey || !signTransaction) {
-    return <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen">
-      <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
-        <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
-          <h2 className="text-lg font-bold text-orange-600">Create a Bounty</h2>
-        </div>
-        <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6">
-          <p className="text-gray-300">Please connect your wallet to create a bounty</p>
+    return (
+      <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen">
+        <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
+          <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
+            <h2 className="text-lg font-bold text-orange-600">
+              Create a Bounty
+            </h2>
+          </div>
+          <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6">
+            <p className="text-gray-300">
+              Please connect your wallet to create a bounty
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    );
   }
 
   const onClickCreate = async () => {
@@ -50,59 +64,63 @@ export default function CreatePage() {
       owner: publicKey,
       bounty: bountyPda,
       systemProgram: SystemProgram.programId,
-    }
+    };
 
     const latestBlockhash = await connection.getLatestBlockhash();
-    const ix = await program.methods.createV1(bountyTitle, bountyUrl, [], null)
-    .accountsPartial(createV1Acc)
-    .instruction();
+    const ix = await program.methods
+      .createV1(bountyTitle, bountyUrl, [], null)
+      .accountsPartial(createV1Acc)
+      .instruction();
 
     // Create a new TransactionMessage with version and compile it to legacy
     const messageLegacy = new TransactionMessage({
       payerKey: publicKey,
       recentBlockhash: latestBlockhash.blockhash,
       instructions: [ix],
-    }).compileToLegacyMessage()
+    }).compileToLegacyMessage();
     // Create a new VersionedTransaction which supports legacy and v0
-    const transaction = new VersionedTransaction(messageLegacy)
+    const transaction = new VersionedTransaction(messageLegacy);
     const tx = await signTransaction(transaction);
 
     const signature = await sendTransaction(tx, connection);
-    await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed');
+    await connection.confirmTransaction(
+      { signature, ...latestBlockhash },
+      "confirmed",
+    );
     console.log("Signature", signature);
-  }
+  };
 
   return (
     <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen">
-        <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
-            <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
-                <h2 className="text-lg font-bold text-orange-600">Create a Bounty</h2>
-            </div>
-            <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6">
-                <p className="text-gray-300">Create a bounty pool for this ticket</p>
-            </div>
-            <div className="flex justify-center space-x-4">
-                <input
-                    className="bg-gray-100 text-black px-6 py-2 rounded-lg font-semibold"
-                    placeholder="Bounty Title"
-                    value={bountyTitle}
-                    onChange={(e) => setBountyTitle(e.target.value)}
-                />
-                <input
-                    className="bg-gray-100 text-black px-6 py-2 rounded-lg font-semibold"
-                    placeholder="Bounty URL"
-                    value={bountyUrl}
-                    onChange={(e) => setBountyUrl(e.target.value)}
-                />
-                <button
-                    className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold"
-                    onClick={onClickCreate}
-                    disabled={!bountyTitle || !bountyUrl}
-                >
-                  Create
-                </button>
-            </div>
+      <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
+        <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
+          <h2 className="text-lg font-bold text-orange-600">Create a Bounty</h2>
         </div>
+        <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6">
+          <p className="text-gray-300">Create a bounty pool for this ticket</p>
+        </div>
+        <div className="flex justify-center space-x-4">
+          <input
+            className="bg-gray-100 text-black px-6 py-2 rounded-lg font-semibold"
+            placeholder="Bounty Title"
+            value={bountyTitle}
+            onChange={(e) => setBountyTitle(e.target.value)}
+          />
+          <input
+            className="bg-gray-100 text-black px-6 py-2 rounded-lg font-semibold"
+            placeholder="Bounty URL"
+            value={bountyUrl}
+            onChange={(e) => setBountyUrl(e.target.value)}
+          />
+          <button
+            className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold"
+            onClick={onClickCreate}
+            disabled={!bountyTitle || !bountyUrl}
+          >
+            Create
+          </button>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
