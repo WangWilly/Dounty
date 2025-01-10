@@ -8,9 +8,7 @@ import Image from "next/image";
 import { DataTable } from "@/components/ui/defaultTable";
 
 import { useAnchorProvider } from "@/components/solana_provider";
-import {
-  getBountyFactoryProgram,
-} from "@/components/anchor/bounty_factory";
+import { getBountyFactoryProgram } from "@/components/anchor/bounty_factory";
 import { Bounty, columns } from "@/components/anchor/dtos/bounty";
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,14 +27,18 @@ export default function Page() {
     const fetchBounties = async () => {
       const allBounties = await program.account.bountyV1.all([]);
       // log(allBounties);
-      setBounties(allBounties.map((bounty): Bounty => ({
-        owner: bounty.account.owner,
-        donation: bounty.account.donation,
-        asignee: bounty.account.asignee,
-        commissioners: bounty.account.commissioners,
-        title: bounty.account.title,
-        url: bounty.account.url,
-      })));
+      setBounties(
+        allBounties.map(
+          (bounty): Bounty => ({
+            owner: bounty.account.owner,
+            donation: bounty.account.donation,
+            asignee: bounty.account.asignee,
+            commissioners: bounty.account.commissioners,
+            title: bounty.account.title,
+            url: bounty.account.url,
+          }),
+        ),
+      );
     };
 
     fetchBounties();
@@ -52,7 +54,8 @@ export default function Page() {
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6">
           <p className="text-gray-300">
-            All the bounties are listed here. Claim them, donate to them, or get more info about them.
+            All the bounties are listed here. Claim them, donate to them, or get
+            more info about them.
           </p>
           <div className="mt-4">
             <Image

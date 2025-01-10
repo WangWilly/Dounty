@@ -57,7 +57,7 @@ export default function CreatePage() {
     await connection.requestAirdrop(publicKey, 3 * LAMPORTS_PER_SOL);
     console.log("Airdrop requested");
     console.log("Balance", await connection.getBalance(publicKey));
-  }
+  };
 
   const onClickCreate = async () => {
     // Resolve

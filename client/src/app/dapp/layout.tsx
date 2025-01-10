@@ -1,7 +1,12 @@
 "use client";
 import React, { useMemo, useState } from "react";
-import Link from 'next/link';
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/dropdown";
+import Link from "next/link";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/dropdown";
 import type { Selection } from "@nextui-org/react";
 
 import { isDev } from "@/utils/appConfig";
@@ -44,7 +49,9 @@ export default function DappLayout({
   // https://github.com/nextui-org/nextui/issues/3626
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   // dropdown
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([defaultNetwork]));
+  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
+    new Set([defaultNetwork]),
+  );
   const networkChoose = React.useMemo(
     () => Array.from(selectedKeys)[0] as NetworkType,
     [selectedKeys],
@@ -102,14 +109,18 @@ export default function DappLayout({
             <div
               draggable
               onDrag={handleDrag}
-              style={{ position: "absolute", left: position.x, top: position.y }}
+              style={{
+                position: "absolute",
+                left: position.x,
+                top: position.y,
+              }}
             >
               <WalletMultiButton />
               <Dropdown>
                 <DropdownTrigger>
-                  <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                  >{networkChoose.toString()}</button>
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                    {networkChoose.toString()}
+                  </button>
                 </DropdownTrigger>
                 <DropdownMenu
                   className="bg-blue-500 text-white px-4 py-2 rounded-md"

@@ -5,7 +5,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -13,15 +13,15 @@ import {
   TableBody,
   TableColumn,
   TableRow,
-  TableCell
+  TableCell,
 } from "@nextui-org/table";
 
 ////////////////////////////////////////////////////////////////////////////////
 
 type DataTableProps<TData, TValue> = {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-}
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+};
 
 export function DataTable<TData, TValue>({
   columns,
@@ -31,14 +31,10 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-  })
+  });
 
   if (!data.length) {
-    return (
-      <div className="h-24 text-center">
-        No results.
-      </div>
-    )
+    return <div className="h-24 text-center">No results.</div>;
   }
 
   return (
@@ -51,7 +47,7 @@ export function DataTable<TData, TValue>({
                 ? null
                 : flexRender(
                     header.column.columnDef.header,
-                    header.getContext()
+                    header.getContext(),
                   )}
             </TableColumn>
           ))}
@@ -80,5 +76,5 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

@@ -1,5 +1,5 @@
 import { PublicKey } from "@solana/web3.js";
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef } from "@tanstack/react-table";
 
 ////////////////////////////////////////////////////////////////////////////////
 
