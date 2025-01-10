@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
   //  * @see https://nextjs.org/docs/app/api-reference/next-config-js/basePath
   //  */
   // basePath: "/nextjs-github-pages",
+  // https://stackoverflow.com/questions/61117865/how-to-set-environment-variable-in-node-js-process-when-deploying-with-github-ac
+  basePath: process.env.IN_GITHUB_WORKER === 'true' ? '/Dounty' : '',
 
   /**
    * Disable server-based image optimization. Next.js does not support

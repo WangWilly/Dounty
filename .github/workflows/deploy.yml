@@ -85,6 +85,12 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
+      # ⚠️⚠️⚠️
+      - name: create env file
+        run: |
+          touch .env
+          echo IN_GITHUB_WORKER=true >> .env
+
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
 
