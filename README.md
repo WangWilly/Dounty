@@ -36,7 +36,9 @@ A tool to incentivize developers to contribute to open source projects by reward
 - [Flow chart for the design](docs/contract/flow-chart.md)
 - [Notes for on-chain program](docs/contract/notes.md)
 
-### Client side (TBD)
+### Client side
+
+- [Notes for client side](docs/client/notes.md)
 
 ### Browser extension (TBD)
 
