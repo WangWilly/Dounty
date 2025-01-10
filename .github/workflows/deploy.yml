@@ -40,6 +40,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Print working directory
+        run: pwd
+
       - name: Detect package manager
         id: detect-package-manager
         run: |
