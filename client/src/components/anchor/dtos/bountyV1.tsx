@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 ////////////////////////////////////////////////////////////////////////////////
 
 export type Bounty = {
+  address: PublicKey;
   owner: PublicKey;
   // timestamp: BN;
   donation: number;
@@ -14,6 +15,10 @@ export type Bounty = {
 };
 
 export const columns: ColumnDef<Bounty>[] = [
+  {
+    accessorKey: "address",
+    header: "Address",
+  },
   {
     accessorKey: "title",
     header: "Title",

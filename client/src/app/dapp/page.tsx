@@ -9,7 +9,7 @@ import { DataTable } from "@/components/ui/defaultTable";
 
 import { useAnchorProvider } from "@/components/solana_provider";
 import { getBountyFactoryProgram } from "@/components/anchor/bounty_factory";
-import { Bounty, columns } from "@/components/anchor/dtos/bounty";
+import { Bounty, columns } from "@/components/anchor/dtos/bountyV1";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -30,6 +30,7 @@ export default function Page() {
       setBounties(
         allBounties.map(
           (bounty): Bounty => ({
+            address: bounty.publicKey,
             owner: bounty.account.owner,
             donation: bounty.account.donation,
             asignee: bounty.account.asignee,
@@ -88,6 +89,11 @@ export default function Page() {
           <Link href="/dapp/create">
             <div className="bg-gray-100 hover:bg-gray-300 text-black px-6 py-2 rounded-lg font-semibold">
               Create a Bounty
+            </div>
+          </Link>
+          <Link href="/dapp/createDonner">
+            <div className="bg-gray-100 hover:bg-gray-300 text-black px-6 py-2 rounded-lg font-semibold">
+              Donate to a Bounty
             </div>
           </Link>
         </div>
