@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 
 import * as anchor from "@coral-xyz/anchor";
 import {
@@ -138,6 +139,11 @@ export default function CreatePage() {
           >
             Airdrop
           </button>
+          <Link href="/dapp">
+            <div className="bg-gray-100 text-black px-6 py-2 rounded-lg font-semibold">
+              To bounty board
+            </div>
+          </Link>
 
           <p className="text-gray-300">Your address: {publicKey.toBase58()}</p>
         </div>

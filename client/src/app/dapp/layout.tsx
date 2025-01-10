@@ -1,7 +1,10 @@
 "use client";
 import React, { useMemo, useState } from "react";
+import Link from 'next/link';
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/dropdown";
+import type { Selection } from "@nextui-org/react";
 
-import { isDev } from "@/app/appConfig";
+import { isDev } from "@/utils/appConfig";
 
 import {
   ConnectionProvider,
@@ -24,16 +27,44 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 
 ////////////////////////////////////////////////////////////////////////////////
 
+// https://stackoverflow.com/questions/43100718/typescript-enum-to-object-array
+enum NetworkType {
+  Devnet = "devnet",
+  Testnet = "testnet",
+  MainnetBeta = "mainnet-beta",
+  Local = "local",
+}
+
 export default function DappLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const defaultNetwork = isDev() ? NetworkType.Local : NetworkType.Testnet;
+  // https://github.com/nextui-org/nextui/issues/3626
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
-  const network = WalletAdapterNetwork.Testnet;
+  // dropdown
+  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([defaultNetwork]));
+  const networkChoose = React.useMemo(
+    () => Array.from(selectedKeys)[0] as NetworkType,
+    [selectedKeys],
+  );
 
   // You can also provide a custom RPC endpoint.
-  const endpoint = useMemo(() => isDev() ? "http://localhost:8899/" : clusterApiUrl(network), [network]);
+  const endpoint = useMemo((): string => {
+    switch (networkChoose) {
+      case NetworkType.Devnet:
+        return clusterApiUrl(WalletAdapterNetwork.Devnet);
+      case NetworkType.Testnet:
+        return clusterApiUrl(WalletAdapterNetwork.Testnet);
+      case NetworkType.MainnetBeta:
+        return clusterApiUrl(WalletAdapterNetwork.Mainnet);
+      case NetworkType.Local:
+        return "http://localhost:8899/";
+      default:
+        return "";
+    }
+  }, [networkChoose]);
 
   const wallets = useMemo(
     () => [
@@ -64,19 +95,47 @@ export default function DappLayout({
   };
 
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>
-          <div
-            draggable
-            onDrag={handleDrag}
-            style={{ position: "absolute", left: position.x, top: position.y }}
-          >
-            <WalletMultiButton />
-          </div>
-          {children}
-        </WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+    <div>
+      <ConnectionProvider endpoint={endpoint}>
+        <WalletProvider wallets={wallets} autoConnect>
+          <WalletModalProvider>
+            <div
+              draggable
+              onDrag={handleDrag}
+              style={{ position: "absolute", left: position.x, top: position.y }}
+            >
+              <WalletMultiButton />
+              <Dropdown>
+                <DropdownTrigger>
+                  <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                  >{networkChoose.toString()}</button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                  selectedKeys={selectedKeys}
+                  selectionMode="single"
+                  variant="flat"
+                  onSelectionChange={setSelectedKeys}
+                >
+                  <DropdownItem key="testnet">Testnet</DropdownItem>
+                  <DropdownItem key="mainnet-beta">Mainnet Beta</DropdownItem>
+                  <DropdownItem key="devnet">Devnet</DropdownItem>
+                  <DropdownItem key="local">Local</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+            {children}
+          </WalletModalProvider>
+        </WalletProvider>
+      </ConnectionProvider>
+      {/* to home */}
+      <Link
+        href="/"
+        className="fixed bottom-4 right-4 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+      >
+        Home
+      </Link>
+    </div>
   );
 }

@@ -12,11 +12,15 @@
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.30.1",
+    "@nextui-org/dropdown": "^2.3.9",
+    "@nextui-org/react": "^2.6.11",
+    "@nextui-org/table": "^2.2.8",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/wallet-adapter-wallets": "^0.19.32",
     "@solana/web3.js": "^1.98.0",
+    "@tanstack/react-table": "^8.20.6",
     "next": "15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
