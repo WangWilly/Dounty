@@ -64,6 +64,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
+          cache-dependency-path: ${{ env.TARGET }}/package-lock.json
           node-version: "lts/*"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
