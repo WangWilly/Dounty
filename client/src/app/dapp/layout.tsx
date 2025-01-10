@@ -1,5 +1,8 @@
 "use client";
 import React, { useMemo, useState } from "react";
+
+import { isDev } from "@/app/appConfig";
+
 import {
   ConnectionProvider,
   WalletProvider,
@@ -12,7 +15,6 @@ import {
 } from "@solana/wallet-adapter-wallets";
 import {
   WalletModalProvider,
-  // WalletDisconnectButton,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl } from "@solana/web3.js";
@@ -28,10 +30,10 @@ export default function DappLayout({
   children: React.ReactNode;
 }>) {
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
-  const network = WalletAdapterNetwork.Devnet;
+  const network = WalletAdapterNetwork.Testnet;
 
   // You can also provide a custom RPC endpoint.
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const endpoint = useMemo(() => isDev() ? "http://localhost:8899/" : clusterApiUrl(network), [network]);
 
   const wallets = useMemo(
     () => [
@@ -51,8 +53,7 @@ export default function DappLayout({
       new PhantomWalletAdapter(),
       new SolflareWalletAdapter(),
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [network],
+    [],
   );
 
   const [position, setPosition] = useState({ x: 0, y: 0 });

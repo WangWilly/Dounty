@@ -7,6 +7,7 @@ import {
   PublicKey,
   TransactionMessage,
   VersionedTransaction,
+  LAMPORTS_PER_SOL,
 } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
@@ -47,6 +48,14 @@ export default function CreatePage() {
         </div>
       </div>
     );
+  }
+
+  const onClickAirDrop = async () => {
+    // Resolve
+    console.log("Balance", await connection.getBalance(publicKey));
+    await connection.requestAirdrop(publicKey, 3 * LAMPORTS_PER_SOL);
+    console.log("Airdrop requested");
+    console.log("Balance", await connection.getBalance(publicKey));
   }
 
   const onClickCreate = async () => {
@@ -119,6 +128,18 @@ export default function CreatePage() {
           >
             Create
           </button>
+        </div>
+        <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mt-6">
+          <p className="text-gray-300">Or</p>
+
+          <button
+            className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold"
+            onClick={onClickAirDrop}
+          >
+            Airdrop
+          </button>
+
+          <p className="text-gray-300">Your address: {publicKey.toBase58()}</p>
         </div>
       </div>
     </div>
