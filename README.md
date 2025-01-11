@@ -1,5 +1,11 @@
 # Dounty (coDe Bounty)
 
+<p align="center">
+    <a href="https://wangwilly.github.io/Dounty/">
+        <img src="docs/assets/dounty-icon.png" alt="Dounty icon" width="200" height="200">
+    </a>
+</p>
+
 A tool to incentivize developers to contribute to open source projects by rewarding them with bounties. Like the ticketing system in JIRA, but with bounties. Users open bounties for issues they want to see fixed on Github, and developers can claim them. Once the issue is fixed, the developer gets the bounty.
 
 <details>
