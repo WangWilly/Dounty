@@ -10,7 +10,7 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches:
-      - main
+      - master
     paths: # https://stackoverflow.com/questions/63822219/how-to-run-github-actions-workflow-only-if-the-pushed-files-are-in-a-specific-fo
       - 'client/**'
 
