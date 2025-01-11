@@ -1,13 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@nextui-org/react";
 
-// import log from "@/utils/logging";
-
 import { DataTable } from "@/components/ui/defaultTable";
 
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useAnchorProvider } from "@/components/solana_provider";
 import { getBountyFactoryProgram } from "@/components/anchor/bounty_factory";
 import { Bounty, columns } from "@/components/anchor/dtos/bountyV1";
@@ -23,8 +22,8 @@ export default function Page() {
 
   const [bounties, setBounties] = useState<Bounty[]>([]);
   const [donners, setDonners] = useState<Donner[]>([]);
-
   const changeOnClick = () => {
+    //////////////////////////////////////////////////////////////////////////////
     // Resolve
     // https://stackoverflow.com/questions/77742713/how-to-use-async-await-inside-client-component-in-next-js
     // https://stackoverflow.com/questions/77457425/how-to-implement-useeffect-in-the-server-in-next-js-14
@@ -65,6 +64,18 @@ export default function Page() {
     fetchDonners();
   };
 
+  const [bountySol, setBountySol] = useState(0);
+  useEffect(() => {
+    const totalSol = bounties.reduce((acc, bounty) => acc + bounty.donation, 0) / LAMPORTS_PER_SOL;
+    setBountySol(totalSol);
+  }, [bounties]);
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Initial load
+  changeOnClick(); 
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Compose
   return (
     <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen">
       <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
@@ -89,10 +100,14 @@ export default function Page() {
           </div>
           <p className="mt-4 text-gray-300">
             Current Bounty:{" "}
-            <span className="text-orange-400 font-semibold">5 SOL</span>
+            <span className="text-orange-400 font-semibold">
+              {bountySol} SOL
+            </span>
           </p>
           <p className="text-gray-300">
-            Contributors: <span className="text-blue-400">15</span>
+            Contributors: <span className="text-blue-400">
+              {donners.length}
+            </span>
           </p>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6">
