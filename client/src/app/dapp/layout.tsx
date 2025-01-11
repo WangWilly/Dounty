@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import Link from "next/link";
 import {
   Dropdown,
@@ -8,6 +8,7 @@ import {
   DropdownItem,
 } from "@nextui-org/dropdown";
 import type { Selection } from "@nextui-org/react";
+import { NextUIProvider, Button } from "@nextui-org/react";
 
 import { isDev } from "@/utils/appConfig";
 
@@ -94,58 +95,51 @@ export default function DappLayout({
     [],
   );
 
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-  const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
-    // console.log(e.clientX, e.clientY);
-    setPosition({ x: e.clientX, y: e.clientY });
-  };
-
   return (
     <div>
       <ConnectionProvider endpoint={endpoint}>
         <WalletProvider wallets={wallets} autoConnect>
           <WalletModalProvider>
-            <div
-              draggable
-              onDrag={handleDrag}
-              style={{
-                position: "absolute",
-                left: position.x,
-                top: position.y,
-              }}
-            >
-              <WalletMultiButton />
-              <Dropdown>
-                <DropdownTrigger>
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
-                    {networkChoose.toString()}
-                  </button>
-                </DropdownTrigger>
-                <DropdownMenu
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                  selectedKeys={selectedKeys}
-                  selectionMode="single"
-                  variant="flat"
-                  onSelectionChange={setSelectedKeys}
-                >
-                  {/* <DropdownItem key="testnet">Testnet</DropdownItem> */}
-                  {/* <DropdownItem key="mainnet-beta">Mainnet Beta</DropdownItem> */}
-                  <DropdownItem key="devnet">Devnet</DropdownItem>
-                  <DropdownItem key="local">Local</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </div>
-            {children}
+            <NextUIProvider>
+              <div
+                className="grid grid-cols-6 items-center gap-4 p-4 bg-violet-400 text-white"
+                style={{ position: "fixed", width: "100%" }}
+              >
+                <WalletMultiButton />
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button className="bg-default text-white px-4 py-2 rounded-md h-full text-lg font-semibold">
+                      {networkChoose.toString()}
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                    className="bg-white text-black font-semibold"
+                    selectedKeys={selectedKeys}
+                    selectionMode="single"
+                    variant="flat"
+                    onSelectionChange={setSelectedKeys}
+                  >
+                    {/* <DropdownItem key="testnet">Testnet</DropdownItem> */}
+                    {/* <DropdownItem key="mainnet-beta">Mainnet Beta</DropdownItem> */}
+                    <DropdownItem key="devnet">Devnet</DropdownItem>
+                    <DropdownItem key="local">Local</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </div>
+              <div className="pt-16 border-spacing-16">{children}</div>
+            </NextUIProvider>
           </WalletModalProvider>
         </WalletProvider>
       </ConnectionProvider>
-      {/* to home */}
       <Link
         href="/"
-        className="fixed bottom-4 right-4 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
       >
-        Home
+        <Button
+          color="success"
+          className="fixed bottom-4 right-4 text-lg size-lg"
+        >
+        🥾🏠
+        </Button>
       </Link>
     </div>
   );

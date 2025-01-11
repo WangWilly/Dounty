@@ -1,28 +1,27 @@
 // Code: Dounty (c) 2025
 // License: MIT
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { NextUIProvider, Button } from "@nextui-org/react";
 
 ////////////////////////////////////////////////////////////////////////////////
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <Image
-        src="./icon/favicon-32x32.png"
-        alt="Dounty Logo"
-        width={32}
-        height={32}
-        className="rounded-full"
-      />
+    <NextUIProvider className="grid grid-rows-[20px_1fr_80px] items-center justify-items-center min-h-screen p-8 pb-20 gap-4 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <h1 className="text-4xl font-bold text-center">Dounty</h1>
-
-      <Link
-        href="/dapp"
-        className="inline-block px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-      >
-        Go to Dapp
+      <Image
+        src="./icon/apple-touch-icon.png"
+        alt="Dounty Logo"
+        width={320}
+        height={320}
+      />
+      <Link href="/dapp" className="w-full h-full">
+        <Button color="default" className="w-full h-full">
+          Go to Dapp
+        </Button>
       </Link>
-    </div>
+    </NextUIProvider>
   );
 }

@@ -17,7 +17,8 @@ import {
   getBountyFactoryProgram,
   BOUNTY_FACTORY_PROGRAM_ID,
 } from "@/components/anchor/bounty_factory";
-import log from "@/utils/logging";
+
+import { ToastContainer, toast } from 'react-toastify';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -65,10 +66,6 @@ export default function CreateDonneerPage() {
       return;
     }
 
-    log("Donation", donation);
-    log("Bounty PDA", bountyPda.toString());
-    log("Public Key", publicKey.toBase58());
-
     // Resolve
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [donerPda, _donerPdaBump] = PublicKey.findProgramAddressSync(
@@ -86,32 +83,37 @@ export default function CreateDonneerPage() {
       systemProgram: SystemProgram.programId,
     };
 
-    const latestBlockhash = await connection.getLatestBlockhash();
-    const ix = await program.methods
-      .createDonerV1(new anchor.BN(donation), "")
-      .accountsPartial(createDonerV1Acc)
-      .instruction();
-
-    // Create a new TransactionMessage with version and compile it to legacy
-    const messageLegacy = new TransactionMessage({
-      payerKey: publicKey,
-      recentBlockhash: latestBlockhash.blockhash,
-      instructions: [ix],
-    }).compileToLegacyMessage();
-    // Create a new VersionedTransaction which supports legacy and v0
-    const transaction = new VersionedTransaction(messageLegacy);
-    const tx = await signTransaction(transaction);
-
-    const signature = await sendTransaction(tx, connection);
-    await connection.confirmTransaction(
-      { signature, ...latestBlockhash },
-      "confirmed",
-    );
-    console.log("Signature", signature);
+    try {
+      const latestBlockhash = await connection.getLatestBlockhash();
+      const ix = await program.methods
+        .createDonerV1(new anchor.BN(donation), "")
+        .accountsPartial(createDonerV1Acc)
+        .instruction();
+  
+      // Create a new TransactionMessage with version and compile it to legacy
+      const messageLegacy = new TransactionMessage({
+        payerKey: publicKey,
+        recentBlockhash: latestBlockhash.blockhash,
+        instructions: [ix],
+      }).compileToLegacyMessage();
+      // Create a new VersionedTransaction which supports legacy and v0
+      const transaction = new VersionedTransaction(messageLegacy);
+      const tx = await signTransaction(transaction);
+  
+      const signature = await sendTransaction(tx, connection);
+      await connection.confirmTransaction(
+        { signature, ...latestBlockhash },
+        "confirmed",
+      );
+    } catch (error) {
+      toast.error('Create doner failed: ' + error);
+      return;
+    }
   };
 
   return (
     <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen">
+      <ToastContainer />
       <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
         <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
           <h2 className="text-lg font-bold text-orange-600">

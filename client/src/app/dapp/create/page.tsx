@@ -18,6 +18,8 @@ import {
   BOUNTY_FACTORY_PROGRAM_ID,
 } from "@/components/anchor/bounty_factory";
 
+import { ToastContainer, toast } from 'react-toastify';
+
 ////////////////////////////////////////////////////////////////////////////////
 
 // The bounty creating page
@@ -53,20 +55,25 @@ export default function CreatePage() {
 
   const onClickAirDrop = async () => {
     // Resolve
-    console.log("Balance", await connection.getBalance(publicKey));
-    await connection.requestAirdrop(publicKey, 3 * LAMPORTS_PER_SOL);
-    console.log("Airdrop requested");
-    console.log("Balance", await connection.getBalance(publicKey));
+    toast.info('Airdropping 3 SOL');
+    try {
+      await connection.requestAirdrop(publicKey, 3 * LAMPORTS_PER_SOL);
+      toast.success('Airdrop succeeded');
+    } catch (error) {
+      console.error(error);
+      toast.error('Airdrop failed');
+    }
   };
 
   const onClickCreate = async () => {
     // Resolve
+    const bountyUrlBase64 = Buffer.from(bountyUrl).toString("base64");
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [bountyPda, _bountyPdaBump] = PublicKey.findProgramAddressSync(
       [
         anchor.utils.bytes.utf8.encode("bounty"),
         publicKey.toBuffer(),
-        anchor.utils.bytes.utf8.encode(bountyUrl),
+        anchor.utils.bytes.utf8.encode(bountyUrlBase64),
       ],
       BOUNTY_FACTORY_PROGRAM_ID,
     );
@@ -76,32 +83,38 @@ export default function CreatePage() {
       systemProgram: SystemProgram.programId,
     };
 
-    const latestBlockhash = await connection.getLatestBlockhash();
-    const ix = await program.methods
-      .createV1(bountyTitle, bountyUrl, [], null)
-      .accountsPartial(createV1Acc)
-      .instruction();
-
-    // Create a new TransactionMessage with version and compile it to legacy
-    const messageLegacy = new TransactionMessage({
-      payerKey: publicKey,
-      recentBlockhash: latestBlockhash.blockhash,
-      instructions: [ix],
-    }).compileToLegacyMessage();
-    // Create a new VersionedTransaction which supports legacy and v0
-    const transaction = new VersionedTransaction(messageLegacy);
-    const tx = await signTransaction(transaction);
-
-    const signature = await sendTransaction(tx, connection);
-    await connection.confirmTransaction(
-      { signature, ...latestBlockhash },
-      "confirmed",
-    );
-    console.log("Signature", signature);
+    try {
+      const latestBlockhash = await connection.getLatestBlockhash();
+      const ix = await program.methods
+        .createV1(bountyTitle, bountyUrlBase64, [], null)
+        .accountsPartial(createV1Acc)
+        .instruction();
+  
+      // Create a new TransactionMessage with version and compile it to legacy
+      const messageLegacy = new TransactionMessage({
+        payerKey: publicKey,
+        recentBlockhash: latestBlockhash.blockhash,
+        instructions: [ix],
+      }).compileToLegacyMessage();
+      // Create a new VersionedTransaction which supports legacy and v0
+      const transaction = new VersionedTransaction(messageLegacy);
+      const tx = await signTransaction(transaction);
+  
+      const signature = await sendTransaction(tx, connection);
+      await connection.confirmTransaction(
+        { signature, ...latestBlockhash },
+        "confirmed",
+      );
+      toast.success('Create bounty succeeded');
+    } catch (error) {
+      console.error(error);
+      toast.error('Create bounty failed: ' + error);
+    }
   };
 
   return (
     <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen">
+      <ToastContainer />
       <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
         <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
           <h2 className="text-lg font-bold text-orange-600">Create a Bounty</h2>
