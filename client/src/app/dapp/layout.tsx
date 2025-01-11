@@ -45,7 +45,7 @@ export default function DappLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const defaultNetwork = isDev() ? NetworkType.Local : NetworkType.Testnet;
+  const defaultNetwork = isDev() ? NetworkType.Local : NetworkType.Devnet;
   // https://github.com/nextui-org/nextui/issues/3626
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   // dropdown
@@ -129,8 +129,8 @@ export default function DappLayout({
                   variant="flat"
                   onSelectionChange={setSelectedKeys}
                 >
-                  <DropdownItem key="testnet">Testnet</DropdownItem>
-                  <DropdownItem key="mainnet-beta">Mainnet Beta</DropdownItem>
+                  {/* <DropdownItem key="testnet">Testnet</DropdownItem> */}
+                  {/* <DropdownItem key="mainnet-beta">Mainnet Beta</DropdownItem> */}
                   <DropdownItem key="devnet">Devnet</DropdownItem>
                   <DropdownItem key="local">Local</DropdownItem>
                 </DropdownMenu>

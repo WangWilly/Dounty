@@ -41,6 +41,7 @@ A tool to incentivize developers to contribute to open source projects by reward
 
 - [Flow chart for the design](docs/contract/flow-chart.md)
 - [Notes for on-chain program](docs/contract/notes.md)
+- [Solana dev faucet](https://faucet.solana.com/)
 
 ### Client side
 
@@ -126,8 +127,13 @@ anchor init [new-workspace-name]
     - [ ] 🤔 https://solana.stackexchange.com/questions/9352/dynamically-use-pda-with-transfer-hooks
     - [ ] https://github.com/wormholelabs-xyz/example-queries-solana-pda
     - [x] https://stackoverflow.com/questions/70150946/systemprogramcreateaccount-data-size-limited-to-10240-in-inner-instructions
+    - [ ] https://solana.stackexchange.com/questions/2715/why-cant-i-close-a-solana-program-and-redeploy-to-the-same-program-id
+    - [x] https://solana.com/docs/programs/deploying
+        - [x] https://solana.stackexchange.com/questions/5807/what-does-sbf-as-in-sbf-program-stand-for
+        - [x] https://solana.com/docs/core/clusters
 - 🙂
     - [ ] [My journey into web3](https://lorisleiva.com/my-journey-into-web-3)
     - [ ] https://www.quicknode.com/guides/solana-development/solidity/solang-get-started
+    - [ ] https://www.reddit.com/r/solana/comments/1b1xmtk/sam_bankmanfried_is_telling_prison_guards_to_buy/
 - 🤨
     - [ ] https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/assigning-issues-and-pull-requests-to-other-github-users

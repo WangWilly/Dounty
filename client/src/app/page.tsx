@@ -17,7 +17,6 @@ export default function Home() {
       />
       <h1 className="text-4xl font-bold text-center">Dounty</h1>
 
-      {/* go to dapp */}
       <Link
         href="/dapp"
         className="inline-block px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
