@@ -37,6 +37,7 @@ export default function Page() {
         log(allBounties);
         setBounties(
           allBounties.map(
+            // TODO: transform the bounty to the correct format
             (bounty): Bounty => ({
               address: bounty.publicKey,
               owner: bounty.account.owner,
@@ -79,7 +80,7 @@ export default function Page() {
   const [bountySol, setBountySol] = useState(0);
   useEffect(() => {
     const totalSol =
-      bounties.reduce((acc, bounty) => acc + bounty.donation, 0) /
+      bounties.reduce((acc, bounty) => acc + Number(bounty.donation), 0) /
       LAMPORTS_PER_SOL;
     setBountySol(totalSol);
   }, [bounties]);
