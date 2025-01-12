@@ -18,7 +18,7 @@ import {
   BOUNTY_FACTORY_PROGRAM_ID,
 } from "@/components/anchor/bounty_factory";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -89,7 +89,7 @@ export default function CreateDonneerPage() {
         .createDonerV1(new anchor.BN(donation), "")
         .accountsPartial(createDonerV1Acc)
         .instruction();
-  
+
       // Create a new TransactionMessage with version and compile it to legacy
       const messageLegacy = new TransactionMessage({
         payerKey: publicKey,
@@ -99,16 +99,16 @@ export default function CreateDonneerPage() {
       // Create a new VersionedTransaction which supports legacy and v0
       const transaction = new VersionedTransaction(messageLegacy);
       const tx = await signTransaction(transaction);
-  
+
       const signature = await sendTransaction(tx, connection);
       await connection.confirmTransaction(
         { signature, ...latestBlockhash },
         "confirmed",
       );
 
-      toast.success('Successfully donated');
+      toast.success("Successfully donated");
     } catch (error) {
-      toast.error('Create doner failed: ' + error);
+      toast.error("Create doner failed: " + error);
     }
   };
 

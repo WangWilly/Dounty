@@ -15,7 +15,7 @@ import {
 } from "@/components/anchor/dtos/donnerV1";
 import log from "@/utils/logging";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +49,7 @@ export default function Page() {
           ),
         );
       } catch (error) {
-        toast.error('Error fetching bounty: ' + error);
+        toast.error("Error fetching bounty: " + error);
       }
     };
 
@@ -68,7 +68,7 @@ export default function Page() {
           ),
         );
       } catch (error) {
-        toast.error('Error fetching donners: ' + error);
+        toast.error("Error fetching donners: " + error);
       }
     };
 
@@ -128,10 +128,7 @@ export default function Page() {
           </Button>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6 text-black">
-          <DataTable
-            columns={columns}
-            data={bounties}
-          />
+          <DataTable columns={columns} data={bounties} />
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6 text-black">
           <DataTable

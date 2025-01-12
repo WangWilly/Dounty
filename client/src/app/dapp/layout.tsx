@@ -131,14 +131,12 @@ export default function DappLayout({
           </WalletModalProvider>
         </WalletProvider>
       </ConnectionProvider>
-      <Link
-        href="/"
-      >
+      <Link href="/">
         <Button
           color="success"
           className="fixed bottom-4 right-4 text-lg size-lg"
         >
-        🥾🏠
+          🥾🏠
         </Button>
       </Link>
     </div>

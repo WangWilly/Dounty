@@ -19,7 +19,7 @@ import {
   BOUNTY_FACTORY_PROGRAM_ID,
 } from "@/components/anchor/bounty_factory";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -56,13 +56,13 @@ export default function CreatePage() {
 
   const onClickAirDrop = async () => {
     // Resolve
-    toast.info('Airdropping 3 SOL');
+    toast.info("Airdropping 3 SOL");
     try {
       await connection.requestAirdrop(publicKey, 3 * LAMPORTS_PER_SOL);
-      toast.success('Airdrop succeeded');
+      toast.success("Airdrop succeeded");
     } catch (error) {
       console.error(error);
-      toast.error('Airdrop failed');
+      toast.error("Airdrop failed");
     }
   };
 
@@ -89,7 +89,7 @@ export default function CreatePage() {
         .createV1(bountyTitle, bountyUrl, [], null)
         .accountsPartial(createV1Acc)
         .instruction();
-  
+
       // Create a new TransactionMessage with version and compile it to legacy
       const messageLegacy = new TransactionMessage({
         payerKey: publicKey,
@@ -99,16 +99,16 @@ export default function CreatePage() {
       // Create a new VersionedTransaction which supports legacy and v0
       const transaction = new VersionedTransaction(messageLegacy);
       const tx = await signTransaction(transaction);
-  
+
       const signature = await sendTransaction(tx, connection);
       await connection.confirmTransaction(
         { signature, ...latestBlockhash },
         "confirmed",
       );
-      toast.success('Create bounty succeeded');
+      toast.success("Create bounty succeeded");
     } catch (error) {
       console.error(error);
-      toast.error('Create bounty failed: ' + error);
+      toast.error("Create bounty failed: " + error);
     }
   };
 
