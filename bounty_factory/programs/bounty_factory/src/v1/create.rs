@@ -2,6 +2,7 @@ use anchor_lang::prelude::*;
 
 use crate::errors::ErrorCode;
 use crate::models::BountyV1;
+use super::utils::str_extend::StringExt;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -14,7 +15,7 @@ pub struct CreateV1Acc<'info> {
         init,
         payer = owner,
         space = BountyV1::INIT_SPACE,
-        seeds = [b"bounty", owner.key().as_ref(), url.as_bytes()],
+        seeds = [b"bounty", owner.key().as_ref(), &url.to_hashed_bytes()],
         bump,
     )]
     pub bounty: Account<'info, BountyV1>,

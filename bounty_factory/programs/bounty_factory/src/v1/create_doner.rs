@@ -3,6 +3,7 @@ use anchor_lang::solana_program::system_instruction;
 
 use crate::errors::ErrorCode;
 use crate::models::{BountyV1, DonerV1};
+use super::utils::str_extend::StringExt;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -20,7 +21,7 @@ pub struct CreateDonerV1Acc<'info> {
     pub doner_account: Account<'info, DonerV1>,
     #[account(
         mut,
-        seeds = [b"bounty", bounty.owner.key().as_ref(), bounty.url.as_bytes()],
+        seeds = [b"bounty", bounty.owner.key().as_ref(), &bounty.url.to_hashed_bytes()],
         bump = bounty.bump,
     )]
     pub bounty: Account<'info, BountyV1>,

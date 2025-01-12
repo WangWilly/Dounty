@@ -131,6 +131,7 @@ anchor init [new-workspace-name]
     - [x] https://solana.com/docs/programs/deploying
         - [x] https://solana.stackexchange.com/questions/5807/what-does-sbf-as-in-sbf-program-stand-for
         - [x] https://solana.com/docs/core/clusters
+    - [x] https://solana.stackexchange.com/questions/2840/best-ways-to-store-long-string-as-pda-seed
 - 🙂
     - [ ] [My journey into web3](https://lorisleiva.com/my-journey-into-web-3)
     - [ ] https://www.quicknode.com/guides/solana-development/solidity/solang-get-started

@@ -4,6 +4,7 @@ use std::collections::HashSet;
 
 use crate::errors::ErrorCode;
 use crate::models::BountyV1;
+use super::utils::str_extend::StringExt;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -15,7 +16,15 @@ pub struct IssueV1Acc<'info> {
     pub commissioner3: Option<Signer<'info>>,
     pub commissioner4: Option<Signer<'info>>,
     pub commissioner5: Option<Signer<'info>>,
-    #[account(mut, seeds = [b"bounty", bounty.owner.key().as_ref(), bounty.url.as_bytes()], bump = bounty.bump)]
+    #[account(
+        mut,
+        seeds = [
+            b"bounty",
+            bounty.owner.key().as_ref(),
+            &bounty.url.to_hashed_bytes(),
+        ],
+        bump = bounty.bump,
+    )]
     pub bounty: Account<'info, BountyV1>,
     #[account(mut)]
     pub assignee: SystemAccount<'info>,

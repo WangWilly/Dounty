@@ -3,6 +3,7 @@ import { Program } from "@coral-xyz/anchor";
 import { BountyFactory } from "../target/types/bounty_factory";
 
 import { Keypair, SystemProgram, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import * as crypto from "crypto";
 
 import { expect } from "chai";
 
@@ -30,6 +31,12 @@ async function expectError<T>(promise: Promise<T>): Promise<boolean> {
     // console.log("Caught error:", error);
     return true;
   }
+}
+
+function toHashedSeed(str: string): Uint8Array {
+  let hexString = crypto.createHash('sha256').update(str,'utf-8').digest('hex');
+  let seed = Uint8Array.from(Buffer.from(hexString,'hex'));
+  return seed;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -88,7 +95,7 @@ describe("bounty_factory", () => {
       [
         anchor.utils.bytes.utf8.encode("bounty"),
         wallet1.publicKey.toBuffer(),
-        anchor.utils.bytes.utf8.encode(url),
+        toHashedSeed(url),
       ],
       pBountryFactory.programId
     );
@@ -338,7 +345,7 @@ describe("bounty_factory", () => {
       [
         anchor.utils.bytes.utf8.encode("bounty"),
         wallet1.publicKey.toBuffer(),
-        anchor.utils.bytes.utf8.encode(url),
+        toHashedSeed(url),
       ],
       pBountryFactory.programId
     );
@@ -476,7 +483,7 @@ describe("bounty_factory", () => {
       [
         anchor.utils.bytes.utf8.encode("bounty"),
         wallet1.publicKey.toBuffer(),
-        anchor.utils.bytes.utf8.encode(url),
+        toHashedSeed(url),
       ],
       pBountryFactory.programId
     );
@@ -549,7 +556,7 @@ describe("bounty_factory", () => {
       [
         anchor.utils.bytes.utf8.encode("bounty"),
         wallet1.publicKey.toBuffer(),
-        anchor.utils.bytes.utf8.encode(url),
+        toHashedSeed(url),
       ],
       pBountryFactory.programId
     );
