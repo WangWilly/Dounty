@@ -49,10 +49,19 @@ A tool to incentivize developers to contribute to open source projects by reward
 
 ### Browser extension (TBD)
 
-### Server side (TBD)
+### Server side (Backend)
 
-- [Notes for server side](docs/server/notes.md)
+- [Notes for backend](docs/backend/notes.md)
     - Multi-signature
+
+#### Run w/ docker-compose
+
+```bash
+./scripts/be-build.sh
+
+cd deployments
+docker compose up -d
+```
 
 ## Setup
 

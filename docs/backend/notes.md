@@ -1,4 +1,4 @@
-# Server - Notes
+# Backend - Notes
 
 ## Studies
 
@@ -11,3 +11,11 @@
 - [ ] [How can one sign a serialized transaction?](https://solana.stackexchange.com/questions/534/how-can-one-sign-a-serialized-transaction)
 - [ ] https://www.npmjs.com/package/@solana/signers/v/2.0.0-preview.2.20240419004227.da22d0b4f9f8409054cc1c1080ed74cc4e21976d
 - [ ] https://docs.shyft.to/dev-guides/solana/transactions/how-to-sign-transactions-using-multiple-signers-on-solana
+
+## NestJS
+
+> https://medium.com/@zulfiqar.langah/how-to-setup-nest-js-next-js-mono-repository-8a5d8c3b5849
+
+```bash
+nest new [server-name] --strict --skip-git --package-manager=npm
+```

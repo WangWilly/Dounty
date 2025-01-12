@@ -1,0 +1,37 @@
+version: '3'
+services:
+  backend:
+    image: dounty/backend:latest
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      PT_APP_HOST: "0.0.0.0"
+      PT_APP_PORT: 8000
+      PT_APP_WORKERS: 1
+      PT_GPT_GROQ_API_KEY: your-api-key
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: dounty-2025
+      DB_USER: dounty-2025
+      DB_PASSWORD: dounty-2025
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: dounty-2025
+      POSTGRES_USER: dounty-2025
+      POSTGRES_PASSWORD: dounty-2025
+    volumes:
+      - './storage/db:/var/lib/postgresql/data'
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER}']
+      interval: 10s
+      timeout: 60s
+      retries: 10
