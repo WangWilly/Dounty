@@ -51,6 +51,9 @@ A tool to incentivize developers to contribute to open source projects by reward
 
 ### Server side (TBD)
 
+- [Notes for server side](docs/server/notes.md)
+    - Multi-signature
+
 ## Setup
 
 ### On-chain program
