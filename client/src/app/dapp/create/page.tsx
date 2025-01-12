@@ -12,6 +12,7 @@ import {
 } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
+import { toHashedSeed } from "@/utils/web3";
 import { useAnchorProvider } from "@/components/solana_provider";
 import {
   getBountyFactoryProgram,
@@ -67,13 +68,12 @@ export default function CreatePage() {
 
   const onClickCreate = async () => {
     // Resolve
-    const bountyUrlBase64 = Buffer.from(bountyUrl).toString("base64");
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [bountyPda, _bountyPdaBump] = PublicKey.findProgramAddressSync(
       [
         anchor.utils.bytes.utf8.encode("bounty"),
         publicKey.toBuffer(),
-        anchor.utils.bytes.utf8.encode(bountyUrlBase64),
+        toHashedSeed(bountyUrl),
       ],
       BOUNTY_FACTORY_PROGRAM_ID,
     );
@@ -86,7 +86,7 @@ export default function CreatePage() {
     try {
       const latestBlockhash = await connection.getLatestBlockhash();
       const ix = await program.methods
-        .createV1(bountyTitle, bountyUrlBase64, [], null)
+        .createV1(bountyTitle, bountyUrl, [], null)
         .accountsPartial(createV1Acc)
         .instruction();
   

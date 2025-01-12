@@ -105,9 +105,10 @@ export default function CreateDonneerPage() {
         { signature, ...latestBlockhash },
         "confirmed",
       );
+
+      toast.success('Successfully donated');
     } catch (error) {
       toast.error('Create doner failed: ' + error);
-      return;
     }
   };
 

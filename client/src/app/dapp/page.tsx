@@ -110,7 +110,11 @@ export default function Page() {
             <span className="text-blue-400">{donners.length}</span>
           </p>
         </div>
-        <div className="grid grid-cols-6 gap-4 p-1">
+        <div className="grid grid-cols-10 gap-4 p-1">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
           <div></div>
           <div></div>
           <div></div>
@@ -118,10 +122,9 @@ export default function Page() {
           <div></div>
           <Button
             onPress={changeOnClick}
-            color="default"
-            className="text-black px-6 py-2 rounded-lg font-semibold"
+            className="bg-transparent rounded-lg font-semibold size-lg"
           >
-            Refresh
+            🔄
           </Button>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6 text-black">
