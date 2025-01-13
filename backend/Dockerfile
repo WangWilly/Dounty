@@ -15,14 +15,16 @@ RUN npm i
 # Install runner dependencies
 FROM base AS runnder-deps
 
-# TODO: prisma
-# ENV NODE_ENV production
+ENV NODE_ENV production
 
 COPY package.json package-lock.json ./
+COPY prisma/deploy.prisma ./prisma/schema.prisma
 
-# TODO: prisma
-# RUN npm i --omit=dev
-RUN npm i
+RUN apt update
+RUN apt-get install -y openssl
+
+RUN npm i --omit=dev
+RUN npx prisma generate
 
 ################################################################################
 # Build the source code
@@ -39,14 +41,12 @@ FROM base AS runner
 
 ENV NODE_ENV production
 
-RUN apt update
-RUN apt-get install -y openssl
-
 COPY --from=runnder-deps /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./
 
-# TODO: move to runnder-deps
-COPY ./prisma/schema.prisma ./prisma/schema.prisma
-COPY ./serve.sh ./serve.sh
+COPY serve.sh ./serve.sh
+
+RUN apt update
+RUN apt-get install -y openssl
 
 CMD ["./serve.sh"]
