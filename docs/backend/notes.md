@@ -20,6 +20,7 @@
     - 📌 [Database connections](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections)
     - [Postgres pool setting not taking into account when schema uses env variable](https://github.com/prisma/prisma/issues/22177)
     - [How to Increase Prisma Connection Pool Size on a RDS Instance?](https://stackoverflow.com/questions/78922303/how-to-increase-prisma-connection-pool-size-on-a-rds-instance)
+    - 📌 [Failing to run `npx prisma generate`](https://github.com/prisma/prisma/discussions/23165)
 
 ## NestJS
 

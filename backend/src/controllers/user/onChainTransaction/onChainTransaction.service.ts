@@ -8,7 +8,7 @@ import { OnChainTransactionRepoService } from '../../../repos/onChainTransaction
 
 import { OnChainTransactionV1CreateReq } from './dtos/onChainTransaction.dto';
 
-import { OnChainTransactionCreateInputObjectSchema } from 'src/models/schemas/objects/OnChainTransactionCreateInput.schema';
+import { OnChainTransactionModel } from '../../../models';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -39,7 +39,7 @@ export class OnChainTransactionService {
   async createOnChainTransaction(
     req: OnChainTransactionV1CreateReq,
   ): Promise<void> {
-    const parsed = OnChainTransactionCreateInputObjectSchema.parse(req);
+    const parsed = OnChainTransactionModel.parse(req);
     await this.onChainTransactionRepoServices.create(parsed);
   }
 }

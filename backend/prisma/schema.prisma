@@ -9,19 +9,31 @@
 // [ ] https://www.prisma.io/docs/orm/prisma-schema/overview/generators
 // [ ] https://github.com/arthurfiorette/prisma-json-types-generator
 // [ ] https://github.com/vegardit/prisma-generator-nestjs-dto
-// [ ] https://github.com/CarterGrimmeisen/zod-prisma
-// [x] https://github.com/omar-dulaimi/prisma-zod-generator
+// [x] https://github.com/CarterGrimmeisen/zod-prisma
+// [x] ~~https://github.com/omar-dulaimi/prisma-zod-generator~~
 // [ ] https://github.com/luisrudge/prisma-generator-fake-data
 // [ ] https://github.com/samchon/prisma-markdown
+// https://github.com/colinhacks/zod
 
 generator client {
   provider = "prisma-client-js"
 }
 
-// https://github.com/colinhacks/zod
+// deprecated
+// generator zod {
+//   provider = "prisma-zod-generator"
+//   output  = "../src/models"
+// }
+
 generator zod {
-  provider = "prisma-zod-generator"
-  output  = "../src/models"
+  provider        = "zod-prisma"
+  output          = "../src/models"
+  relationModel   = false
+  modelCase       = "PascalCase"
+  modelSuffix     = "Model"
+  useDecimalJs    = true 
+  // https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-by-null-values
+  prismaJsonNullability = true
 }
 
 ////////////////////////////////////////////////////////////////////////////////
