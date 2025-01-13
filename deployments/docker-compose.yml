@@ -4,17 +4,24 @@ services:
     image: dounty/backend:latest
     restart: always
     ports:
-      - "8000:8000"
+      - "3000:3000"
     environment:
-      PT_APP_HOST: "0.0.0.0"
-      PT_APP_PORT: 8000
-      PT_APP_WORKERS: 1
-      PT_GPT_GROQ_API_KEY: your-api-key
+      APP_HOST: "0.0.0.0"
+      APP_PORT: 3000
       DB_HOST: db
       DB_PORT: 5432
       DB_NAME: dounty-2025
       DB_USER: dounty-2025
       DB_PASSWORD: dounty-2025
+      DATABASE_URL: postgresql://dounty-2025:dounty-2025@db:5432/dounty-2025
+    depends_on:
+      db:
+        condition: service_healthy
+
+  migration:
+    image: dounty/migration:latest
+    environment:
+      DATABASE_URL: postgres://dounty-2025:dounty-2025@db:5432/dounty-2025
     depends_on:
       db:
         condition: service_healthy

@@ -57,6 +57,7 @@ A tool to incentivize developers to contribute to open source projects by reward
 #### Run w/ docker-compose
 
 ```bash
+./scripts/db-build-migration.sh
 ./scripts/be-build.sh
 
 cd deployments
