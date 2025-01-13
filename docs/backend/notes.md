@@ -11,6 +11,15 @@
 - [ ] [How can one sign a serialized transaction?](https://solana.stackexchange.com/questions/534/how-can-one-sign-a-serialized-transaction)
 - [ ] https://www.npmjs.com/package/@solana/signers/v/2.0.0-preview.2.20240419004227.da22d0b4f9f8409054cc1c1080ed74cc4e21976d
 - [ ] https://docs.shyft.to/dev-guides/solana/transactions/how-to-sign-transactions-using-multiple-signers-on-solana
+- Database
+    - [prisma/prisma-examples/pulse/product-search-with-typesense/backend](https://github.com/prisma/prisma-examples/tree/latest/pulse/product-search-with-typesense/backend)
+    - 📌 [NestJS Prisma](https://docs.nestjs.com/recipes/prisma)
+    - 📌 [Connection pool](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections/connection-pool)
+        - https://www.prisma.io/blog/nestjs-prisma-rest-api-7D056s1BmOL0#create-a-prisma-service
+        - https://github.com/notiz-dev/nestjs-prisma/tree/main/
+    - 📌 [Database connections](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections)
+    - [Postgres pool setting not taking into account when schema uses env variable](https://github.com/prisma/prisma/issues/22177)
+    - [How to Increase Prisma Connection Pool Size on a RDS Instance?](https://stackoverflow.com/questions/78922303/how-to-increase-prisma-connection-pool-size-on-a-rds-instance)
 
 ## NestJS
 
