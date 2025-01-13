@@ -11,16 +11,18 @@ ENV NODE_ENV production
 
 COPY package.json package-lock.json ./
 
-RUN npm install --dev
+RUN npm install
 
 ################################################################################
 # Runtime stage
 FROM base AS runner
 
 COPY --from=runnder-deps /app/node_modules ./node_modules
-COPY ./prisma ./prisma
+COPY prisma/deploy.prisma ./prisma/schema.prisma
+COPY db-deploy.sh ./db-deploy.sh
+COPY db-deployed.sh ./db-deployed.sh
 
 RUN apt update
 RUN apt-get install -y openssl
 
-ENTRYPOINT ["npx", "prisma", "migrate", "deploy"]
+ENTRYPOINT ["./db-deploy.sh"]

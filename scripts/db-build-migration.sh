@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# TODO: unimplemented
-echo "Not implemented yet"
-return 1
-
 git checkout master
 
 TS_BACKEND_DIR=backend

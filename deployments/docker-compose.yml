@@ -15,7 +15,7 @@ services:
       DB_PASSWORD: dounty-2025
       DATABASE_URL: postgresql://dounty-2025:dounty-2025@db:5432/dounty-2025
     depends_on:
-      db:
+      migration:
         condition: service_healthy
 
   migration:
@@ -25,6 +25,11 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', '/app/db-deployed.sh']
+      interval: 10s
+      timeout: 60s
+      retries: 10
 
   db:
     image: postgres:14-alpine

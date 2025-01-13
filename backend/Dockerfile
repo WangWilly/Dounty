@@ -9,7 +9,7 @@ FROM base AS builder-deps
 
 COPY package.json package-lock.json ./
 
-RUN npm i
+RUN npm install
 
 ################################################################################
 # Install runner dependencies
@@ -23,7 +23,7 @@ COPY prisma/deploy.prisma ./prisma/schema.prisma
 RUN apt update
 RUN apt-get install -y openssl
 
-RUN npm i --omit=dev
+RUN npm install --omit=dev
 RUN npx prisma generate
 
 ################################################################################
@@ -49,4 +49,4 @@ COPY serve.sh ./serve.sh
 RUN apt update
 RUN apt-get install -y openssl
 
-CMD ["./serve.sh"]
+ENTRYPOINT ["./serve.sh"]
