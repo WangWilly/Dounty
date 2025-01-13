@@ -4,9 +4,27 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+////////////////////////////////////////////////////////////////////////////////
+
+// [ ] https://www.prisma.io/docs/orm/prisma-schema/overview/generators
+// [ ] https://github.com/arthurfiorette/prisma-json-types-generator
+// [ ] https://github.com/vegardit/prisma-generator-nestjs-dto
+// [ ] https://github.com/CarterGrimmeisen/zod-prisma
+// [x] https://github.com/omar-dulaimi/prisma-zod-generator
+// [ ] https://github.com/luisrudge/prisma-generator-fake-data
+// [ ] https://github.com/samchon/prisma-markdown
+
 generator client {
   provider = "prisma-client-js"
 }
+
+// https://github.com/colinhacks/zod
+generator zod {
+  provider = "prisma-zod-generator"
+  output  = "../src/models"
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 datasource db {
   provider = "postgresql"

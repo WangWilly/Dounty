@@ -8,4 +8,4 @@ import { GlobalPrismaService } from './prismaDb.service';
   providers: [GlobalPrismaService],
   exports: [GlobalPrismaService],
 })
-export class GlobalAppConfigModule {}
+export class GlobalPrismaModule {}
