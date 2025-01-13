@@ -9,4 +9,5 @@ set -a && source dev.env && set +a
 echo "Database zod schema generation"
 npx prisma generate
 
+# for backend/src/models/*.ts
 npm run format

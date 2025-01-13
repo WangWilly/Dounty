@@ -3,6 +3,8 @@ import { Module } from '@nestjs/common';
 import { GlobalAppConfigModule } from '../../globals/appConfig/appConfig.module';
 import { GlobalPrismaModule } from '../../globals/prismaDb/prismaDb.module';
 
+import { OnChainTransactionRepoService } from 'src/repos/onChainTransaction.service';
+
 import { OnChainTransactionService } from './onChainTransaction/onChainTransaction.service';
 import { OnChainTransactionController } from './onChainTransaction/onChainTransaction.controller';
 
@@ -10,7 +12,7 @@ import { OnChainTransactionController } from './onChainTransaction/onChainTransa
 
 @Module({
   imports: [GlobalPrismaModule, GlobalAppConfigModule],
-  providers: [OnChainTransactionService],
+  providers: [OnChainTransactionRepoService, OnChainTransactionService],
   controllers: [OnChainTransactionController],
 })
-export class ChainModule {}
+export class UserModule {}
