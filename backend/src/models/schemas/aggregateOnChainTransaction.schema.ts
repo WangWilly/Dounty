@@ -2,9 +2,11 @@ import { z } from 'zod';
 import { OnChainTransactionOrderByWithRelationInputObjectSchema } from './objects/OnChainTransactionOrderByWithRelationInput.schema';
 import { OnChainTransactionWhereInputObjectSchema } from './objects/OnChainTransactionWhereInput.schema';
 import { OnChainTransactionWhereUniqueInputObjectSchema } from './objects/OnChainTransactionWhereUniqueInput.schema';
-import { OnChainTransactionScalarFieldEnumSchema } from './enums/OnChainTransactionScalarFieldEnum.schema';
+import { OnChainTransactionCountAggregateInputObjectSchema } from './objects/OnChainTransactionCountAggregateInput.schema';
+import { OnChainTransactionMinAggregateInputObjectSchema } from './objects/OnChainTransactionMinAggregateInput.schema';
+import { OnChainTransactionMaxAggregateInputObjectSchema } from './objects/OnChainTransactionMaxAggregateInput.schema';
 
-export const OnChainTransactionFindFirstSchema = z.object({
+export const OnChainTransactionAggregateSchema = z.object({
   orderBy: z
     .union([
       OnChainTransactionOrderByWithRelationInputObjectSchema,
@@ -15,5 +17,9 @@ export const OnChainTransactionFindFirstSchema = z.object({
   cursor: OnChainTransactionWhereUniqueInputObjectSchema.optional(),
   take: z.number().optional(),
   skip: z.number().optional(),
-  distinct: z.array(OnChainTransactionScalarFieldEnumSchema).optional(),
+  _count: z
+    .union([z.literal(true), OnChainTransactionCountAggregateInputObjectSchema])
+    .optional(),
+  _min: OnChainTransactionMinAggregateInputObjectSchema.optional(),
+  _max: OnChainTransactionMaxAggregateInputObjectSchema.optional(),
 });

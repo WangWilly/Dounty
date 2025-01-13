@@ -1,19 +1,19 @@
 import { z } from 'zod';
-import { onChainTransactionOrderByWithRelationInputObjectSchema } from './objects/onChainTransactionOrderByWithRelationInput.schema';
-import { onChainTransactionWhereInputObjectSchema } from './objects/onChainTransactionWhereInput.schema';
-import { onChainTransactionWhereUniqueInputObjectSchema } from './objects/onChainTransactionWhereUniqueInput.schema';
-import { onChainTransactionScalarFieldEnumSchema } from './enums/onChainTransactionScalarFieldEnum.schema';
+import { OnChainTransactionOrderByWithRelationInputObjectSchema } from './objects/OnChainTransactionOrderByWithRelationInput.schema';
+import { OnChainTransactionWhereInputObjectSchema } from './objects/OnChainTransactionWhereInput.schema';
+import { OnChainTransactionWhereUniqueInputObjectSchema } from './objects/OnChainTransactionWhereUniqueInput.schema';
+import { OnChainTransactionScalarFieldEnumSchema } from './enums/OnChainTransactionScalarFieldEnum.schema';
 
-export const onChainTransactionFindManySchema = z.object({
+export const OnChainTransactionFindManySchema = z.object({
   orderBy: z
     .union([
-      onChainTransactionOrderByWithRelationInputObjectSchema,
-      onChainTransactionOrderByWithRelationInputObjectSchema.array(),
+      OnChainTransactionOrderByWithRelationInputObjectSchema,
+      OnChainTransactionOrderByWithRelationInputObjectSchema.array(),
     ])
     .optional(),
-  where: onChainTransactionWhereInputObjectSchema.optional(),
-  cursor: onChainTransactionWhereUniqueInputObjectSchema.optional(),
+  where: OnChainTransactionWhereInputObjectSchema.optional(),
+  cursor: OnChainTransactionWhereUniqueInputObjectSchema.optional(),
   take: z.number().optional(),
   skip: z.number().optional(),
-  distinct: z.array(onChainTransactionScalarFieldEnumSchema).optional(),
+  distinct: z.array(OnChainTransactionScalarFieldEnumSchema).optional(),
 });

@@ -8,19 +8,17 @@ import { OnChainTransactionRepoService } from '../../../repos/onChainTransaction
 
 import { OnChainTransactionV1CreateReq } from './dtos/onChainTransaction.dto';
 
-import { onChainTransactionCreateInputObjectSchema } from 'src/models/schemas/objects/onChainTransactionCreateInput.schema';
+import { OnChainTransactionCreateInputObjectSchema } from 'src/models/schemas/objects/OnChainTransactionCreateInput.schema';
 
 ////////////////////////////////////////////////////////////////////////////////
 
 // TODO: to zod
-class ConfigSchema {
-}
+class ConfigSchema {}
 
 ////////////////////////////////////////////////////////////////////////////////
 
 @Injectable()
 export class OnChainTransactionService {
-
   constructor(
     private readonly globalAppConfigService: GlobalAppConfigService,
     private readonly onChainTransactionRepoServices: OnChainTransactionRepoService,
@@ -38,8 +36,10 @@ export class OnChainTransactionService {
 
   //////////////////////////////////////////////////////////////////////////////
 
-  async createOnChainTransaction(req: OnChainTransactionV1CreateReq): Promise<void> {
-    const parsed = onChainTransactionCreateInputObjectSchema.parse(req);
+  async createOnChainTransaction(
+    req: OnChainTransactionV1CreateReq,
+  ): Promise<void> {
+    const parsed = OnChainTransactionCreateInputObjectSchema.parse(req);
     await this.onChainTransactionRepoServices.create(parsed);
   }
 }

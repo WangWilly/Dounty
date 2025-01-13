@@ -3,11 +3,11 @@ import { SortOrderSchema } from '../enums/SortOrder.schema';
 
 import type { Prisma } from '@prisma/client';
 
-const Schema: z.ZodType<Prisma.onChainTransactionCountOrderByAggregateInput> = z
+const Schema: z.ZodType<Prisma.OnChainTransactionCountOrderByAggregateInput> = z
   .object({
-    public_key: z.lazy(() => SortOrderSchema).optional(),
-    serialized_tx: z.lazy(() => SortOrderSchema).optional(),
+    publicKey: z.lazy(() => SortOrderSchema).optional(),
+    serializedTx: z.lazy(() => SortOrderSchema).optional(),
   })
   .strict();
 
-export const onChainTransactionCountOrderByAggregateInputObjectSchema = Schema;
+export const OnChainTransactionCountOrderByAggregateInputObjectSchema = Schema;

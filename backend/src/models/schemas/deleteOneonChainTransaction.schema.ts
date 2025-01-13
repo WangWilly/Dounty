@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { onChainTransactionWhereUniqueInputObjectSchema } from './objects/onChainTransactionWhereUniqueInput.schema';
+import { OnChainTransactionWhereUniqueInputObjectSchema } from './objects/OnChainTransactionWhereUniqueInput.schema';
 
-export const onChainTransactionDeleteOneSchema = z.object({
-  where: onChainTransactionWhereUniqueInputObjectSchema,
+export const OnChainTransactionDeleteOneSchema = z.object({
+  where: OnChainTransactionWhereUniqueInputObjectSchema,
 });

@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { onChainTransactionUpdateManyMutationInputObjectSchema } from './objects/onChainTransactionUpdateManyMutationInput.schema';
-import { onChainTransactionWhereInputObjectSchema } from './objects/onChainTransactionWhereInput.schema';
+import { OnChainTransactionUpdateManyMutationInputObjectSchema } from './objects/OnChainTransactionUpdateManyMutationInput.schema';
+import { OnChainTransactionWhereInputObjectSchema } from './objects/OnChainTransactionWhereInput.schema';
 
-export const onChainTransactionUpdateManySchema = z.object({
-  data: onChainTransactionUpdateManyMutationInputObjectSchema,
-  where: onChainTransactionWhereInputObjectSchema.optional(),
+export const OnChainTransactionUpdateManySchema = z.object({
+  data: OnChainTransactionUpdateManyMutationInputObjectSchema,
+  where: OnChainTransactionWhereInputObjectSchema.optional(),
 });

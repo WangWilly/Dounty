@@ -1,26 +1,26 @@
 import { z } from 'zod';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
-import { onChainTransactionCountOrderByAggregateInputObjectSchema } from './onChainTransactionCountOrderByAggregateInput.schema';
-import { onChainTransactionMaxOrderByAggregateInputObjectSchema } from './onChainTransactionMaxOrderByAggregateInput.schema';
-import { onChainTransactionMinOrderByAggregateInputObjectSchema } from './onChainTransactionMinOrderByAggregateInput.schema';
+import { OnChainTransactionCountOrderByAggregateInputObjectSchema } from './OnChainTransactionCountOrderByAggregateInput.schema';
+import { OnChainTransactionMaxOrderByAggregateInputObjectSchema } from './OnChainTransactionMaxOrderByAggregateInput.schema';
+import { OnChainTransactionMinOrderByAggregateInputObjectSchema } from './OnChainTransactionMinOrderByAggregateInput.schema';
 
 import type { Prisma } from '@prisma/client';
 
-const Schema: z.ZodType<Prisma.onChainTransactionOrderByWithAggregationInput> =
+const Schema: z.ZodType<Prisma.OnChainTransactionOrderByWithAggregationInput> =
   z
     .object({
-      public_key: z.lazy(() => SortOrderSchema).optional(),
-      serialized_tx: z.lazy(() => SortOrderSchema).optional(),
+      publicKey: z.lazy(() => SortOrderSchema).optional(),
+      serializedTx: z.lazy(() => SortOrderSchema).optional(),
       _count: z
-        .lazy(() => onChainTransactionCountOrderByAggregateInputObjectSchema)
+        .lazy(() => OnChainTransactionCountOrderByAggregateInputObjectSchema)
         .optional(),
       _max: z
-        .lazy(() => onChainTransactionMaxOrderByAggregateInputObjectSchema)
+        .lazy(() => OnChainTransactionMaxOrderByAggregateInputObjectSchema)
         .optional(),
       _min: z
-        .lazy(() => onChainTransactionMinOrderByAggregateInputObjectSchema)
+        .lazy(() => OnChainTransactionMinOrderByAggregateInputObjectSchema)
         .optional(),
     })
     .strict();
 
-export const onChainTransactionOrderByWithAggregationInputObjectSchema = Schema;
+export const OnChainTransactionOrderByWithAggregationInputObjectSchema = Schema;

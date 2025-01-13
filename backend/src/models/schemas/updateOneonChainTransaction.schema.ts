@@ -1,12 +1,12 @@
 import { z } from 'zod';
-import { onChainTransactionUpdateInputObjectSchema } from './objects/onChainTransactionUpdateInput.schema';
-import { onChainTransactionUncheckedUpdateInputObjectSchema } from './objects/onChainTransactionUncheckedUpdateInput.schema';
-import { onChainTransactionWhereUniqueInputObjectSchema } from './objects/onChainTransactionWhereUniqueInput.schema';
+import { OnChainTransactionUpdateInputObjectSchema } from './objects/OnChainTransactionUpdateInput.schema';
+import { OnChainTransactionUncheckedUpdateInputObjectSchema } from './objects/OnChainTransactionUncheckedUpdateInput.schema';
+import { OnChainTransactionWhereUniqueInputObjectSchema } from './objects/OnChainTransactionWhereUniqueInput.schema';
 
-export const onChainTransactionUpdateOneSchema = z.object({
+export const OnChainTransactionUpdateOneSchema = z.object({
   data: z.union([
-    onChainTransactionUpdateInputObjectSchema,
-    onChainTransactionUncheckedUpdateInputObjectSchema,
+    OnChainTransactionUpdateInputObjectSchema,
+    OnChainTransactionUncheckedUpdateInputObjectSchema,
   ]),
-  where: onChainTransactionWhereUniqueInputObjectSchema,
+  where: OnChainTransactionWhereUniqueInputObjectSchema,
 });

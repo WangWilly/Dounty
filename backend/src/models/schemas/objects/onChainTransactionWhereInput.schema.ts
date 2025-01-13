@@ -4,29 +4,29 @@ import { JsonFilterObjectSchema } from './JsonFilter.schema';
 
 import type { Prisma } from '@prisma/client';
 
-const Schema: z.ZodType<Prisma.onChainTransactionWhereInput> = z
+const Schema: z.ZodType<Prisma.OnChainTransactionWhereInput> = z
   .object({
     AND: z
       .union([
-        z.lazy(() => onChainTransactionWhereInputObjectSchema),
-        z.lazy(() => onChainTransactionWhereInputObjectSchema).array(),
+        z.lazy(() => OnChainTransactionWhereInputObjectSchema),
+        z.lazy(() => OnChainTransactionWhereInputObjectSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => onChainTransactionWhereInputObjectSchema)
+      .lazy(() => OnChainTransactionWhereInputObjectSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => onChainTransactionWhereInputObjectSchema),
-        z.lazy(() => onChainTransactionWhereInputObjectSchema).array(),
+        z.lazy(() => OnChainTransactionWhereInputObjectSchema),
+        z.lazy(() => OnChainTransactionWhereInputObjectSchema).array(),
       ])
       .optional(),
-    public_key: z
+    publicKey: z
       .union([z.lazy(() => StringFilterObjectSchema), z.string()])
       .optional(),
-    serialized_tx: z.lazy(() => JsonFilterObjectSchema).optional(),
+    serializedTx: z.lazy(() => JsonFilterObjectSchema).optional(),
   })
   .strict();
 
-export const onChainTransactionWhereInputObjectSchema = Schema;
+export const OnChainTransactionWhereInputObjectSchema = Schema;

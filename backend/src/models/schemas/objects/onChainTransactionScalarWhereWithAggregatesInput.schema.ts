@@ -4,52 +4,52 @@ import { JsonWithAggregatesFilterObjectSchema } from './JsonWithAggregatesFilter
 
 import type { Prisma } from '@prisma/client';
 
-const Schema: z.ZodType<Prisma.onChainTransactionScalarWhereWithAggregatesInput> =
+const Schema: z.ZodType<Prisma.OnChainTransactionScalarWhereWithAggregatesInput> =
   z
     .object({
       AND: z
         .union([
           z.lazy(
-            () => onChainTransactionScalarWhereWithAggregatesInputObjectSchema,
+            () => OnChainTransactionScalarWhereWithAggregatesInputObjectSchema,
           ),
           z
             .lazy(
               () =>
-                onChainTransactionScalarWhereWithAggregatesInputObjectSchema,
+                OnChainTransactionScalarWhereWithAggregatesInputObjectSchema,
             )
             .array(),
         ])
         .optional(),
       OR: z
         .lazy(
-          () => onChainTransactionScalarWhereWithAggregatesInputObjectSchema,
+          () => OnChainTransactionScalarWhereWithAggregatesInputObjectSchema,
         )
         .array()
         .optional(),
       NOT: z
         .union([
           z.lazy(
-            () => onChainTransactionScalarWhereWithAggregatesInputObjectSchema,
+            () => OnChainTransactionScalarWhereWithAggregatesInputObjectSchema,
           ),
           z
             .lazy(
               () =>
-                onChainTransactionScalarWhereWithAggregatesInputObjectSchema,
+                OnChainTransactionScalarWhereWithAggregatesInputObjectSchema,
             )
             .array(),
         ])
         .optional(),
-      public_key: z
+      publicKey: z
         .union([
           z.lazy(() => StringWithAggregatesFilterObjectSchema),
           z.string(),
         ])
         .optional(),
-      serialized_tx: z
+      serializedTx: z
         .lazy(() => JsonWithAggregatesFilterObjectSchema)
         .optional(),
     })
     .strict();
 
-export const onChainTransactionScalarWhereWithAggregatesInputObjectSchema =
+export const OnChainTransactionScalarWhereWithAggregatesInputObjectSchema =
   Schema;

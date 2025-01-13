@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { onChainTransactionCreateManyInputObjectSchema } from './objects/onChainTransactionCreateManyInput.schema';
+import { OnChainTransactionCreateManyInputObjectSchema } from './objects/OnChainTransactionCreateManyInput.schema';
 
-export const onChainTransactionCreateManySchema = z.object({
+export const OnChainTransactionCreateManySchema = z.object({
   data: z.union([
-    onChainTransactionCreateManyInputObjectSchema,
-    z.array(onChainTransactionCreateManyInputObjectSchema),
+    OnChainTransactionCreateManyInputObjectSchema,
+    z.array(OnChainTransactionCreateManyInputObjectSchema),
   ]),
   skipDuplicates: z.boolean().optional(),
 });

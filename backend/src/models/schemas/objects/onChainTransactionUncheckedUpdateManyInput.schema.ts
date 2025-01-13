@@ -13,18 +13,18 @@ const jsonSchema: z.ZodType<Prisma.InputJsonValue> = z.lazy(() =>
   ]),
 );
 
-const Schema: z.ZodType<Prisma.onChainTransactionUncheckedUpdateManyInput> = z
+const Schema: z.ZodType<Prisma.OnChainTransactionUncheckedUpdateManyInput> = z
   .object({
-    public_key: z
+    publicKey: z
       .union([
         z.string(),
         z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
       ])
       .optional(),
-    serialized_tx: z
+    serializedTx: z
       .union([z.lazy(() => JsonNullValueInputSchema), jsonSchema])
       .optional(),
   })
   .strict();
 
-export const onChainTransactionUncheckedUpdateManyInputObjectSchema = Schema;
+export const OnChainTransactionUncheckedUpdateManyInputObjectSchema = Schema;

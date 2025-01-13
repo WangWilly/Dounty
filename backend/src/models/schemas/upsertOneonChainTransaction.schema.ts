@@ -1,18 +1,18 @@
 import { z } from 'zod';
-import { onChainTransactionWhereUniqueInputObjectSchema } from './objects/onChainTransactionWhereUniqueInput.schema';
-import { onChainTransactionCreateInputObjectSchema } from './objects/onChainTransactionCreateInput.schema';
-import { onChainTransactionUncheckedCreateInputObjectSchema } from './objects/onChainTransactionUncheckedCreateInput.schema';
-import { onChainTransactionUpdateInputObjectSchema } from './objects/onChainTransactionUpdateInput.schema';
-import { onChainTransactionUncheckedUpdateInputObjectSchema } from './objects/onChainTransactionUncheckedUpdateInput.schema';
+import { OnChainTransactionWhereUniqueInputObjectSchema } from './objects/OnChainTransactionWhereUniqueInput.schema';
+import { OnChainTransactionCreateInputObjectSchema } from './objects/OnChainTransactionCreateInput.schema';
+import { OnChainTransactionUncheckedCreateInputObjectSchema } from './objects/OnChainTransactionUncheckedCreateInput.schema';
+import { OnChainTransactionUpdateInputObjectSchema } from './objects/OnChainTransactionUpdateInput.schema';
+import { OnChainTransactionUncheckedUpdateInputObjectSchema } from './objects/OnChainTransactionUncheckedUpdateInput.schema';
 
-export const onChainTransactionUpsertSchema = z.object({
-  where: onChainTransactionWhereUniqueInputObjectSchema,
+export const OnChainTransactionUpsertSchema = z.object({
+  where: OnChainTransactionWhereUniqueInputObjectSchema,
   create: z.union([
-    onChainTransactionCreateInputObjectSchema,
-    onChainTransactionUncheckedCreateInputObjectSchema,
+    OnChainTransactionCreateInputObjectSchema,
+    OnChainTransactionUncheckedCreateInputObjectSchema,
   ]),
   update: z.union([
-    onChainTransactionUpdateInputObjectSchema,
-    onChainTransactionUncheckedUpdateInputObjectSchema,
+    OnChainTransactionUpdateInputObjectSchema,
+    OnChainTransactionUncheckedUpdateInputObjectSchema,
   ]),
 });
