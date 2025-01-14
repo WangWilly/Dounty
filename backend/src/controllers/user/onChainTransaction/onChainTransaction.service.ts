@@ -6,7 +6,7 @@ import { validateSync } from 'class-validator';
 import { GlobalAppConfigService } from '../../../globals/appConfig/appConfig.service';
 import { OnChainTransactionRepoService } from '../../../repos/onChainTransaction.service';
 
-import { OnChainTransactionV1CreateReq } from './dtos/onChainTransaction.dto';
+import { OnChainTransactionV1CreateReq, OnChainTransactionV1BatchCreateReq } from './dtos/onChainTransaction.dto';
 
 import { OnChainTransactionModel } from '../../../models';
 
@@ -41,5 +41,12 @@ export class OnChainTransactionService {
   ): Promise<void> {
     const parsed = OnChainTransactionModel.parse(req);
     await this.onChainTransactionRepoServices.create(parsed);
+  }
+
+  async batchCreateOnChainTransaction(
+    req: OnChainTransactionV1BatchCreateReq,
+  ): Promise<void> {
+    const serializedTxs = req.transactions.map((tx) => OnChainTransactionModel.parse(tx));
+    await this.onChainTransactionRepoServices.batchCreate(serializedTxs);
   }
 }

@@ -1,4 +1,4 @@
-import { IsString, IsObject } from 'class-validator';
+import { IsArray, IsString, IsObject } from 'class-validator';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -8,4 +8,9 @@ export class OnChainTransactionV1CreateReq {
 
   @IsObject()
   serializedTx: any;
+}
+
+export class OnChainTransactionV1BatchCreateReq {
+  @IsArray({each: true})
+  transactions!: OnChainTransactionV1CreateReq[];
 }
