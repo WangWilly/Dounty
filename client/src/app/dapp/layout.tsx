@@ -10,7 +10,8 @@ import {
 import type { Selection } from "@nextui-org/react";
 import { NextUIProvider, Button } from "@nextui-org/react";
 
-import { isDev } from "@/utils/appConfig";
+import { config } from "./config";
+import { NetworkType } from "./types";
 
 import {
   ConnectionProvider,
@@ -33,25 +34,16 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// https://stackoverflow.com/questions/43100718/typescript-enum-to-object-array
-enum NetworkType {
-  Devnet = "devnet",
-  Testnet = "testnet",
-  MainnetBeta = "mainnet-beta",
-  Local = "local",
-}
-
 export default function DappLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const defaultNetwork = isDev() ? NetworkType.Local : NetworkType.Devnet;
   // https://github.com/nextui-org/nextui/issues/3626
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   // dropdown
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
-    new Set([defaultNetwork]),
+    new Set([config.DEFAULT_NETWORK_TYPE]),
   );
   const networkChoose = React.useMemo(
     () => Array.from(selectedKeys)[0] as NetworkType,

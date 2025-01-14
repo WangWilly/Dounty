@@ -13,6 +13,7 @@ import {
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
 import { toHashedSeed } from "@/utils/web3";
+import NoWallet from "@/components/dapp/noWallet";
 import { useAnchorProvider } from "@/components/solana_provider";
 import {
   getBountyFactoryProgram,
@@ -36,22 +37,7 @@ export default function CreatePage() {
 
   const { publicKey, signTransaction, sendTransaction } = useWallet();
   if (!publicKey || !signTransaction) {
-    return (
-      <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen">
-        <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
-          <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
-            <h2 className="text-lg font-bold text-orange-600">
-              Create a Bounty
-            </h2>
-          </div>
-          <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6">
-            <p className="text-gray-300">
-              Please connect your wallet to create a bounty
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+    return <NoWallet title="No wallet found" content="Please connect to a wallet to create a bounty" />;
   }
 
   const onClickAirDrop = async () => {
