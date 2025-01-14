@@ -37,7 +37,7 @@ async function safeAsync<T>(
     if (e instanceof Error) {
       return { success: false, error: e.message };
     }
-    return { success: false, error: 'Something went wrong' };
+    return { success: false, error: "Something went wrong" };
   }
 }
 
@@ -53,6 +53,6 @@ function safeSync<T>(func: () => T, err?: string): Safe<T> {
     if (e instanceof Error) {
       return { success: false, error: e.message };
     }
-    return { success: false, error: 'Something went wrong' };
+    return { success: false, error: "Something went wrong" };
   }
 }

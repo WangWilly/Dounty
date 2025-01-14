@@ -95,6 +95,8 @@ jobs:
           touch .env
           echo IN_GITHUB_WORKER=true >> .env
           echo NEXT_PUBLIC_DEFAULT_NETWORK_TYPE=devnet >> .env
+          echo NEXT_PUBLIC_DEFAULT_NETWORK_URL=https://api.devnet.solana.com >> .env
+          echo NEXT_PUBLIC_USER_CLIENT_BASE_URL=https://me.willywangkaa.xyz >> .env
 
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build

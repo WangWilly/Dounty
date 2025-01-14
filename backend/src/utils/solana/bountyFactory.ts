@@ -1,7 +1,7 @@
-import { AnchorProvider, Program } from "@coral-xyz/anchor";
-import { PublicKey, Connection } from "@solana/web3.js";
-import BountyFactoryIDL from "../../contract/idl/bounty_factory.json";
-import type { BountyFactory } from "../../contract/types/bounty_factory";
+import { AnchorProvider, Program } from '@coral-xyz/anchor';
+import { PublicKey, Connection } from '@solana/web3.js';
+import BountyFactoryIDL from '../../contract/idl/bounty_factory.json';
+import type { BountyFactory } from '../../contract/types/bounty_factory';
 
 ////////////////////////////////////////////////////////////////////////////////
 

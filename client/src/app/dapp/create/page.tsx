@@ -37,7 +37,12 @@ export default function CreatePage() {
 
   const { publicKey, signTransaction, sendTransaction } = useWallet();
   if (!publicKey || !signTransaction) {
-    return <NoWallet title="No wallet found" content="Please connect to a wallet to create a bounty" />;
+    return (
+      <NoWallet
+        title="No wallet found"
+        content="Please connect to a wallet to create a bounty"
+      />
+    );
   }
 
   const onClickAirDrop = async () => {

@@ -11,4 +11,5 @@ const jsonSchema: z.ZodSchema<Json> = z.lazy(() =>
 export const OnChainTransactionModel = z.object({
   publicKey: z.string(),
   serializedTx: jsonSchema,
+  serializedTxBase64: z.string(),
 });

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack -p 8080",
     "build": "next build",
-    "start": "npx serve@latest out",
+    "start": "npx serve@latest out -p 8080",
     "lint": "next lint",
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore ."
@@ -21,6 +21,7 @@
     "@solana/wallet-adapter-wallets": "^0.19.32",
     "@solana/web3.js": "^1.98.0",
     "@tanstack/react-table": "^8.20.6",
+    "axios": "^1.7.9",
     "next": "15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

@@ -36,7 +36,12 @@ export default function CreateDonneerPage() {
 
   const { publicKey, signTransaction, sendTransaction } = useWallet();
   if (!publicKey || !signTransaction) {
-    return <NoWallet title="No wallet found" content="Please connect to a wallet to donate" />;
+    return (
+      <NoWallet
+        title="No wallet found"
+        content="Please connect to a wallet to donate"
+      />
+    );
   }
 
   const onClickAirDrop = async () => {

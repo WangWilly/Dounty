@@ -10,7 +10,9 @@ export class OnChainTransactionRepoService {
   constructor(private prisma: GlobalPrismaService) {}
 
   // CRUD operations
-  async create(data: Prisma.OnChainTransactionCreateInput): Promise<OnChainTransaction> {
+  async create(
+    data: Prisma.OnChainTransactionCreateInput,
+  ): Promise<OnChainTransaction> {
     const onChainTransaction = await this.prisma.onChainTransaction.create({
       data,
     });
@@ -18,11 +20,22 @@ export class OnChainTransactionRepoService {
   }
 
   // https://www.prisma.io/docs/orm/prisma-client/queries/crud#create-and-return-multiple-records
-  async batchCreate(data: Prisma.OnChainTransactionCreateInput[]): Promise<OnChainTransaction[]> {
-    const onChainTransactions = await this.prisma.onChainTransaction.createMany({
-      data,
-    });
+  async batchCreate(
+    data: Prisma.OnChainTransactionCreateInput[],
+  ): Promise<OnChainTransaction[]> {
+    const onChainTransactions = await this.prisma.onChainTransaction.createMany(
+      {
+        data,
+      },
+    );
     return onChainTransactions as unknown as OnChainTransaction[];
+  }
+
+  async getByPublicKey(publicKey: string): Promise<OnChainTransaction | null> {
+    const onChainTransaction = await this.prisma.onChainTransaction.findUnique({
+      where: { publicKey },
+    });
+    return onChainTransaction;
   }
 
   async upsert(data: Prisma.OnChainTransactionUpdateInput) {

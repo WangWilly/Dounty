@@ -19,6 +19,7 @@ FROM base AS runner
 
 COPY --from=runnder-deps /app/node_modules ./node_modules
 COPY prisma/deploy.prisma ./prisma/schema.prisma
+COPY prisma/migrations ./prisma/migrations
 COPY db-deploy.sh ./db-deploy.sh
 COPY db-deployed.sh ./db-deployed.sh
 
