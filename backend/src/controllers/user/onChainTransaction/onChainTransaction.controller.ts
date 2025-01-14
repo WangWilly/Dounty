@@ -1,11 +1,13 @@
-import { Controller, Get, Post, Param, Body, Logger } from '@nestjs/common';
-import { OnChainTransactionService } from './onChainTransaction.service';
+import { Controller, Get, Post, Param, Body, Logger, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+
+import { safe } from '../../../utils/exception';
 
 import {
   OnChainTransactionV1CreateReq,
   OnChainTransactionV1BatchCreateReq,
   OnChainTransactionV1GetResp,
 } from './dtos/onChainTransaction.dto';
+import { OnChainTransactionService } from './onChainTransaction.service';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -19,16 +21,21 @@ export class OnChainTransactionController {
 
   //////////////////////////////////////////////////////////////////////////////
 
-  @Post('v1')
+  @Post('/v1')
   async createOnChainTransaction(
     @Body() req: OnChainTransactionV1CreateReq,
   ): Promise<void> {
     this.logger.log('createOnChainTransaction');
 
-    this.onChainTransactionService.createOnChainTransaction(req);
+    const createRes = await safe(this.onChainTransactionService.createOnChainTransaction(req));
+    if (!createRes.success) {
+      throw new InternalServerErrorException('Failed to create OnChainTransaction', {
+        description: 'Failed to create OnChainTransaction',
+      });
+    }
   }
 
-  @Post('v1:batch')
+  @Post('/v1:batch')
   async batchCreateOnChainTransaction(
     @Body() req: OnChainTransactionV1BatchCreateReq,
   ): Promise<void> {
@@ -37,14 +44,21 @@ export class OnChainTransactionController {
     this.onChainTransactionService.batchCreateOnChainTransaction(req);
   }
 
-  @Get('v1/:txPublicKey')
+  @Get('/v1/:txPublicKey')
   async getOnChainTransaction(
     @Param('txPublicKey') txPublicKey: string,
-  ): Promise<OnChainTransactionV1GetResp | null> {
+  ): Promise<OnChainTransactionV1GetResp> {
     this.logger.log('getOnChainTransaction');
 
-    return await this.onChainTransactionService.getOnChainTransaction(
+    const record = await this.onChainTransactionService.getOnChainTransaction(
       txPublicKey,
     );
+    if (!record) {
+      throw new NotFoundException('OnChainTransaction not found', {
+        description: 'OnChainTransaction not found',
+      });
+    }
+
+    return record;
   }
 }

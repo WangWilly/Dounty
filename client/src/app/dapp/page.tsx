@@ -159,6 +159,22 @@ export default function Page() {
               Donate to a Bounty
             </Button>
           </Link>
+          <Link href="/dapp/durableNonce">
+            <Button
+              color="default"
+              className="text-black px-6 py-2 rounded-lg font-semibold"
+            >
+              Durable Nonce
+            </Button>
+          </Link>
+          <Link href="/dapp/appendSignature">
+            <Button
+              color="default"
+              className="text-black px-6 py-2 rounded-lg font-semibold"
+            >
+              Append Signature
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

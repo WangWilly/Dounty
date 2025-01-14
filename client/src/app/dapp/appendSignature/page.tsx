@@ -8,7 +8,6 @@ import {
   TransactionMessage,
   VersionedTransaction,
   NonceAccount,
-  // Transaction,
 } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
@@ -158,10 +157,10 @@ export default function IssuePage() {
       <ToastContainer />
       <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
         <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
-          <h2 className="text-lg font-bold text-orange-600">Create a Bounty</h2>
+          <h2 className="text-lg font-bold text-orange-600">Append a signature to agree the decision</h2>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6">
-          <p className="text-gray-300">Create a bounty pool for this ticket</p>
+          <p className="text-gray-300">Append a signature to agree the decision of the bounty</p>
         </div>
         <div className="flex justify-center space-x-4">
           <input
@@ -195,6 +194,8 @@ export default function IssuePage() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+// https://solana.stackexchange.com/questions/9701/signtransaction-removes-partialsigned-signatures-making-it-impossible-to-sign-a
+// https://solana.stackexchange.com/questions/5007/partial-sign-transaction-from-front-end
 async function signAndCreateTx(
   bountyPdaBase58: string,
   signTransaction: (
@@ -211,6 +212,7 @@ async function signAndCreateTx(
   const createRes = await safe(
     createTx({
       publicKey: bountyPdaBase58,
+      serializedTx: {},
       serializedTxBase64: Buffer.from(signedTx.serialize()).toString("base64"),
     }),
   );

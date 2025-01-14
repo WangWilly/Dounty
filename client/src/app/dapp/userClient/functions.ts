@@ -17,8 +17,9 @@ export const createNonceAccount = async (
 
 export const getBountyNonceAccountPublicKey = async (
   txPublicKey: string,
-): Promise<dtos.NonceAccountV1GetResp | null> => {
-  return await fetcher.get(`/api/nonceAccount/v1?txPublicKey=${txPublicKey}`);
+): Promise<dtos.NonceAccountV1GetResp> => {
+  const res = await fetcher.get(`/api/nonceAccount/v1/txPublicKey/${txPublicKey}`);
+  return dtos.NonceAccountV1GetRespSchema.parse(res.data);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
