@@ -36,7 +36,7 @@ export class HttpClient {
     method: Method,
     path: string,
     config0: FetchConfig,
-    params?: FetchParams
+    params?: FetchParams,
   ): Promise<unknown> {
     // Update config
     const config = this.mergeConfig(method, path, config0, params);
@@ -52,8 +52,8 @@ export class HttpClient {
         `succeed in issuing request: { method: ${method}, base: ${
           this.config.baseURL
         }, path: ${path}, params: ${params}, req: ${JSON.stringify(
-          config.data
-        )}, res: ${JSON.stringify(data)}, startTime: ${startTime} }`
+          config.data,
+        )}, res: ${JSON.stringify(data)}, startTime: ${startTime} }`,
       );
 
       return data;
@@ -65,10 +65,10 @@ export class HttpClient {
           `failed to issue request: { method: ${method}, base: ${
             this.config.baseURL
           }, path: ${path}, params: ${params}, req: ${JSON.stringify(
-            config.data
+            config.data,
           )}, message: ${message}, res: ${JSON.stringify(
-            data
-          )}, startTime: ${startTime} }`
+            data,
+          )}, startTime: ${startTime} }`,
         );
         throw new HttpException(message, res?.status ?? 500);
       }
@@ -81,7 +81,7 @@ export class HttpClient {
     method: Method,
     url: string,
     config: FetchConfig,
-    params?: FetchParams
+    params?: FetchParams,
   ): AxiosRequestConfig {
     const headers = config.headers ?? {};
 
@@ -108,7 +108,7 @@ export class HttpClient {
   post(
     url: string,
     data: Record<string, any>,
-    params?: FetchParams
+    params?: FetchParams,
   ): Promise<unknown> {
     return this.call('POST', url, { data }, params);
   }
@@ -116,7 +116,7 @@ export class HttpClient {
   put(
     url: string,
     data: Record<string, any>,
-    params?: FetchParams
+    params?: FetchParams,
   ): Promise<unknown> {
     return this.call('PUT', url, { data }, params);
   }
@@ -124,7 +124,7 @@ export class HttpClient {
   patch(
     url: string,
     data: Record<string, any>,
-    params?: FetchParams
+    params?: FetchParams,
   ): Promise<unknown> {
     return this.call('PATCH', url, { data }, params);
   }

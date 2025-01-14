@@ -1,4 +1,4 @@
-import { clusterApiUrl, Connection } from "@solana/web3.js";
+import { clusterApiUrl, Connection } from '@solana/web3.js';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -18,6 +18,9 @@ export function parseConnectionEndpoint(endpoint: string): string {
 }
 
 export function createConnection(endpoint: string): Connection {
-  const connection = new Connection(parseConnectionEndpoint(endpoint), 'confirmed');
+  const connection = new Connection(
+    parseConnectionEndpoint(endpoint),
+    'confirmed',
+  );
   return connection;
 }

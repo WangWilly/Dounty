@@ -7,10 +7,24 @@ export class OnChainTransactionV1CreateReq {
   publicKey!: string;
 
   @IsObject()
-  serializedTx: any;
+  serializedTx!: any;
+
+  @IsString()
+  serializedTxBase64!: string;
 }
 
 export class OnChainTransactionV1BatchCreateReq {
-  @IsArray({each: true})
+  @IsArray({ each: true })
   transactions!: OnChainTransactionV1CreateReq[];
+}
+
+export class OnChainTransactionV1GetResp {
+  @IsString()
+  publicKey!: string;
+
+  @IsObject()
+  serializedTx!: any;
+
+  @IsString()
+  serializedTxBase64!: string;
 }

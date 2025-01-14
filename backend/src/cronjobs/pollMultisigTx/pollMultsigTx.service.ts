@@ -15,7 +15,10 @@ import { safe } from '../../utils/exception';
 import { HttpClient } from '../../utils/httpClient';
 import { SECRET_HEADER } from '../../utils/constant';
 import { GlobalAppConfigService } from 'src/globals/appConfig/appConfig.service';
-import {OnChainTransactionV1CreateReq, OnChainTransactionV1BatchCreateReq } from '../../controllers/user/onChainTransaction/dtos/onChainTransaction.dto';
+import {
+  OnChainTransactionV1CreateReq,
+  OnChainTransactionV1BatchCreateReq,
+} from '../../controllers/user/onChainTransaction/dtos/onChainTransaction.dto';
 
 // TODO: WIP
 ////////////////////////////////////////////////////////////////////////////////
@@ -72,24 +75,21 @@ export class PollMultsigTxCronService {
       headers: {
         [SECRET_HEADER]: this.config.USER_CTRL_SECRET,
       },
-    })
+    });
   }
 
   //////////////////////////////////////////////////////////////////////////////
 
-  onModuleInit() {
-    // Arrange
-    const job = new CronJob(
-      this.config.HANDLE_CRON,
-      () => this.handleCron()
-    );
+  // onModuleInit() {
+  //   // Arrange
+  //   const job = new CronJob(this.config.HANDLE_CRON, () => this.handleCron());
 
-    // Resolve
-    this.schedulerRegistry.addCronJob(PollMultsigTxCronService.name, job);
-    job.start();
+  //   // Resolve
+  //   this.schedulerRegistry.addCronJob(PollMultsigTxCronService.name, job);
+  //   job.start();
 
-    this.logger.debug(`cronjobs ${PollMultsigTxCronService.name} initialized`);
-  }
+  //   this.logger.debug(`cronjobs ${PollMultsigTxCronService.name} initialized`);
+  // }
 
   onApplicationShutdown(signal: string) {
     this.logger.debug(`shutting down with signal: ${signal}`);
@@ -102,31 +102,33 @@ export class PollMultsigTxCronService {
 
   /////////////////////////////////////////////////////////////////////////////
 
-  async handleCron() {
-    // Setup
-    this.logger.log(`${PollMultsigTxCronService.name} - handleCron`);
+  // async handleCron() {
+  //   // Setup
+  //   this.logger.log(`${PollMultsigTxCronService.name} - handleCron`);
 
-    // Arrange
-    const txs = await this.bountyFactoryProgram.account.bountyV1.all([]);
-    if (!txs.length) {
-      this.logger.log(`no transactions to process`);
-      return;
-    }
-    const req: OnChainTransactionV1BatchCreateReq = {
-      transactions: txs.map((tx): OnChainTransactionV1CreateReq => ({
-        publicKey: tx.publicKey.toBase58(),
-        serializedTx: tx.account,
-      })),
-    };
+  //   // Arrange
+  //   const txs = await this.bountyFactoryProgram.account.bountyV1.all([]);
+  //   if (!txs.length) {
+  //     this.logger.log(`no transactions to process`);
+  //     return;
+  //   }
+  //   const req: OnChainTransactionV1BatchCreateReq = {
+  //     transactions: txs.map(
+  //       (tx): OnChainTransactionV1CreateReq => ({
+  //         publicKey: tx.publicKey.toBase58(),
+  //         serializedTx: tx.account,
+  //       }),
+  //     ),
+  //   };
 
-    const res = await safe(
-      this.userControllerClient.post('onChainTransaction/v1:batchCreate', req)
-    );
-    if (!res.success) {
-      this.logger.error(`failed to batch create txs: ${res.error}`);
-      return;
-    }
+  //   const res = await safe(
+  //     this.userControllerClient.post('onChainTransaction/v1:batchCreate', req),
+  //   );
+  //   if (!res.success) {
+  //     this.logger.error(`failed to batch create txs: ${res.error}`);
+  //     return;
+  //   }
 
-    this.logger.log(`batch created txs: ${txs.length}`);
-  }
+  //   this.logger.log(`batch created txs: ${txs.length}`);
+  // }
 }

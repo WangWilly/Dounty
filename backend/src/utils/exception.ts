@@ -14,7 +14,7 @@ export function safe<T>(promise: Promise<T>, err?: string): Promise<Safe<T>>;
 export function safe<T>(func: () => T, err?: string): Safe<T>;
 export function safe<T>(
   promiseOrFunc: Promise<T> | (() => T),
-  err?: string
+  err?: string,
 ): Promise<Safe<T>> | Safe<T> {
   if (promiseOrFunc instanceof Promise) {
     return safeAsync(promiseOrFunc, err);
@@ -24,7 +24,7 @@ export function safe<T>(
 
 async function safeAsync<T>(
   promise: Promise<T>,
-  err?: string
+  err?: string,
 ): Promise<Safe<T>> {
   try {
     const data = await promise;

@@ -1,7 +1,11 @@
 import { Controller, Get, Post, Param, Body, Logger } from '@nestjs/common';
 import { OnChainTransactionService } from './onChainTransaction.service';
 
-import { OnChainTransactionV1CreateReq, OnChainTransactionV1BatchCreateReq } from './dtos/onChainTransaction.dto';
+import {
+  OnChainTransactionV1CreateReq,
+  OnChainTransactionV1BatchCreateReq,
+  OnChainTransactionV1GetResp,
+} from './dtos/onChainTransaction.dto';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -31,5 +35,16 @@ export class OnChainTransactionController {
     this.logger.log('batchCreateOnChainTransaction');
 
     this.onChainTransactionService.batchCreateOnChainTransaction(req);
+  }
+
+  @Get('v1/:txPublicKey')
+  async getOnChainTransaction(
+    @Param('txPublicKey') txPublicKey: string,
+  ): Promise<OnChainTransactionV1GetResp | null> {
+    this.logger.log('getOnChainTransaction');
+
+    return await this.onChainTransactionService.getOnChainTransaction(
+      txPublicKey,
+    );
   }
 }

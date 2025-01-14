@@ -16,7 +16,11 @@ import { safe } from "@/utils/exception";
 import NoWallet from "@/components/dapp/noWallet";
 import { useAnchorProvider } from "@/components/solana_provider";
 import { getBountyFactoryProgram } from "@/components/anchor/bounty_factory";
-import { getTx, createTx, getBountyNonceAccountPublicKey } from "@/app/dapp/appendSignature/userClient/functions";
+import {
+  getTx,
+  createTx,
+  getBountyNonceAccountPublicKey,
+} from "@/app/dapp/userClient/functions";
 
 import { ToastContainer, toast } from "react-toastify";
 
@@ -62,33 +66,43 @@ export default function IssuePage() {
       return;
     }
     if (bounty.account.asignee === null) {
-      toast.error("Bounty not assigned");
-      return;
+      // toast.error("Bounty not assigned");
+      // TODO: return;
+
+      toast.warn("Bounty not assigned, assigning to the current user");
+      bounty.account.asignee = publicKey;
     }
 
     // TODO: find existing transaction for issuing bounty
-    const existingTxRes = await safe(
-      getTx(bountyPda.toBase58()),
-    );
-    if (!existingTxRes.success) {
-      toast.error("Failed to get existing transaction: " + existingTxRes.error);
-      return;
-    }
-    const existingTx = existingTxRes.data;
-    if (existingTx) {
-      // const tx: Transaction = Transaction.from(existingTx.serializedTx);
-      // TODO: modulate
+    const existingTxRes = await safe(getTx(bountyPda.toBase58()));
+    if (existingTxRes.success) {
+      const existingTx = existingTxRes.data;
+      if (existingTx) {
+        const transaction = VersionedTransaction.deserialize(
+          Buffer.from(existingTx.serializedTx, "base64"),
+        );
+        await signAndCreateTx(
+          bountyPda.toBase58(),
+          signTransaction,
+          transaction,
+        );
+      }
+
       return;
     }
 
     // There is no existing transaction, create a new one
-    const nonceAccountRes = await safe(getBountyNonceAccountPublicKey(bountyPda.toBase58()));
+    const nonceAccountRes = await safe(
+      getBountyNonceAccountPublicKey(bountyPda.toBase58()),
+    );
     if (!nonceAccountRes.success) {
       toast.error("Failed to get nonce account: " + nonceAccountRes.error);
       return;
     }
     const nonceAccountPubkey = new PublicKey(nonceAccountRes.data.publickey);
-    const accountInfoRes = await safe(connection.getAccountInfo(nonceAccountPubkey));
+    const accountInfoRes = await safe(
+      connection.getAccountInfo(nonceAccountPubkey),
+    );
     if (!accountInfoRes.success) {
       toast.error("Failed to get account info: " + accountInfoRes.error);
       return;
@@ -130,24 +144,7 @@ export default function IssuePage() {
     }).compileToLegacyMessage(); // TODO: anchor has already supported v0
     // Create a new VersionedTransaction which supports legacy and v0
     const transaction = new VersionedTransaction(messageLegacy);
-    const signedTxRes = await safe(signTransaction(transaction));
-    if (!signedTxRes.success) {
-      toast.error("Failed to sign transaction: " + signedTxRes.error);
-      return;
-    }
-    const signedTx = signedTxRes.data;
-    const createRes = await safe(
-      createTx({
-        publicKey: bountyPda,
-        serializedTx: signedTx.serialize(),
-      }),
-    );
-    if (!createRes.success) {
-      toast.error("Failed to create transaction: " + createRes.error);
-      return;
-    }
-
-    toast.success("Create transaction success");
+    await signAndCreateTx(bountyPda.toBase58(), signTransaction, transaction);
   };
 
   return (
@@ -188,4 +185,34 @@ export default function IssuePage() {
       </div>
     </div>
   );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+async function signAndCreateTx(
+  bountyPdaBase58: string,
+  signTransaction: (
+    transaction: VersionedTransaction,
+  ) => Promise<VersionedTransaction>,
+  transaction: VersionedTransaction,
+) {
+  const signedTxRes = await safe(signTransaction(transaction));
+  if (!signedTxRes.success) {
+    toast.error("Failed to sign transaction: " + signedTxRes.error);
+    return;
+  }
+  const signedTx = signedTxRes.data;
+  const createRes = await safe(
+    createTx({
+      publicKey: bountyPdaBase58,
+      serializedTx: Buffer.from(signedTx.serialize()).toString("base64"),
+    }),
+  );
+  if (!createRes.success) {
+    toast.error("Failed to create transaction: " + createRes.error);
+    return;
+  }
+
+  toast.success("Create transaction success");
+  return;
 }

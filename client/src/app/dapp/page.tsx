@@ -13,7 +13,7 @@ import {
   Donner,
   columns as donnerColumns,
 } from "@/components/anchor/dtos/donnerV1";
-import log from "@/utils/logging";
+// import log from "@/utils/logging";
 
 import { ToastContainer, toast } from "react-toastify";
 
@@ -34,7 +34,6 @@ export default function Page() {
     const fetchBounties = async () => {
       try {
         const allBounties = await program.account.bountyV1.all([]);
-        log(allBounties);
         setBounties(
           allBounties.map(
             // TODO: transform the bounty to the correct format
@@ -57,7 +56,6 @@ export default function Page() {
     const fetchDonners = async () => {
       try {
         const allDonners = await program.account.donerV1.all([]);
-        log(allDonners);
         setDonners(
           allDonners.map(
             (donner): Donner => ({
