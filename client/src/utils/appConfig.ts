@@ -22,6 +22,6 @@ const envSchema = zod
   });
 
 export const appConfig = envSchema.parse({
-    NODE_ENV: process.env.NODE_ENV,
-    IS_DEV: process.env.NODE_ENV,
-  });
+  NODE_ENV: process.env.NODE_ENV,
+  IS_DEV: process.env.NODE_ENV,
+});

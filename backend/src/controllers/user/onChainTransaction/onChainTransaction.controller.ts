@@ -5,7 +5,7 @@ import { OnChainTransactionV1CreateReq, OnChainTransactionV1BatchCreateReq } fro
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@Controller('api/onChainTransaction')
+@Controller('/api/onChainTransaction')
 export class OnChainTransactionController {
   private readonly logger = new Logger('OnChainTransactionController');
 
