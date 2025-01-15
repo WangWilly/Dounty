@@ -17,11 +17,9 @@ export default function Home() {
         width={320}
         height={320}
       />
-      <Link href="/dapp" className="w-full h-full">
-        <Button color="default" className="w-full h-full">
-          Go to Dapp
-        </Button>
-      </Link>
+      <Button color="default" as={Link} href="/dapp" className="w-full h-full">
+        Go to Dapp
+      </Button>
     </NextUIProvider>
   );
 }

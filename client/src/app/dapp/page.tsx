@@ -8,10 +8,15 @@ import { DataTable } from "@/components/ui/defaultTable";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useAnchorProvider } from "@/components/solana_provider";
 import { getBountyFactoryProgram } from "@/components/anchor/bounty_factory";
-import { Bounty, columns } from "@/components/anchor/dtos/bountyV1";
 import {
-  Donner,
-  columns as donnerColumns,
+  bountyV1Schema,
+  BountyV1,
+  bountyV1Columns,
+} from "@/components/anchor/dtos/bountyV1";
+import {
+  donnerV1Schema,
+  DonnerV1,
+  donnerV1Columns,
 } from "@/components/anchor/dtos/donnerV1";
 // import log from "@/utils/logging";
 
@@ -24,8 +29,8 @@ export default function Page() {
   const provider = useAnchorProvider();
   const program = getBountyFactoryProgram(provider);
 
-  const [bounties, setBounties] = useState<Bounty[]>([]);
-  const [donners, setDonners] = useState<Donner[]>([]);
+  const [bounties, setBounties] = useState<BountyV1[]>([]);
+  const [donners, setDonners] = useState<DonnerV1[]>([]);
   const changeOnClick = () => {
     //////////////////////////////////////////////////////////////////////////////
     // Resolve
@@ -35,16 +40,10 @@ export default function Page() {
       try {
         const allBounties = await program.account.bountyV1.all([]);
         setBounties(
-          allBounties.map(
-            // TODO: transform the bounty to the correct format
-            (bounty): Bounty => ({
+          allBounties.map((bounty) =>
+            bountyV1Schema.parse({
               address: bounty.publicKey,
-              owner: bounty.account.owner,
-              donation: bounty.account.donation,
-              asignee: bounty.account.asignee,
-              commissioners: bounty.account.commissioners,
-              title: bounty.account.title,
-              url: bounty.account.url,
+              ...bounty.account,
             }),
           ),
         );
@@ -57,12 +56,10 @@ export default function Page() {
       try {
         const allDonners = await program.account.donerV1.all([]);
         setDonners(
-          allDonners.map(
-            (donner): Donner => ({
-              doner: donner.publicKey,
-              bounty: donner.account.bounty,
-              donation: donner.account.donation,
-              message: donner.account.message,
+          allDonners.map((donner) =>
+            donnerV1Schema.parse({
+              address: donner.publicKey,
+              ...donner.account,
             }),
           ),
         );
@@ -93,7 +90,7 @@ export default function Page() {
   //////////////////////////////////////////////////////////////////////////////
   // Compose
   return (
-    <div className="text-white flex flex-col items-center justify-center min-h-screen">
+    <div className="text-white flex-col items-center justify-center w-screen overflow-x-auto">
       <ToastContainer />
       <div className="p-8 rounded-lg shadow-lg border border-gray-800">
         <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
@@ -129,79 +126,79 @@ export default function Page() {
             🔄
           </Button>
         </div>
-        <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6 text-black">
-          <DataTable columns={columns} data={bounties} />
+        <div className="flex-initial border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6 text-black overflow-x-auto">
+          <DataTable columns={bountyV1Columns} data={bounties} />
         </div>
-        <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6 text-black">
+        <div className="flex-initial border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6 text-black overflow-x-auto">
           <DataTable
-            columns={donnerColumns}
+            columns={donnerV1Columns}
             data={donners}
             // className="border border-gray-600 p-4 rounded-lg text-center mb-6"
           />
         </div>
-        <div className="flex justify-center space-x-4">
+        <div className="rounded-lg shadow-lg border border-dotted border-gray-800 flex space-x-4 px-4 py-8 overflow-x-scroll">
           <Button
             color="default"
             className="text-black px-6 py-2 rounded-lg font-semibold"
           >
             Claim it!
           </Button>
-          <Link href="/dapp/create">
-            <Button
-              color="default"
-              className="text-black px-6 py-2 rounded-lg font-semibold"
-            >
-              Create a Bounty
-            </Button>
-          </Link>
-          <Link href="/dapp/createDonner">
-            <Button
-              color="default"
-              className="text-black px-6 py-2 rounded-lg font-semibold"
-            >
-              Donate to a Bounty
-            </Button>
-          </Link>
-          <Link href="/dapp/changeAssignee">
-            <Button
-              color="default"
-              className="text-black px-6 py-2 rounded-lg font-semibold"
-            >
-              Change Assignee
-            </Button>
-          </Link>
-          <Link href="/dapp/changeTitle">
-            <Button
-              color="default"
-              className="text-black px-6 py-2 rounded-lg font-semibold"
-            >
-              Change Title
-            </Button>
-          </Link>
-          <Link href="/dapp/changeCommissioners">
-            <Button
-              color="default"
-              className="text-black px-6 py-2 rounded-lg font-semibold"
-            >
-              Change Commissioners
-            </Button>
-          </Link>
-          <Link href="/dapp/durableNonce">
-            <Button
-              color="default"
-              className="text-black px-6 py-2 rounded-lg font-semibold"
-            >
-              Durable Nonce
-            </Button>
-          </Link>
-          <Link href="/dapp/appendSignature">
-            <Button
-              color="default"
-              className="text-black px-6 py-2 rounded-lg font-semibold"
-            >
-              Append Signature
-            </Button>
-          </Link>
+          <Button
+            as={Link}
+            href="/dapp/create"
+            color="default"
+            className="text-black px-6 py-2 rounded-lg font-semibold"
+          >
+            Create a Bounty
+          </Button>
+          <Button
+            as={Link}
+            href="/dapp/createDonner"
+            color="default"
+            className="text-black px-6 py-2 rounded-lg font-semibold"
+          >
+            Donate to a Bounty
+          </Button>
+          <Button
+            as={Link}
+            href="/dapp/changeAssignee"
+            color="default"
+            className="text-black px-6 py-2 rounded-lg font-semibold"
+          >
+            Change Assignee
+          </Button>
+          <Button
+            as={Link}
+            href="/dapp/changeTitle"
+            color="default"
+            className="text-black px-6 py-2 rounded-lg font-semibold"
+          >
+            Change Title
+          </Button>
+          <Button
+            as={Link}
+            href="/dapp/changeCommissioners"
+            color="default"
+            className="text-black px-6 py-2 rounded-lg font-semibold"
+          >
+            Change Commissioners
+          </Button>
+          <Button
+            as={Link}
+            href="/dapp/durableNonce"
+            color="default"
+            className="text-black px-6 py-2 rounded-lg font-semibold"
+          >
+            Durable Nonce
+          </Button>
+          <Button
+            as={Link}
+            href="/dapp/appendSignature"
+            color="default"
+            className="text-black px-6 py-2 rounded-lg font-semibold"
+          >
+            Append Signature
+          </Button>
         </div>
       </div>
     </div>

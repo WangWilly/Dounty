@@ -90,50 +90,52 @@ export default function DappLayout({
   );
 
   return (
-    <div>
+    <div className="w-full h-full">
       <ConnectionProvider endpoint={endpoint}>
         <WalletProvider wallets={wallets} autoConnect>
           <WalletModalProvider>
             <NextUIProvider>
-              <div
-                className="grid grid-cols-6 items-center gap-4 p-4 bg-violet-400 text-white"
-                style={{ position: "fixed", width: "100%" }}
-              >
-                <WalletMultiButton />
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button className="bg-default text-white px-4 py-2 rounded-md h-full text-lg font-semibold">
-                      {networkChoose.toString()}
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu
-                    className="bg-white text-black font-semibold"
-                    selectedKeys={selectedKeys}
-                    selectionMode="single"
-                    variant="flat"
-                    onSelectionChange={setSelectedKeys}
-                  >
-                    {/* <DropdownItem key="testnet">Testnet</DropdownItem> */}
-                    {/* <DropdownItem key="mainnet-beta">Mainnet Beta</DropdownItem> */}
-                    <DropdownItem key="devnet">Devnet</DropdownItem>
-                    <DropdownItem key="local">Local</DropdownItem>
-                    <DropdownItem key="custom">Custom</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </div>
-              <div className="pt-16 border-spacing-16">{children}</div>
+              <header>
+                <div
+                  className="z-50 grid grid-cols-6 items-center gap-4 p-4 bg-violet-400 text-white w-full"
+                  style={{ position: "fixed" }}
+                >
+                  <WalletMultiButton />
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button className="bg-default text-white px-4 py-2 rounded-md h-full text-lg font-semibold">
+                        {networkChoose.toString()}
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      className="bg-white text-black font-semibold"
+                      selectedKeys={selectedKeys}
+                      selectionMode="single"
+                      variant="flat"
+                      onSelectionChange={setSelectedKeys}
+                    >
+                      {/* <DropdownItem key="testnet">Testnet</DropdownItem> */}
+                      {/* <DropdownItem key="mainnet-beta">Mainnet Beta</DropdownItem> */}
+                      <DropdownItem key="devnet">Devnet</DropdownItem>
+                      <DropdownItem key="local">Local</DropdownItem>
+                      <DropdownItem key="custom">Custom</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+              </header>
+              <div className="pt-24 px-4 w-full">{children}</div>
             </NextUIProvider>
           </WalletModalProvider>
         </WalletProvider>
       </ConnectionProvider>
-      <Link href="/">
-        <Button
-          color="success"
-          className="fixed bottom-4 right-4 text-lg size-lg"
-        >
-          🥾🏠
-        </Button>
-      </Link>
+      <Button
+        as={Link}
+        href="/"
+        color="success"
+        className="fixed bottom-4 right-4 text-lg size-lg"
+      >
+        🥾🏠
+      </Button>
     </div>
   );
 }

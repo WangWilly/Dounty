@@ -38,7 +38,7 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className="rounded-md border">
+    <div className="overflow-x-auto p-4 max-h-dvh overflow-y-scroll">
       <Table>
         <TableHeader>
           {table.getFlatHeaders().map((header) => (
