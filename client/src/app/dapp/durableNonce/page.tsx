@@ -8,7 +8,6 @@ import {
   Transaction,
   Keypair,
   NONCE_ACCOUNT_LENGTH,
-  // sendAndConfirmTransaction,
 } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
@@ -40,6 +39,16 @@ export default function Page() {
     if (!bountyPda) {
       return;
     }
+    const nonceAccountRes = await safe(
+      userClient.getBountyNonceAccountPublicKey(bountyPda.toBase58()),
+    );
+    if (nonceAccountRes.success) {
+      if (nonceAccountRes.data.txPublickey === bountyPda.toBase58()) {
+        toast.info("Nonce account already exists");
+        return;
+      }
+    }
+
 
     // Resolve
     const nonceAccountKp = Keypair.generate();
@@ -67,7 +76,6 @@ export default function Page() {
       return;
     }
     const res = await safe(
-      // sendAndConfirmTransaction(connection, signedTxRes.data, [nonceAccountKp]),
       sendTransaction(signedTxRes.data, connection, {
         signers: [nonceAccountKp],
       }),

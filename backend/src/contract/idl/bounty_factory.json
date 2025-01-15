@@ -218,7 +218,7 @@
           }
         },
         {
-          "name": "asignee",
+          "name": "assignee",
           "type": {
             "option": "pubkey"
           }
@@ -366,7 +366,7 @@
           }
         },
         {
-          "name": "asignee",
+          "name": "assignee",
           "type": {
             "option": "pubkey"
           }
@@ -465,8 +465,8 @@
     },
     {
       "code": 6012,
-      "name": "IllegalAsignee",
-      "msg": "Illegal asignee"
+      "name": "IllegalAssignee",
+      "msg": "Illegal assignee"
     }
   ],
   "types": [

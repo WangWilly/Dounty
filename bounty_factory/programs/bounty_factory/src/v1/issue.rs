@@ -53,7 +53,7 @@ pub fn issue_v1_impl(ctx: Context<IssueV1Acc>) -> Result<()> {
 
     let commissioners: HashSet<Pubkey> = bounty.commissioners.iter().cloned().collect();
     if commissioners.contains(&ctx.accounts.assignee.key) {
-        return Err(ErrorCode::IllegalAsignee.into());
+        return Err(ErrorCode::IllegalAssignee.into());
     }
     let mut agreed_num: usize = 0;
     if commissioners.contains(&ctx.accounts.commissioner1.key) {

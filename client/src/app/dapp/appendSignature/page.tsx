@@ -44,7 +44,6 @@ export default function Page() {
     );
   }
 
-  // TODO: only commissioners can sign the transaction
   const onClickAppend = async () => {
     // Resolve
     if (!bountyPda) {
@@ -63,10 +62,15 @@ export default function Page() {
       toast.error("Bounty not found");
       return;
     }
-    if (bounty.asignee === null) {
+    if (bounty.assignee === null) {
       toast.error("Bounty not assigned");
       return;
     }
+    if (!bounty.commissioners.includes(publicKey)) {
+      toast.error("You are not a commissioner");
+      return;
+    }
+    // TODO: check resign
 
     // TODO: find existing transaction for issuing bounty
     const existingTxRes = await safe(getTx(bountyPda.toBase58()));
@@ -122,12 +126,12 @@ export default function Page() {
       commissioner4: bounty.commissioners[3],
       commissioner5: bounty.commissioners[4],
       bounty: bountyPda,
-      assignee: bounty.asignee,
+      assignee: bounty.assignee,
       systemProgram: SystemProgram.programId,
     };
 
     const ixRes = await safe(
-      program.methods.issueV1().accountsPartial(issueV1Acc).instruction(),
+      program.methods.issueV1().accounts(issueV1Acc).instruction(),
     );
     if (!ixRes.success) {
       toast.error("Failed to create instruction: " + ixRes.error);

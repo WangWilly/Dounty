@@ -33,7 +33,7 @@ export default function Page() {
     return (
       <NoWallet
         title="No wallet found"
-        content="Please connect to a wallet to change the asignee of the bounty"
+        content="Please connect to a wallet to change the assignee of the bounty"
       />
     );
   }

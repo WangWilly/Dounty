@@ -19,18 +19,18 @@ pub mod bounty_factory {
         title: String,
         url: String,
         commissioners: Option<Vec<Pubkey>>,
-        asignee: Option<Pubkey>,
+        assignee: Option<Pubkey>,
     ) -> Result<()> {
-        create_v1_impl(ctx, title, url, commissioners, asignee)
+        create_v1_impl(ctx, title, url, commissioners, assignee)
     }
 
     pub fn update_v1(
         ctx: Context<UpdateV1Acc>,
         title: Option<String>,
         commissioners: Option<Vec<Pubkey>>,
-        asignee: Option<Pubkey>,
+        assignee: Option<Pubkey>,
     ) -> Result<()> {
-        update_v1_impl(ctx, title, commissioners, asignee)
+        update_v1_impl(ctx, title, commissioners, assignee)
     }
 
     pub fn issue_v1(ctx: Context<IssueV1Acc>) -> Result<()> {

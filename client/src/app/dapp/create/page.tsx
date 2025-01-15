@@ -82,14 +82,12 @@ export default function CreatePage() {
         .instruction();
 
       // https://solana.com/docs/core/transactions
-      // Create a new TransactionMessage with version and compile it to legacy
-      const messageLegacy = new TransactionMessage({
+      const message = new TransactionMessage({
         payerKey: publicKey,
         recentBlockhash: latestBlockhash.blockhash,
         instructions: [ix],
-      }).compileToLegacyMessage(); // TODO: anchor has already supported v0
-      // Create a new VersionedTransaction which supports legacy and v0
-      const transaction = new VersionedTransaction(messageLegacy);
+      }).compileToV0Message();
+      const transaction = new VersionedTransaction(message);
       const signedTx = await signTransaction(transaction);
 
       const signature = await sendTransaction(signedTx, connection);

@@ -224,7 +224,7 @@ export type BountyFactory = {
           }
         },
         {
-          "name": "asignee",
+          "name": "assignee",
           "type": {
             "option": "pubkey"
           }
@@ -372,7 +372,7 @@ export type BountyFactory = {
           }
         },
         {
-          "name": "asignee",
+          "name": "assignee",
           "type": {
             "option": "pubkey"
           }
@@ -471,8 +471,8 @@ export type BountyFactory = {
     },
     {
       "code": 6012,
-      "name": "illegalAsignee",
-      "msg": "Illegal asignee"
+      "name": "illegalAssignee",
+      "msg": "Illegal assignee"
     }
   ],
   "types": [

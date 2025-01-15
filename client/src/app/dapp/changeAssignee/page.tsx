@@ -33,7 +33,7 @@ export default function Page() {
     return (
       <NoWallet
         title="No wallet found"
-        content="Please connect to a wallet to change the asignee of the bounty"
+        content="Please connect to a wallet to change the assignee of the bounty"
       />
     );
   }
@@ -57,7 +57,7 @@ export default function Page() {
       return;
     }
     if (!bounty.owner.equals(publicKey)) {
-      toast.error("Only the owner can change the asignee");
+      toast.error("Only the owner can change the assignee");
       return;
     }
 
@@ -113,7 +113,7 @@ export default function Page() {
       return;
     }
 
-    toast.success("Change asignee succeeded");
+    toast.success("Change assignee succeeded");
   };
 
   return (
@@ -122,12 +122,12 @@ export default function Page() {
       <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
         <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
           <h2 className="text-lg font-bold text-orange-600">
-            Change the asignee of the bounty
+            Change the assignee of the bounty
           </h2>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6">
           <p className="text-gray-300">
-            Change the asignee of the bounty to a new assignee
+            Change the assignee of the bounty to a new assignee
           </p>
         </div>
         <div className="flex justify-center space-x-4">

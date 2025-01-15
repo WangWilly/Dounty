@@ -53,7 +53,7 @@ pub fn update_v1_impl(
             return Err(ErrorCode::NoCommissioners.into());
         }
         if bounty.commissioners.contains(&assignee) {
-            return Err(ErrorCode::IllegalAsignee.into());
+            return Err(ErrorCode::IllegalAssignee.into());
         }
         bounty.assignee = Some(assignee);
     }
