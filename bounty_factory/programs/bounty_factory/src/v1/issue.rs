@@ -36,10 +36,10 @@ pub struct IssueV1Acc<'info> {
 pub fn issue_v1_impl(ctx: Context<IssueV1Acc>) -> Result<()> {
     let bounty = &ctx.accounts.bounty;
 
-    if bounty.asignee.is_none() {
+    if bounty.assignee.is_none() {
         return Err(ErrorCode::BountyNotAssigned.into());
     }
-    if bounty.asignee.unwrap() != *ctx.accounts.assignee.key {
+    if bounty.assignee.unwrap() != *ctx.accounts.assignee.key {
         return Err(ErrorCode::WrongAssignee.into());
     }
 

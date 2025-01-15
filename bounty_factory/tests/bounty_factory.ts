@@ -125,7 +125,7 @@ describe("bounty_factory", () => {
       expect(bounty.title).to.equal(title);
       expect(bounty.url).to.equal(url);
       expect(bounty.owner.toString()).to.equal(wallet1.publicKey.toString());
-      expect(bounty.asignee).to.be.null;
+      expect(bounty.assignee).to.be.null;
     }
     const bountyInitBalance = await connection.getBalance(bountyPda);
 
@@ -275,7 +275,7 @@ describe("bounty_factory", () => {
     // Assert
     {
       const bounty = await pBountryFactory.account.bountyV1.fetch(bountyPda);
-      expect(bounty.asignee.toString()).to.equal(wallet2.publicKey.toString());
+      expect(bounty.assignee.toString()).to.equal(wallet2.publicKey.toString());
     }
 
     // Complete a bounty
@@ -376,7 +376,7 @@ describe("bounty_factory", () => {
       expect(bounty.title).to.equal(title);
       expect(bounty.url).to.equal(url);
       expect(bounty.owner.toString()).to.equal(wallet1.publicKey.toString());
-      expect(bounty.asignee.toString()).to.equal(wallet2.publicKey.toString());
+      expect(bounty.assignee.toString()).to.equal(wallet2.publicKey.toString());
     }
 
     // Issue a bounty (fail for the wrong commissioner)
@@ -514,7 +514,7 @@ describe("bounty_factory", () => {
       expect(bounty.title).to.equal(title);
       expect(bounty.url).to.equal(url);
       expect(bounty.owner.toString()).to.equal(wallet1.publicKey.toString());
-      expect(bounty.asignee.toString()).to.equal(wallet2.publicKey.toString());
+      expect(bounty.assignee.toString()).to.equal(wallet2.publicKey.toString());
     }
 
     // Issue a bounty
@@ -587,7 +587,7 @@ describe("bounty_factory", () => {
       expect(bounty.title).to.equal(title);
       expect(bounty.url).to.equal(url);
       expect(bounty.owner.toString()).to.equal(wallet1.publicKey.toString());
-      expect(bounty.asignee.toString()).to.equal(wallet2.publicKey.toString());
+      expect(bounty.assignee.toString()).to.equal(wallet2.publicKey.toString());
     }
 
     // Issue a bounty

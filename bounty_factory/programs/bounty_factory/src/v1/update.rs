@@ -1,5 +1,7 @@
 use anchor_lang::prelude::*;
 
+use std::collections::HashSet;
+
 use crate::errors::ErrorCode;
 use crate::models::BountyV1;
 use super::utils::str_extend::StringExt;
@@ -24,7 +26,7 @@ pub fn update_v1_impl(
     ctx: Context<UpdateV1Acc>,
     title: Option<String>,
     commissioners: Option<Vec<Pubkey>>,
-    asignee: Option<Pubkey>,
+    assignee: Option<Pubkey>,
 ) -> Result<()> {
     let bounty = &mut ctx.accounts.bounty;
     if let Some(title) = title {
@@ -34,10 +36,26 @@ pub fn update_v1_impl(
         bounty.title = title;
     }
     if let Some(commissioners) = commissioners {
+        let unique_commissioners: HashSet<Pubkey> = commissioners.iter().cloned().collect();
+        if unique_commissioners.len() != commissioners.len() {
+            return Err(ErrorCode::DuplicateCommissioners.into());
+        }
+        if commissioners.len() > 5 {
+            return Err(ErrorCode::TooManyCommissioners.into());
+        }
+        if bounty.commissioners.len() != 0 && commissioners.len() % 2 == 0 {
+            return Err(ErrorCode::EvenCommissioners.into());
+        }
         bounty.commissioners = commissioners;
     }
-    if let Some(asignee) = asignee {
-        bounty.asignee = Some(asignee);
+    if let Some(assignee) = assignee {
+        if bounty.commissioners.len() == 0 {
+            return Err(ErrorCode::NoCommissioners.into());
+        }
+        if bounty.commissioners.contains(&assignee) {
+            return Err(ErrorCode::IllegalAsignee.into());
+        }
+        bounty.assignee = Some(assignee);
     }
 
     Ok(())

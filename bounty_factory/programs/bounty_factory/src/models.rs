@@ -8,7 +8,7 @@ pub struct BountyV1 {
     pub owner: Pubkey,
     pub timestamp: i64,
     pub donation: u64,
-    pub asignee: Option<Pubkey>,
+    pub assignee: Option<Pubkey>,
     #[max_len(5)]
     pub commissioners: Vec<Pubkey>,
     #[max_len(50)]

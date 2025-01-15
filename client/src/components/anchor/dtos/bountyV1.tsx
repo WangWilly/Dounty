@@ -14,7 +14,7 @@ export const bountyV1Schema = zod.object({
     .instanceof(anchor.BN)
     .transform((val) => new Date(val.toNumber() * 1000)),
   donation: zod.instanceof(anchor.BN).transform((val) => val.toNumber()),
-  asignee: zod
+  assignee: zod
     .instanceof(PublicKey)
     .transform((val) => val.toBase58())
     .nullable(),
@@ -53,8 +53,8 @@ export const bountyV1Columns: ColumnDef<BountyV1>[] = [
     header: "Donation",
   },
   {
-    accessorKey: "asignee",
-    header: "Asignee",
+    accessorKey: "assignee",
+    header: "Assignee",
   },
   {
     accessorKey: "commissioners",

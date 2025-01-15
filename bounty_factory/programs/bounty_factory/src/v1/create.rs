@@ -1,5 +1,7 @@
 use anchor_lang::prelude::*;
 
+use std::collections::HashSet;
+
 use crate::errors::ErrorCode;
 use crate::models::BountyV1;
 use super::utils::str_extend::StringExt;
@@ -29,7 +31,7 @@ pub fn create_v1_impl(
     title: String,
     url: String,
     commissioners: Option<Vec<Pubkey>>,
-    asignee: Option<Pubkey>,
+    assignee: Option<Pubkey>,
 ) -> Result<()> {
     if title.len() > 50 {
         return Err(ErrorCode::StringTooLong.into());
@@ -45,8 +47,29 @@ pub fn create_v1_impl(
     bounty.donation = 0;
     bounty.title = title;
     bounty.url = url;
-    bounty.commissioners = commissioners.unwrap_or_default();
-    bounty.asignee = asignee;
+    if let Some(commissioners) = commissioners {
+        let unique_commissioners: HashSet<Pubkey> = commissioners.iter().cloned().collect();
+        if unique_commissioners.len() != commissioners.len() {
+            return Err(ErrorCode::DuplicateCommissioners.into());
+        }
+
+        if commissioners.len() > 5 {
+            return Err(ErrorCode::TooManyCommissioners.into());
+        }
+        if bounty.commissioners.len() != 0 && commissioners.len() % 2 == 0 {
+            return Err(ErrorCode::EvenCommissioners.into());
+        }
+        bounty.commissioners = commissioners;
+    }
+    if let Some(assignee) = assignee {
+        if bounty.commissioners.len() == 0 {
+            return Err(ErrorCode::NoCommissioners.into());
+        }
+        if bounty.commissioners.contains(&assignee) {
+            return Err(ErrorCode::IllegalAsignee.into());
+        }
+        bounty.assignee = Some(assignee);
+    }
     bounty.bump = ctx.bumps.bounty;
 
     Ok(())

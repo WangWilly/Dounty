@@ -410,51 +410,61 @@
     },
     {
       "code": 6001,
+      "name": "DuplicateCommissioners",
+      "msg": "Duplicate commissioners"
+    },
+    {
+      "code": 6002,
+      "name": "TooManyCommissioners",
+      "msg": "Too many commissioners"
+    },
+    {
+      "code": 6003,
       "name": "NotEnoughLamports",
       "msg": "Not enough lamports"
     },
     {
-      "code": 6002,
+      "code": 6004,
       "name": "NotEnoughCommission",
       "msg": "Not enough commission"
     },
     {
-      "code": 6003,
+      "code": 6005,
       "name": "BountyNotAssigned",
       "msg": "Bounty not assigned"
     },
     {
-      "code": 6004,
+      "code": 6006,
       "name": "NoCommissioners",
       "msg": "No commissioners"
     },
     {
-      "code": 6005,
+      "code": 6007,
       "name": "EvenCommissioners",
       "msg": "Even number of commissioners"
     },
     {
-      "code": 6006,
+      "code": 6008,
       "name": "WrongAssignee",
       "msg": "Wrong assignee"
     },
     {
-      "code": 6007,
+      "code": 6009,
       "name": "WrongOwner",
       "msg": "Wrong owner"
     },
     {
-      "code": 6008,
+      "code": 6010,
       "name": "WrongUrl",
       "msg": "Wrong url"
     },
     {
-      "code": 6009,
+      "code": 6011,
       "name": "IllegalClose",
       "msg": "Illegal close"
     },
     {
-      "code": 6010,
+      "code": 6012,
       "name": "IllegalAsignee",
       "msg": "Illegal asignee"
     }
@@ -478,7 +488,7 @@
             "type": "u64"
           },
           {
-            "name": "asignee",
+            "name": "assignee",
             "type": {
               "option": "pubkey"
             }
