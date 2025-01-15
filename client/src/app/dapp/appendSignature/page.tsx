@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 import {
+  Keypair,
   SystemProgram,
   PublicKey,
   TransactionMessage,
@@ -20,6 +21,8 @@ import {
   createTx,
   getBountyNonceAccountPublicKey,
 } from "@/app/dapp/userClient/functions";
+
+import * as bs58 from "bs58";
 
 import { ToastContainer, toast } from "react-toastify";
 
@@ -70,9 +73,8 @@ export default function Page() {
       toast.error("You are not a commissioner");
       return;
     }
-    // TODO: check resign
+    // TODO: check re-sign
 
-    // TODO: find existing transaction for issuing bounty
     const existingTxRes = await safe(getTx(bountyPda.toBase58()));
     if (existingTxRes.success) {
       const existingTx = existingTxRes.data;
@@ -118,6 +120,9 @@ export default function Page() {
       return;
     }
     const nonceAccount = NonceAccount.fromAccountData(accountInfo.data);
+    const nonceAccountKp = Keypair.fromSecretKey(
+      bs58.default.decode(nonceAccountRes.data.secretKey),
+    );
 
     const issueV1Acc = {
       commissioner1: bounty.commissioners[0],
@@ -130,6 +135,10 @@ export default function Page() {
       systemProgram: SystemProgram.programId,
     };
 
+    const nonceAdvIx = SystemProgram.nonceAdvance({
+      noncePubkey: nonceAccountPubkey,
+      authorizedPubkey: nonceAccount.authorizedPubkey,
+    });
     const ixRes = await safe(
       program.methods.issueV1().accounts(issueV1Acc).instruction(),
     );
@@ -139,16 +148,13 @@ export default function Page() {
     }
     const ix = ixRes.data;
 
-    // TODO: https://solana.com/developers/cookbook/transactions/offline-transactions
-    // https://solana.com/docs/core/transactions
-    // Create a new TransactionMessage with version and compile it to legacy
-    const messageLegacy = new TransactionMessage({
+    const message = new TransactionMessage({
       payerKey: publicKey,
       recentBlockhash: nonceAccount.nonce,
-      instructions: [ix],
-    }).compileToLegacyMessage(); // TODO: anchor has already supported v0
-    // Create a new VersionedTransaction which supports legacy and v0
-    const transaction = new VersionedTransaction(messageLegacy);
+      instructions: [nonceAdvIx, ix],
+    }).compileToV0Message();
+    const transaction = new VersionedTransaction(message);
+    transaction.sign([nonceAccountKp]);
     await signAndCreateTx(bountyPda.toBase58(), signTransaction, transaction);
   };
 
@@ -207,6 +213,7 @@ async function signAndCreateTx(
   ) => Promise<VersionedTransaction>,
   transaction: VersionedTransaction,
 ) {
+  // signTransaction won't replace the previous signatures
   const signedTxRes = await safe(signTransaction(transaction));
   if (!signedTxRes.success) {
     toast.error("Failed to sign transaction: " + signedTxRes.error);

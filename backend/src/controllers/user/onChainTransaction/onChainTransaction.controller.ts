@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Param, Body, Logger, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Body,
+  Logger,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 import { safe } from '../../../utils/exception';
 
@@ -27,11 +36,16 @@ export class OnChainTransactionController {
   ): Promise<void> {
     this.logger.log('createOnChainTransaction');
 
-    const createRes = await safe(this.onChainTransactionService.createOnChainTransaction(req));
+    const createRes = await safe(
+      this.onChainTransactionService.createOnChainTransaction(req),
+    );
     if (!createRes.success) {
-      throw new InternalServerErrorException('Failed to create OnChainTransaction', {
-        description: 'Failed to create OnChainTransaction',
-      });
+      throw new InternalServerErrorException(
+        'Failed to create OnChainTransaction',
+        {
+          description: 'Failed to create OnChainTransaction',
+        },
+      );
     }
   }
 
@@ -50,9 +64,8 @@ export class OnChainTransactionController {
   ): Promise<OnChainTransactionV1GetResp> {
     this.logger.log('getOnChainTransaction');
 
-    const record = await this.onChainTransactionService.getOnChainTransaction(
-      txPublicKey,
-    );
+    const record =
+      await this.onChainTransactionService.getOnChainTransaction(txPublicKey);
     if (!record) {
       throw new NotFoundException('OnChainTransaction not found', {
         description: 'OnChainTransaction not found',

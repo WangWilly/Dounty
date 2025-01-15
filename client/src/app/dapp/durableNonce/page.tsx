@@ -15,6 +15,8 @@ import { safe } from "@/utils/exception";
 import NoWallet from "@/components/dapp/noWallet";
 import * as userClient from "@/app/dapp/userClient/functions";
 
+import * as bs58 from "bs58";
+
 import { ToastContainer, toast } from "react-toastify";
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +53,7 @@ export default function Page() {
 
 
     // Resolve
+    // TODO: only owner can create a nonce account for the bounty
     const nonceAccountKp = Keypair.generate();
     const createAccountIx = SystemProgram.createAccount({
       fromPubkey: publicKey,
@@ -89,6 +92,7 @@ export default function Page() {
       userClient.createNonceAccount({
         publicKey: nonceAccountKp.publicKey.toBase58(),
         txPublickey: bountyPda.toBase58(),
+        secretKey: bs58.default.encode(nonceAccountKp.secretKey),
       }),
     );
     if (!createNonceAccountRes.success) {

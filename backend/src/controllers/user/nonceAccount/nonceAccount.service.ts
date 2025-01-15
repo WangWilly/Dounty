@@ -44,6 +44,7 @@ export class NonceAccountService {
     const nonceAccount = await this.nonceAccountRepoService.create({
       publicKey: req.publicKey,
       txPublicKey: req.txPublickey,
+      secretKey: req.secretKey,
     });
 
     return NonceAccountV1CreateResp.fromModel(nonceAccount);

@@ -29,4 +29,5 @@ model OnChainTransaction {
 model NonceAccount {
   publicKey   String @id
   txPublicKey String
+  secretKey   String
 }

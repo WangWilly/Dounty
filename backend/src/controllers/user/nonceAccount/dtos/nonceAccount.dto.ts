@@ -10,6 +10,9 @@ export class NonceAccountV1CreateReq {
 
   @IsString()
   txPublickey!: string;
+
+  @IsString()
+  secretKey!: string;
 }
 
 export class NonceAccountV1CreateResp {
@@ -19,12 +22,16 @@ export class NonceAccountV1CreateResp {
   @IsString()
   txPublickey!: string;
 
+  @IsString()
+  secretKey!: string;
+
   //////////////////////////////////////////////////////////////////////////////
 
   static fromModel(model: NonceAccount): NonceAccountV1CreateResp {
     return {
       publicKey: model.publicKey,
       txPublickey: model.txPublicKey,
+      secretKey: model.secretKey,
     };
   }
 }

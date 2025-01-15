@@ -8,6 +8,7 @@ const fetcher = getFetcher(config.USER_CLIENT_BASE_URL);
 
 ////////////////////////////////////////////////////////////////////////////////
 
+// TODO: login required
 // Nonce account should be created by the owner of the txPublicKey
 export const createNonceAccount = async (
   req: dtos.NonceAccountV1CreateReq,
