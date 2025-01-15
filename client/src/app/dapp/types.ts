@@ -4,4 +4,5 @@ export enum NetworkType {
   Testnet = "testnet",
   MainnetBeta = "mainnet-beta",
   Local = "local",
+  Custom = "custom",
 }

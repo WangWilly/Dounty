@@ -61,6 +61,8 @@ export default function DappLayout({
         return clusterApiUrl(WalletAdapterNetwork.Mainnet);
       case NetworkType.Local:
         return "http://localhost:8899/";
+      case NetworkType.Custom:
+        return config.CUSTOM_RPC_URL;
       default:
         return "";
     }
@@ -115,6 +117,7 @@ export default function DappLayout({
                     {/* <DropdownItem key="mainnet-beta">Mainnet Beta</DropdownItem> */}
                     <DropdownItem key="devnet">Devnet</DropdownItem>
                     <DropdownItem key="local">Local</DropdownItem>
+                    <DropdownItem key="custom">Custom</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </div>

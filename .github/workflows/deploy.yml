@@ -94,8 +94,8 @@ jobs:
         run: |
           touch .env
           echo IN_GITHUB_WORKER=true >> .env
-          echo NEXT_PUBLIC_DEFAULT_NETWORK_TYPE=devnet >> .env
-          echo NEXT_PUBLIC_DEFAULT_NETWORK_URL=https://api.devnet.solana.com >> .env
+          echo NEXT_PUBLIC_DEFAULT_NETWORK_TYPE=custom >> .env
+          echo NEXT_PUBLIC_CUSTOM_RPC_URL=https://skilled-white-leaf.solana-devnet.quiknode.pro/f7ffd926eb10ef0b77dcfdf420696bccd649320c >> .env
           echo NEXT_PUBLIC_USER_CLIENT_BASE_URL=https://me.willywangkaa.xyz >> .env
 
       - name: Build with Next.js

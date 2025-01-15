@@ -42,6 +42,13 @@ A tool to incentivize developers to contribute to open source projects by reward
 - [Flow chart for the design](docs/contract/flow-chart.md)
 - [Notes for on-chain program](docs/contract/notes.md)
 - [Solana dev faucet](https://faucet.solana.com/)
+- Issues
+    - https://solana.stackexchange.com/questions/15175/react-app-with-anchor-0-30-1-error-walletsendtransactionerror-unexpected-erro/19112#19112
+    - https://stackoverflow.com/questions/68755285/solana-how-to-get-cluster-versions
+    - https://www.quicknode.com/guides/solana-development/transactions/how-to-get-transaction-logs-on-solana
+    - https://www.rareskills.io/post/solana-logs-transaction-history
+    - https://solana.stackexchange.com/questions/9803/how-can-i-see-what-the-currently-deployed-version-of-solana-is
+    - https://solana.stackexchange.com/questions/7153/how-do-you-change-your-solana-cli-version
 
 ### Client side
 
