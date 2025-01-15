@@ -85,7 +85,10 @@ export default function Page() {
 
   //////////////////////////////////////////////////////////////////////////////
   // Initial load
-  changeOnClick();
+  useEffect(() => {
+    changeOnClick();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // The empty dependency array ensures this runs only once on mount
 
   //////////////////////////////////////////////////////////////////////////////
   // Compose
@@ -157,6 +160,14 @@ export default function Page() {
               className="text-black px-6 py-2 rounded-lg font-semibold"
             >
               Donate to a Bounty
+            </Button>
+          </Link>
+          <Link href="/dapp/assignee">
+            <Button
+              color="default"
+              className="text-black px-6 py-2 rounded-lg font-semibold"
+            >
+              Change Assignee
             </Button>
           </Link>
           <Link href="/dapp/durableNonce">
