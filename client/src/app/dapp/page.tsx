@@ -162,12 +162,28 @@ export default function Page() {
               Donate to a Bounty
             </Button>
           </Link>
-          <Link href="/dapp/assignee">
+          <Link href="/dapp/changeAssignee">
             <Button
               color="default"
               className="text-black px-6 py-2 rounded-lg font-semibold"
             >
               Change Assignee
+            </Button>
+          </Link>
+          <Link href="/dapp/changeTitle">
+            <Button
+              color="default"
+              className="text-black px-6 py-2 rounded-lg font-semibold"
+            >
+              Change Title
+            </Button>
+          </Link>
+          <Link href="/dapp/changeCommissioners">
+            <Button
+              color="default"
+              className="text-black px-6 py-2 rounded-lg font-semibold"
+            >
+              Change Commissioners
             </Button>
           </Link>
           <Link href="/dapp/durableNonce">

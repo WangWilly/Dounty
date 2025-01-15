@@ -68,7 +68,9 @@ export default function Page() {
     }
     const res = await safe(
       // sendAndConfirmTransaction(connection, signedTxRes.data, [nonceAccountKp]),
-      sendTransaction(signedTxRes.data, connection, {signers: [nonceAccountKp]}),
+      sendTransaction(signedTxRes.data, connection, {
+        signers: [nonceAccountKp],
+      }),
     );
     if (!res.success) {
       toast.error(`Failed to send the transaction: ${res.error}`);
@@ -82,7 +84,9 @@ export default function Page() {
       }),
     );
     if (!createNonceAccountRes.success) {
-      toast.error(`Failed to create the nonce account: ${createNonceAccountRes.error}`);
+      toast.error(
+        `Failed to create the nonce account: ${createNonceAccountRes.error}`,
+      );
       return;
     }
 
@@ -94,10 +98,14 @@ export default function Page() {
       <ToastContainer />
       <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
         <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
-          <h2 className="text-lg font-bold text-orange-600">Create a Durable Nonce for multisig</h2>
+          <h2 className="text-lg font-bold text-orange-600">
+            Create a Durable Nonce for multisig
+          </h2>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6">
-          <p className="text-gray-300">Create a durable nonce account for the bounty</p>
+          <p className="text-gray-300">
+            Create a durable nonce account for the bounty
+          </p>
         </div>
         <div className="flex justify-center space-x-4">
           <input

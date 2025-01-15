@@ -18,7 +18,9 @@ export const createNonceAccount = async (
 export const getBountyNonceAccountPublicKey = async (
   txPublicKey: string,
 ): Promise<dtos.NonceAccountV1GetResp> => {
-  const res = await fetcher.get(`/api/nonceAccount/v1/txPublicKey/${txPublicKey}`);
+  const res = await fetcher.get(
+    `/api/nonceAccount/v1/txPublicKey/${txPublicKey}`,
+  );
   return dtos.NonceAccountV1GetRespSchema.parse(res.data);
 };
 
@@ -30,6 +32,8 @@ export const createTx = async (
   await fetcher.post(`/api/onChainTransaction/v1`, req);
 };
 
-export const getTx = async (txPublicKey: string): Promise<dtos.OnChainTransactionV1GetResp> => {
+export const getTx = async (
+  txPublicKey: string,
+): Promise<dtos.OnChainTransactionV1GetResp> => {
   return await fetcher.get(`/api/onChainTransaction/v1/${txPublicKey}`);
 };

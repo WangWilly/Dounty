@@ -25,8 +25,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// The bounty issuing page
-export default function IssuePage() {
+export default function Page() {
   // Arrange
   const { connection } = useConnection();
 
@@ -65,11 +64,8 @@ export default function IssuePage() {
       return;
     }
     if (bounty.asignee === null) {
-      // toast.error("Bounty not assigned");
-      // TODO: return;
-
-      toast.warn("Bounty not assigned, assigning to the current user");
-      bounty.asignee = publicKey;
+      toast.error("Bounty not assigned");
+      return;
     }
 
     // TODO: find existing transaction for issuing bounty
@@ -157,10 +153,14 @@ export default function IssuePage() {
       <ToastContainer />
       <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
         <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
-          <h2 className="text-lg font-bold text-orange-600">Append a signature to agree the decision</h2>
+          <h2 className="text-lg font-bold text-orange-600">
+            Append a signature to agree the decision
+          </h2>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6">
-          <p className="text-gray-300">Append a signature to agree the decision of the bounty</p>
+          <p className="text-gray-300">
+            Append a signature to agree the decision of the bounty
+          </p>
         </div>
         <div className="flex justify-center space-x-4">
           <input
