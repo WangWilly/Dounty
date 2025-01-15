@@ -36,5 +36,6 @@ export const createTx = async (
 export const getTx = async (
   txPublicKey: string,
 ): Promise<dtos.OnChainTransactionV1GetResp> => {
-  return await fetcher.get(`/api/onChainTransaction/v1/${txPublicKey}`);
+  const res = await fetcher.get(`/api/onChainTransaction/v1/${txPublicKey}`);
+  return dtos.OnChainTransactionV1GetRespSchema.parse(res.data);
 };

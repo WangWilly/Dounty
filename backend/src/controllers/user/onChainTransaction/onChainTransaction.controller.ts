@@ -62,7 +62,7 @@ export class OnChainTransactionController {
   async getOnChainTransaction(
     @Param('txPublicKey') txPublicKey: string,
   ): Promise<OnChainTransactionV1GetResp> {
-    this.logger.log('getOnChainTransaction');
+    this.logger.log('getOnChainTransaction: ' + txPublicKey);
 
     const record =
       await this.onChainTransactionService.getOnChainTransaction(txPublicKey);

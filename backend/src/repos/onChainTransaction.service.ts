@@ -31,16 +31,19 @@ export class OnChainTransactionRepoService {
     return onChainTransactions as unknown as OnChainTransaction[];
   }
 
-  async getByPublicKey(publicKey: string): Promise<OnChainTransaction | null> {
+  async getByPublicKey(publicKey: string): Promise<OnChainTransaction> {
     const onChainTransaction = await this.prisma.onChainTransaction.findUnique({
       where: { publicKey },
     });
+    if (!onChainTransaction) {
+      throw new Error('OnChainTransaction not found');
+    }
     return onChainTransaction;
   }
 
-  async upsert(data: Prisma.OnChainTransactionUpdateInput) {
+  async upsert(data: Prisma.OnChainTransactionCreateInput) {
     const onChainTransaction = await this.prisma.onChainTransaction.upsert({
-      where: { publicKey: data.publicKey?.toString() },
+      where: { publicKey: data.publicKey },
       update: data,
       create: data as Prisma.OnChainTransactionCreateInput,
     });

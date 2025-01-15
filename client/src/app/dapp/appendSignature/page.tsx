@@ -69,8 +69,9 @@ export default function Page() {
       toast.error("Bounty not assigned");
       return;
     }
-    if (!bounty.commissioners.includes(publicKey)) {
+    if (!bounty.commissioners.map((pubkey) => pubkey.toBase58()).includes(publicKey.toBase58())) {
       toast.error("You are not a commissioner");
+      toast.error("Commissioners: " + bounty.commissioners.join(", "));
       return;
     }
     // TODO: check re-sign
@@ -78,18 +79,25 @@ export default function Page() {
     const existingTxRes = await safe(getTx(bountyPda.toBase58()));
     if (existingTxRes.success) {
       const existingTx = existingTxRes.data;
-      if (existingTx) {
-        toast.info("Existing transaction found");
-
-        const transaction = VersionedTransaction.deserialize(
-          Buffer.from(existingTx.serializedTx, "base64"),
-        );
-        await signAndCreateTx(
-          bountyPda.toBase58(),
-          signTransaction,
-          transaction,
-        );
+      toast.info("Existing transaction found: " + existingTx.serializedTxBase64 + " " + existingTx.publicKey + " " + existingTx.serializedTx);
+      if (!existingTx) {
+        toast.error("No existing transaction");
+        return;
       }
+      if (!existingTx.serializedTxBase64) {
+        toast.error("SerializedTxBase64 is empty");
+        return;
+      }
+
+      toast.info("Existing transaction found");
+      const transaction = VersionedTransaction.deserialize(
+        Buffer.from(existingTx.serializedTxBase64, "base64"),
+      );
+      await signAndCreateTx(
+        bountyPda.toBase58(),
+        signTransaction,
+        transaction,
+      );
 
       return;
     }
@@ -123,6 +131,10 @@ export default function Page() {
     const nonceAccountKp = Keypair.fromSecretKey(
       bs58.default.decode(nonceAccountRes.data.secretKey),
     );
+    const nonceAdvIx = SystemProgram.nonceAdvance({
+      noncePubkey: nonceAccountPubkey,
+      authorizedPubkey: nonceAccount.authorizedPubkey,
+    });
 
     const issueV1Acc = {
       commissioner1: bounty.commissioners[0],
@@ -134,13 +146,11 @@ export default function Page() {
       assignee: bounty.assignee,
       systemProgram: SystemProgram.programId,
     };
-
-    const nonceAdvIx = SystemProgram.nonceAdvance({
-      noncePubkey: nonceAccountPubkey,
-      authorizedPubkey: nonceAccount.authorizedPubkey,
-    });
     const ixRes = await safe(
-      program.methods.issueV1().accounts(issueV1Acc).instruction(),
+      program.methods.issueV1()
+        .accounts(issueV1Acc)
+        .signers([nonceAccountKp])
+        .instruction(),
     );
     if (!ixRes.success) {
       toast.error("Failed to create instruction: " + ixRes.error);
