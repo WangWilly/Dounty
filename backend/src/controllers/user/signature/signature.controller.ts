@@ -13,6 +13,7 @@ import {
   SignatureV1CreateResp,
   SignatureV1ListReq,
   SignatureV1ListResp,
+  SignatureV1TxListReq,
 } from './dtos/signature';
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,6 +33,26 @@ export class SignatureController {
     this.logger.log('createSignature');
 
     return this.signatureService.createSignature(req);
+  }
+
+  @Post('/v1/listByTxBase64')
+  async listByTxBase64(
+    @Body() req: SignatureV1TxListReq,
+  ): Promise<SignatureV1ListResp> {
+    this.logger.log('listByTxBase64');
+
+    const res = await this.signatureService.listSignaturesByTxBase64(
+      req.txBase64,
+    );
+    if (!res || !res.signatures.length) {
+      this.logger.error('signature not found');
+
+      throw new NotFoundException('signature not found', {
+        description: 'signature not found',
+      });
+    }
+
+    return res;
   }
 
   @Post('/v1/listByIxBase64')

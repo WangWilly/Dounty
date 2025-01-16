@@ -17,6 +17,15 @@ export class SignatureRepoService {
     return signature;
   }
 
+  async listByTxBase64(txBase64: string): Promise<Signature[]> {
+    const signatures = await this.prisma.signature.findMany({
+      where: {
+        serializedTxBase64: txBase64,
+      },
+    });
+    return signatures;
+  }
+
   async listByIxBase64(ixBase64: string): Promise<Signature[]> {
     const signatures = await this.prisma.signature.findMany({
       where: {

@@ -61,6 +61,7 @@ export type NonceAccountV1GetResp = NonceAccountV1CreateResp;
 ////////////////////////////////////////////////////////////////////////////////
 
 export const SignatureV1CreateReqSchema = zod.object({
+  serializedTxBase64: zod.string(),
   serializedIxBase64: zod.string(),
   signerPublicKeyBase58: zod.string(),
   signatureBase58: zod.string(),
@@ -72,11 +73,17 @@ export const SignatureV1CreateRespSchema = SignatureV1CreateReqSchema;
 
 export type SignatureV1CreateResp = SignatureV1CreateReq;
 
-export const SignatureV1ListReqSchema = zod.object({
+export const SignatureV1IxListReqSchema = zod.object({
   ixBase64: zod.string(),
 });
 
-export type SignatureV1ListReq = zod.infer<typeof SignatureV1ListReqSchema>;
+export type SignatureV1ListReq = zod.infer<typeof SignatureV1IxListReqSchema>;
+
+export const SignatureV1TxListReqSchema = zod.object({
+  txBase64: zod.string(),
+});
+
+export type SignatureV1TxListReq = zod.infer<typeof SignatureV1TxListReqSchema>;
 
 export const SignatureV1ListRespSchema = zod.object({
   signatures: zod.array(SignatureV1CreateRespSchema),

@@ -48,7 +48,14 @@ export const createSignature = async (
   await fetcher.post(`/api/signature/v1`, req);
 };
 
-export const listSignatures = async (
+export const listSignaturesByTx = async (
+  req: dtos.SignatureV1ListReq,
+): Promise<dtos.SignatureV1ListResp> => {
+  const res = await fetcher.post(`/api/signature/v1/listByIxBase64`, req);
+  return dtos.SignatureV1ListRespSchema.parse(res.data);
+};
+
+export const listSignaturesByIx = async (
   req: dtos.SignatureV1ListReq,
 ): Promise<dtos.SignatureV1ListResp> => {
   const res = await fetcher.post(`/api/signature/v1/listByIxBase64`, req);

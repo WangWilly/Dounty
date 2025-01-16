@@ -42,6 +42,7 @@ export class SignatureService {
     req: SignatureV1CreateReq,
   ): Promise<SignatureV1CreateResp> {
     const signature = await this.signatureRepoService.create({
+      serializedTxBase64: req.serializedTxBase64,
       serializedIxBase64: req.serializedIxBase64,
       signerPublicKeyBase58: req.signerPublicKeyBase58,
       signatureBase58: req.signatureBase58,
@@ -49,6 +50,14 @@ export class SignatureService {
 
     return SignatureV1CreateResp.fromModel(signature);
   }
+
+  async listSignaturesByTxBase64(
+    txBase64: string,
+  ): Promise<SignatureV1ListResp> {
+    const signatures = await this.signatureRepoService.listByTxBase64(txBase64);
+
+    return SignatureV1ListResp.fromModel(signatures);
+  }  
 
   async listSignaturesByIxBase64(
     ixBase64: string,

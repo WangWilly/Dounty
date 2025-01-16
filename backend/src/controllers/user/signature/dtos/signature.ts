@@ -6,6 +6,9 @@ import { Signature } from '@prisma/client';
 
 export class SignatureV1CreateReq {
   @IsString()
+  serializedTxBase64!: string;
+
+  @IsString()
   serializedIxBase64!: string;
 
   @IsString()
@@ -16,6 +19,9 @@ export class SignatureV1CreateReq {
 }
 
 export class SignatureV1CreateResp {
+  @IsString()
+  serializedTxBase64!: string;
+
   @IsString()
   serializedIxBase64!: string;
 
@@ -30,6 +36,11 @@ export class SignatureV1CreateResp {
   static fromModel(model: Signature): SignatureV1CreateResp {
     return { ...model };
   }
+}
+
+export class SignatureV1TxListReq {
+  @IsString()
+  txBase64!: string;
 }
 
 export class SignatureV1ListReq {

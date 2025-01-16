@@ -2,14 +2,14 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { PublicKey, MessageV0, VersionedTransaction } from "@solana/web3.js";
+import { PublicKey, VersionedTransaction } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
 import { safe } from "@/utils/exception";
 import NoWallet from "@/components/dapp/noWallet";
 import { useAnchorProvider } from "@/components/solana_provider";
 import { getBountyFactoryProgram } from "@/components/anchor/bounty_factory";
-import { getTx, listSignatures } from "@/app/dapp/userClient/functions";
+import { getTx, listSignaturesByTx } from "@/app/dapp/userClient/functions";
 
 import { ToastContainer, toast } from "react-toastify";
 
@@ -69,12 +69,17 @@ export default function Page() {
       return;
     }
     const existingTx = existingTxRes.data;
-    const txMessage = MessageV0.deserialize(
-      Buffer.from(existingTx.serializedIxBase64, "base64"),
+
+    if (!existingTx.serializedTxBase64) {
+      toast.error("No existing transaction");
+      return;
+    }
+    const tx = VersionedTransaction.deserialize(
+      Buffer.from(existingTx.serializedTxBase64, "base64"),
     );
 
     const signaturesRes = await safe(
-      listSignatures({ ixBase64: existingTx.serializedIxBase64 }),
+      listSignaturesByTx({ ixBase64: existingTx.serializedIxBase64 }),
     );
     if (!signaturesRes.success) {
       toast.error("Failed to get signatures: " + signaturesRes.error);
@@ -92,7 +97,6 @@ export default function Page() {
 
     // TODO: confirm the transaction
     // https://www.quicknode.com/guides/solana-development/transactions/how-to-send-offline-tx
-    const tx = new VersionedTransaction(txMessage);
     for (const txSignature of txSignatures) {
       try {
         tx.addSignature(txSignature.publicKey, txSignature.signature);
@@ -100,7 +104,11 @@ export default function Page() {
         toast.error("Failed to add signature: " + error);
       }
     }
-    await safe(sendTransaction(tx, connection));
+    const sigRes = await safe(sendTransaction(tx, connection));
+    if (!sigRes.success) {
+      toast.error("Failed to send transaction: " + sigRes.error);
+      return;
+    }
 
     toast.success("Transaction sent");
   };

@@ -7,7 +7,7 @@ import {
   PublicKey,
   TransactionMessage,
   NonceAccount,
-  MessageV0,
+  VersionedTransaction,
 } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
@@ -22,7 +22,6 @@ import {
   createSignature,
 } from "@/app/dapp/userClient/functions";
 
-import * as nacl from "tweetnacl";
 import * as bs58 from "bs58";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -38,8 +37,8 @@ export default function Page() {
 
   const [bountyPda, setbountyPda] = useState<PublicKey>();
 
-  const { publicKey, signMessage } = useWallet();
-  if (!publicKey || !signMessage) {
+  const { publicKey, signMessage, signTransaction } = useWallet();
+  if (!publicKey || !signMessage || !signTransaction) {
     return (
       <NoWallet
         title="No wallet found"
@@ -88,31 +87,32 @@ export default function Page() {
         toast.error("No existing transaction");
         return;
       }
-      if (!existingTx.serializedIxBase64) {
-        toast.error("SerializedIxBase64 is empty");
-        return;
-      }
-
       toast.info("Existing transaction found");
-      // https://solanacookbook.com/references/offline-transactions.html#sign-transaction
-      const serializedIx = Buffer.from(existingTx.serializedIxBase64, "base64");
-      const txMessage = MessageV0.deserialize(serializedIx);
-      const signRes = await safe(signMessage(txMessage.serialize()));
-      if (!signRes.success) {
-        toast.error("Failed to sign message: " + signRes.error);
+
+      if (!existingTx.serializedTxBase64) {
+        toast.error("SerializedTxBase64 is empty");
         return;
       }
-      const signature = signRes.data;
-      const signatureBase58 = bs58.default.encode(signature);
-      const createRes = await safe(
+      const serializedTx = Buffer.from(existingTx.serializedTxBase64, "base64");
+      const tx = VersionedTransaction.deserialize(serializedTx);
+      const signatureBase58Res = await safe(
+        getSignatureBase58(tx, signTransaction),
+      );
+      if (!signatureBase58Res.success) {
+        toast.error("Failed to get signature: " + signatureBase58Res.error);
+        return;
+      }
+      const signatureBase58 = signatureBase58Res.data;
+      const createSigRes = await safe(
         createSignature({
-          serializedIxBase64: existingTx.serializedIxBase64,
+          serializedTxBase64: existingTx.serializedTxBase64,
+          serializedIxBase64: "",
           signerPublicKeyBase58: publicKey.toBase58(),
           signatureBase58,
         }),
       );
-      if (!createRes.success) {
-        toast.error("Failed to create signature: " + createRes.error);
+      if (!createSigRes.success) {
+        toast.error("Failed to create signature: " + createSigRes.error);
         return;
       }
       toast.success("Create signature success");
@@ -120,6 +120,7 @@ export default function Page() {
       return;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
     // There is no existing transaction, create a new one
     // TODO: if bounty changes, the transaction should be re-created
     const nonceAccountRes = await safe(
@@ -171,22 +172,24 @@ export default function Page() {
     }
     const ix = ixRes.data;
 
-    const serializedMessage = new TransactionMessage({
+    const message = new TransactionMessage({
       payerKey: bounty.owner,
       recentBlockhash: nonceAccount.nonce,
       instructions: [nonceAdvIx, ix],
-    })
-      .compileToV0Message()
-      .serialize();
-    const serializedIxBase64 =
-      Buffer.from(serializedMessage).toString("base64");
+    }).compileToV0Message();
+    const tx = new VersionedTransaction(message);
+    tx.signatures.forEach((sig) => {
+      toast.info("Signature: " + bs58.default.encode(sig));
+    });
 
+    const serializedTx = tx.serialize();
+    const serializedTxBase64 = Buffer.from(serializedTx).toString("base64");
     const createRes = await safe(
       createTx({
         publicKey: bountyPda.toBase58(),
         serializedTx: {},
-        serializedTxBase64: "",
-        serializedIxBase64,
+        serializedTxBase64: serializedTxBase64,
+        serializedIxBase64: "",
       }),
     );
     if (!createRes.success) {
@@ -194,35 +197,54 @@ export default function Page() {
       return;
     }
 
-    const nonceSignatureBase58 = bs58.default.encode(
-      nacl.sign.detached(
-        serializedMessage,
-        bs58.default.decode(nonceAccountRes.data.secretKey),
-      ),
-    );
-    const createNonceSignatureRes = await safe(
-      createSignature({
-        serializedIxBase64,
-        signerPublicKeyBase58: publicKey.toBase58(),
-        signatureBase58: nonceSignatureBase58,
-      }),
-    );
-    if (!createNonceSignatureRes.success) {
-      toast.warn(
-        "Failed to create nonce signature: " + createNonceSignatureRes.error,
-      );
-    }
+    // ////////////////////////////////////////////////////////////////////////////
+    // // Nonce signature
+    // // https://github.com/coral-xyz/anchor/blob/23d1a2ca7298aca26ed7294465797c29d9ddf165/ts/packages/anchor/src/nodewallet.ts#L39
+    // // Error: Cannot sign with non signer key
+    // const nonceKp = Keypair.fromSecretKey(
+    //   bs58.default.decode(nonceAccountRes.data.secretKey),
+    // );
+    // const nonceWalletSignedTx = new VersionedTransaction(tx.message);
+    // try {
+    //   nonceWalletSignedTx.sign([nonceKp]);
+    // } catch (e) {
+    //   toast.error("Failed to sign nonce transaction: " + e);
+    //   return;
+    // }
+    // nonceWalletSignedTx.signatures.forEach((sig) => {
+    //   toast.info("(Nonce) Signature: " + bs58.default.encode(sig));
+    // });
+    // const nonceSignatureBase58 = bs58.default.encode(
+    //   nonceWalletSignedTx.signatures[0],
+    // );
+    // const createNonceSignatureRes = await safe(
+    //   createSignature({
+    //     serializedTxBase64: serializedTxBase64,
+    //     serializedIxBase64: "",
+    //     signerPublicKeyBase58: nonceAccountPubkey.toBase58(),
+    //     signatureBase58: nonceSignatureBase58,
+    //   }),
+    // );
+    // if (!createNonceSignatureRes.success) {
+    //   toast.warn(
+    //     "Failed to create nonce signature: " + createNonceSignatureRes.error,
+    //   );
+    // }
 
-    const sigRes = await safe(signMessage(serializedMessage));
-    if (!sigRes.success) {
-      toast.error("Failed to sign message: " + sigRes.error);
+    ////////////////////////////////////////////////////////////////////////////
+    // User signature
+    const signatureBase58Res = await safe(
+      getSignatureBase58(tx, signTransaction),
+    );
+    if (!signatureBase58Res.success) {
+      toast.error("Failed to get signature: " + signatureBase58Res.error);
       return;
     }
-    const signature = sigRes.data;
-    const signatureBase58 = bs58.default.encode(signature);
+    const signatureBase58 = signatureBase58Res.data;
     const createSigRes = await safe(
       createSignature({
-        serializedIxBase64,
+        serializedTxBase64: serializedTxBase64,
+        serializedIxBase64: "",
         signerPublicKeyBase58: publicKey.toBase58(),
         signatureBase58,
       }),
@@ -231,6 +253,19 @@ export default function Page() {
       toast.error("Failed to create signature: " + createSigRes.error);
       return;
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+    const userSignedTx = await safe(signTransaction(tx));
+    if (!userSignedTx.success) {
+      toast.error("Failed to sign transaction: " + userSignedTx.error);
+      return;
+    }
+    userSignedTx.data.signatures.forEach((sig) => {
+      toast.info("(User) Signature: " + bs58.default.encode(sig));
+    });
+    tx.signatures.forEach((sig) => {
+      toast.info("(Tx) Signature: " + bs58.default.encode(sig));
+    });
 
     toast.success("Create transaction success");
   };
@@ -283,3 +318,16 @@ export default function Page() {
 
 // https://solana.stackexchange.com/questions/9701/signtransaction-removes-partialsigned-signatures-making-it-impossible-to-sign-a
 // https://solana.stackexchange.com/questions/5007/partial-sign-transaction-from-front-end
+async function getSignatureBase58(
+  rawTx: VersionedTransaction,
+  signTransaction: (
+    transaction: VersionedTransaction,
+  ) => Promise<VersionedTransaction>,
+): Promise<string> {
+  const signedTxRes = await safe(signTransaction(rawTx));
+  if (!signedTxRes.success) {
+    throw new Error("Failed to sign transaction: " + signedTxRes.error);
+  }
+  const signature = signedTxRes.data.signatures[0];
+  return bs58.default.encode(signature);
+}

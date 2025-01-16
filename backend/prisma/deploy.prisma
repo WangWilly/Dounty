@@ -34,6 +34,7 @@ model NonceAccount {
 }
 
 model Signature {
+  serializedTxBase64    String
   serializedIxBase64    String
   signerPublicKeyBase58 String
   signatureBase58       String @id
