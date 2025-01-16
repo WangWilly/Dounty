@@ -39,3 +39,18 @@ export const getTx = async (
   const res = await fetcher.get(`/api/onChainTransaction/v1/${txPublicKey}`);
   return dtos.OnChainTransactionV1GetRespSchema.parse(res.data);
 };
+
+////////////////////////////////////////////////////////////////////////////////
+
+export const createSignature = async (
+  req: dtos.SignatureV1CreateReq,
+): Promise<void> => {
+  await fetcher.post(`/api/signature/v1`, req);
+};
+
+export const listSignatures = async (
+  req: dtos.SignatureV1ListReq,
+): Promise<dtos.SignatureV1ListResp> => {
+  const res = await fetcher.post(`/api/signature/v1/listByIxBase64`, req);
+  return dtos.SignatureV1ListRespSchema.parse(res.data);
+};

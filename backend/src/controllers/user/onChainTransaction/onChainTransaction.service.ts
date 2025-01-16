@@ -62,9 +62,9 @@ export class OnChainTransactionService {
   async getOnChainTransaction(
     txPublicKey: string,
   ): Promise<OnChainTransactionV1GetResp> {
-    const res = await safe(this.onChainTransactionRepoServices.getByPublicKey(
-      txPublicKey,
-    ));
+    const res = await safe(
+      this.onChainTransactionRepoServices.getByPublicKey(txPublicKey),
+    );
     if (!res.success) {
       this.logger.debug('getOnChainTransaction', res.error);
       throw new NotFoundException(res.error);

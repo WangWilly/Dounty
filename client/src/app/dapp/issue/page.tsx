@@ -2,19 +2,18 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import {
-  PublicKey,
-  VersionedTransaction,
-} from "@solana/web3.js";
+import { PublicKey, MessageV0, VersionedTransaction } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
 import { safe } from "@/utils/exception";
 import NoWallet from "@/components/dapp/noWallet";
 import { useAnchorProvider } from "@/components/solana_provider";
 import { getBountyFactoryProgram } from "@/components/anchor/bounty_factory";
-import { getTx } from "@/app/dapp/userClient/functions";
+import { getTx, listSignatures } from "@/app/dapp/userClient/functions";
 
 import { ToastContainer, toast } from "react-toastify";
+
+import * as bs58 from "bs58";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -70,14 +69,38 @@ export default function Page() {
       return;
     }
     const existingTx = existingTxRes.data;
-    const transaction = VersionedTransaction.deserialize(
-      Buffer.from(existingTx.serializedTx, "base64"),
+    const txMessage = MessageV0.deserialize(
+      Buffer.from(existingTx.serializedIxBase64, "base64"),
     );
+
+    const signaturesRes = await safe(
+      listSignatures({ ixBase64: existingTx.serializedIxBase64 }),
+    );
+    if (!signaturesRes.success) {
+      toast.error("Failed to get signatures: " + signaturesRes.error);
+      return;
+    }
+    const signatures = signaturesRes.data.signatures;
+    if (!signatures || !signatures.length) {
+      toast.error("No signatures");
+      return;
+    }
+    const txSignatures = signatures.map((signature) => ({
+      publicKey: new PublicKey(signature.signerPublicKeyBase58),
+      signature: bs58.default.decode(signature.signatureBase58),
+    }));
+
     // TODO: confirm the transaction
     // https://www.quicknode.com/guides/solana-development/transactions/how-to-send-offline-tx
-    await safe(
-      sendTransaction(transaction, connection),
-    );
+    const tx = new VersionedTransaction(txMessage);
+    for (const txSignature of txSignatures) {
+      try {
+        tx.addSignature(txSignature.publicKey, txSignature.signature);
+      } catch (error) {
+        toast.error("Failed to add signature: " + error);
+      }
+    }
+    await safe(sendTransaction(tx, connection));
 
     toast.success("Transaction sent");
   };

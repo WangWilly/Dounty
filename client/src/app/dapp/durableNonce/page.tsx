@@ -51,7 +51,6 @@ export default function Page() {
       }
     }
 
-
     // Resolve
     // TODO: only owner can create a nonce account for the bounty
     const nonceAccountKp = Keypair.generate();

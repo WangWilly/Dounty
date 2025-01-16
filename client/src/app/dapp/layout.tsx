@@ -22,6 +22,7 @@ import {
   UnsafeBurnerWalletAdapter,
   PhantomWalletAdapter,
   SolflareWalletAdapter,
+  CoinbaseWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import {
   WalletModalProvider,
@@ -85,6 +86,7 @@ export default function DappLayout({
       new UnsafeBurnerWalletAdapter(),
       new PhantomWalletAdapter(),
       new SolflareWalletAdapter(),
+      new CoinbaseWalletAdapter(),
     ],
     [],
   );

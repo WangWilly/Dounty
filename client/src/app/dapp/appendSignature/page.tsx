@@ -3,12 +3,11 @@ import { useState } from "react";
 import Link from "next/link";
 
 import {
-  Keypair,
   SystemProgram,
   PublicKey,
   TransactionMessage,
-  VersionedTransaction,
   NonceAccount,
+  MessageV0,
 } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
@@ -20,8 +19,10 @@ import {
   getTx,
   createTx,
   getBountyNonceAccountPublicKey,
+  createSignature,
 } from "@/app/dapp/userClient/functions";
 
+import * as nacl from "tweetnacl";
 import * as bs58 from "bs58";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -37,8 +38,8 @@ export default function Page() {
 
   const [bountyPda, setbountyPda] = useState<PublicKey>();
 
-  const { publicKey, signTransaction } = useWallet();
-  if (!publicKey || !signTransaction) {
+  const { publicKey, signMessage } = useWallet();
+  if (!publicKey || !signMessage) {
     return (
       <NoWallet
         title="No wallet found"
@@ -69,40 +70,58 @@ export default function Page() {
       toast.error("Bounty not assigned");
       return;
     }
-    if (!bounty.commissioners.map((pubkey) => pubkey.toBase58()).includes(publicKey.toBase58())) {
-      toast.error("You are not a commissioner");
-      toast.error("Commissioners: " + bounty.commissioners.join(", "));
-      return;
-    }
-    // TODO: check re-sign
+    // TODO: check if the user is a commissioner
+    // if (
+    //   !bounty.commissioners
+    //     .map((pubkey) => pubkey.toBase58())
+    //     .includes(publicKey.toBase58())
+    // ) {
+    //   toast.error("You are not a commissioner");
+    //   toast.error("Commissioners: " + bounty.commissioners.join(", "));
+    //   return;
+    // }
 
     const existingTxRes = await safe(getTx(bountyPda.toBase58()));
     if (existingTxRes.success) {
       const existingTx = existingTxRes.data;
-      toast.info("Existing transaction found: " + existingTx.serializedTxBase64 + " " + existingTx.publicKey + " " + existingTx.serializedTx);
       if (!existingTx) {
         toast.error("No existing transaction");
         return;
       }
-      if (!existingTx.serializedTxBase64) {
-        toast.error("SerializedTxBase64 is empty");
+      if (!existingTx.serializedIxBase64) {
+        toast.error("SerializedIxBase64 is empty");
         return;
       }
 
       toast.info("Existing transaction found");
-      const transaction = VersionedTransaction.deserialize(
-        Buffer.from(existingTx.serializedTxBase64, "base64"),
+      // https://solanacookbook.com/references/offline-transactions.html#sign-transaction
+      const serializedIx = Buffer.from(existingTx.serializedIxBase64, "base64");
+      const txMessage = MessageV0.deserialize(serializedIx);
+      const signRes = await safe(signMessage(txMessage.serialize()));
+      if (!signRes.success) {
+        toast.error("Failed to sign message: " + signRes.error);
+        return;
+      }
+      const signature = signRes.data;
+      const signatureBase58 = bs58.default.encode(signature);
+      const createRes = await safe(
+        createSignature({
+          serializedIxBase64: existingTx.serializedIxBase64,
+          signerPublicKeyBase58: publicKey.toBase58(),
+          signatureBase58,
+        }),
       );
-      await signAndCreateTx(
-        bountyPda.toBase58(),
-        signTransaction,
-        transaction,
-      );
+      if (!createRes.success) {
+        toast.error("Failed to create signature: " + createRes.error);
+        return;
+      }
+      toast.success("Create signature success");
 
       return;
     }
 
     // There is no existing transaction, create a new one
+    // TODO: if bounty changes, the transaction should be re-created
     const nonceAccountRes = await safe(
       getBountyNonceAccountPublicKey(bountyPda.toBase58()),
     );
@@ -128,9 +147,6 @@ export default function Page() {
       return;
     }
     const nonceAccount = NonceAccount.fromAccountData(accountInfo.data);
-    const nonceAccountKp = Keypair.fromSecretKey(
-      bs58.default.decode(nonceAccountRes.data.secretKey),
-    );
     const nonceAdvIx = SystemProgram.nonceAdvance({
       noncePubkey: nonceAccountPubkey,
       authorizedPubkey: nonceAccount.authorizedPubkey,
@@ -147,10 +163,7 @@ export default function Page() {
       systemProgram: SystemProgram.programId,
     };
     const ixRes = await safe(
-      program.methods.issueV1()
-        .accounts(issueV1Acc)
-        .signers([nonceAccountKp])
-        .instruction(),
+      program.methods.issueV1().accounts(issueV1Acc).instruction(),
     );
     if (!ixRes.success) {
       toast.error("Failed to create instruction: " + ixRes.error);
@@ -158,14 +171,68 @@ export default function Page() {
     }
     const ix = ixRes.data;
 
-    const message = new TransactionMessage({
-      payerKey: publicKey,
+    const serializedMessage = new TransactionMessage({
+      payerKey: bounty.owner,
       recentBlockhash: nonceAccount.nonce,
       instructions: [nonceAdvIx, ix],
-    }).compileToV0Message();
-    const transaction = new VersionedTransaction(message);
-    transaction.sign([nonceAccountKp]);
-    await signAndCreateTx(bountyPda.toBase58(), signTransaction, transaction);
+    })
+      .compileToV0Message()
+      .serialize();
+    const serializedIxBase64 =
+      Buffer.from(serializedMessage).toString("base64");
+
+    const createRes = await safe(
+      createTx({
+        publicKey: bountyPda.toBase58(),
+        serializedTx: {},
+        serializedTxBase64: "",
+        serializedIxBase64,
+      }),
+    );
+    if (!createRes.success) {
+      toast.error("Failed to create transaction: " + createRes.error);
+      return;
+    }
+
+    const nonceSignatureBase58 = bs58.default.encode(
+      nacl.sign.detached(
+        serializedMessage,
+        bs58.default.decode(nonceAccountRes.data.secretKey),
+      ),
+    );
+    const createNonceSignatureRes = await safe(
+      createSignature({
+        serializedIxBase64,
+        signerPublicKeyBase58: publicKey.toBase58(),
+        signatureBase58: nonceSignatureBase58,
+      }),
+    );
+    if (!createNonceSignatureRes.success) {
+      toast.warn(
+        "Failed to create nonce signature: " + createNonceSignatureRes.error,
+      );
+    }
+
+    const sigRes = await safe(signMessage(serializedMessage));
+    if (!sigRes.success) {
+      toast.error("Failed to sign message: " + sigRes.error);
+      return;
+    }
+    const signature = sigRes.data;
+    const signatureBase58 = bs58.default.encode(signature);
+    const createSigRes = await safe(
+      createSignature({
+        serializedIxBase64,
+        signerPublicKeyBase58: publicKey.toBase58(),
+        signatureBase58,
+      }),
+    );
+    if (!createSigRes.success) {
+      toast.error("Failed to create signature: " + createSigRes.error);
+      return;
+    }
+
+    toast.success("Create transaction success");
   };
 
   return (
@@ -216,32 +283,3 @@ export default function Page() {
 
 // https://solana.stackexchange.com/questions/9701/signtransaction-removes-partialsigned-signatures-making-it-impossible-to-sign-a
 // https://solana.stackexchange.com/questions/5007/partial-sign-transaction-from-front-end
-async function signAndCreateTx(
-  bountyPdaBase58: string,
-  signTransaction: (
-    transaction: VersionedTransaction,
-  ) => Promise<VersionedTransaction>,
-  transaction: VersionedTransaction,
-) {
-  // signTransaction won't replace the previous signatures
-  const signedTxRes = await safe(signTransaction(transaction));
-  if (!signedTxRes.success) {
-    toast.error("Failed to sign transaction: " + signedTxRes.error);
-    return;
-  }
-  const signedTx = signedTxRes.data;
-  const createRes = await safe(
-    createTx({
-      publicKey: bountyPdaBase58,
-      serializedTx: {},
-      serializedTxBase64: Buffer.from(signedTx.serialize()).toString("base64"),
-    }),
-  );
-  if (!createRes.success) {
-    toast.error("Failed to create transaction: " + createRes.error);
-    return;
-  }
-
-  toast.success("Create transaction success");
-  return;
-}

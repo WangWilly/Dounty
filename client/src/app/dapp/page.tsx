@@ -199,6 +199,14 @@ export default function Page() {
           >
             Append Signature
           </Button>
+          <Button
+            as={Link}
+            href="/dapp/issue"
+            color="default"
+            className="text-black px-6 py-2 rounded-lg font-semibold"
+          >
+            Issue
+          </Button>
         </div>
       </div>
     </div>

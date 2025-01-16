@@ -6,6 +6,7 @@ export const OnChainTransactionV1CreateReqSchema = zod.object({
   publicKey: zod.string(),
   serializedTx: zod.any(),
   serializedTxBase64: zod.string(),
+  serializedIxBase64: zod.string(),
 });
 
 export type OnChainTransactionV1CreateReq = zod.infer<
@@ -24,6 +25,7 @@ export const OnChainTransactionV1GetRespSchema = zod.object({
   publicKey: zod.string(),
   serializedTx: zod.any(),
   serializedTxBase64: zod.string(),
+  serializedIxBase64: zod.string(),
 });
 
 export type OnChainTransactionV1GetResp = zod.infer<
@@ -55,3 +57,29 @@ export type NonceAccountV1CreateResp = zod.infer<
 export const NonceAccountV1GetRespSchema = NonceAccountV1CreateRespSchema;
 
 export type NonceAccountV1GetResp = NonceAccountV1CreateResp;
+
+////////////////////////////////////////////////////////////////////////////////
+
+export const SignatureV1CreateReqSchema = zod.object({
+  serializedIxBase64: zod.string(),
+  signerPublicKeyBase58: zod.string(),
+  signatureBase58: zod.string(),
+});
+
+export type SignatureV1CreateReq = zod.infer<typeof SignatureV1CreateReqSchema>;
+
+export const SignatureV1CreateRespSchema = SignatureV1CreateReqSchema;
+
+export type SignatureV1CreateResp = SignatureV1CreateReq;
+
+export const SignatureV1ListReqSchema = zod.object({
+  ixBase64: zod.string(),
+});
+
+export type SignatureV1ListReq = zod.infer<typeof SignatureV1ListReqSchema>;
+
+export const SignatureV1ListRespSchema = zod.object({
+  signatures: zod.array(SignatureV1CreateRespSchema),
+});
+
+export type SignatureV1ListResp = zod.infer<typeof SignatureV1ListRespSchema>;

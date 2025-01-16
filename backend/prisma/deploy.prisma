@@ -24,10 +24,17 @@ model OnChainTransaction {
   publicKey          String @id
   serializedTx       Json
   serializedTxBase64 String
+  serializedIxBase64 String
 }
 
 model NonceAccount {
   publicKey   String @id
   txPublicKey String
   secretKey   String
+}
+
+model Signature {
+  serializedIxBase64    String
+  signerPublicKeyBase58 String
+  signatureBase58       String @id
 }

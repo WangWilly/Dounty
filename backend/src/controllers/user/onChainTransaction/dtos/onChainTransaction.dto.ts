@@ -11,6 +11,9 @@ export class OnChainTransactionV1CreateReq {
 
   @IsString()
   serializedTxBase64!: string;
+
+  @IsString()
+  serializedIxBase64!: string;
 }
 
 export class OnChainTransactionV1BatchCreateReq {
@@ -27,4 +30,7 @@ export class OnChainTransactionV1GetResp {
 
   @IsString()
   serializedTxBase64!: string;
+
+  @IsString()
+  serializedIxBase64!: string;
 }
