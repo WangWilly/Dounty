@@ -16,6 +16,7 @@ export default function Home() {
         alt="Dounty Logo"
         width={320}
         height={320}
+        priority={false}
       />
       <Button color="default" as={Link} href="/dapp" className="w-full h-full">
         Go to Dapp

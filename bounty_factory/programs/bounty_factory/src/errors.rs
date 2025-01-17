@@ -32,4 +32,9 @@ pub enum ErrorCode {
     IllegalClose,
     #[msg("Illegal assignee")]
     IllegalAssignee,
+
+    #[msg("Commissioners cannot change when assignee is set")]
+    AssigneeRestriction,
+    #[msg("Need quorum to change assignee")]
+    ChangeAssigneeQuorum,
 }

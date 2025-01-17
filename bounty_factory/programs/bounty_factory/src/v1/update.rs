@@ -36,6 +36,10 @@ pub fn update_v1_impl(
         bounty.title = title;
     }
     if let Some(commissioners) = commissioners {
+        if bounty.assignee.is_some() {
+            return Err(ErrorCode::AssigneeRestriction.into());
+        }
+
         let unique_commissioners: HashSet<Pubkey> = commissioners.iter().cloned().collect();
         if unique_commissioners.len() != commissioners.len() {
             return Err(ErrorCode::DuplicateCommissioners.into());
@@ -49,6 +53,10 @@ pub fn update_v1_impl(
         bounty.commissioners = commissioners;
     }
     if let Some(assignee) = assignee {
+        if bounty.assignee.is_some() {
+            return Err(ErrorCode::ChangeAssigneeQuorum.into());
+        }
+
         if bounty.commissioners.len() == 0 {
             return Err(ErrorCode::NoCommissioners.into());
         }

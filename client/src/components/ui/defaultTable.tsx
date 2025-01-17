@@ -39,7 +39,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="overflow-x-auto p-4 max-h-dvh overflow-y-scroll">
-      <Table>
+      <Table aria-label="Default Data Table">
         <TableHeader>
           {table.getFlatHeaders().map((header) => (
             <TableColumn key={header.id}>

@@ -33,6 +33,13 @@ pub mod bounty_factory {
         update_v1_impl(ctx, title, commissioners, assignee)
     }
 
+    pub fn update_assignee_v1(
+        ctx: Context<UpdateAssigneeV1Acc>,
+        assignee: Option<Pubkey>,
+    ) -> Result<()> {
+        update_assignee_v1_impl(ctx, assignee)
+    }
+
     pub fn issue_v1(ctx: Context<IssueV1Acc>) -> Result<()> {
         issue_v1_impl(ctx)
     }
