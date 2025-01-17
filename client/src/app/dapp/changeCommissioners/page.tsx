@@ -36,6 +36,8 @@ export default function Page() {
       .map((str) => new PublicKey(str));
   }, [commissionerStrs]);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { publicKey, signTransaction, sendTransaction } = useWallet();
   if (!publicKey || !signTransaction) {
     return (
@@ -47,6 +49,7 @@ export default function Page() {
   }
 
   const onClickSubmit = async () => {
+    setIsLoading(true);
     // Resolve
     if (!bountyPda) {
       toast.error("Bounty address is required");
@@ -102,12 +105,6 @@ export default function Page() {
       toast.error("Failed to sign transaction: " + signedTxRes.error);
       return;
     }
-    // const sendRes = await safe(sendTransaction(signedTxRes.data, connection));
-    // if (!sendRes.success) {
-    //   toast.error("Failed to send transaction: " + sendRes.error);
-    //   return;
-    // }
-    // const signature = sendRes.data;
     const signature = await sendTransaction(transaction, connection);
 
     const comfirmRes = await safe(
@@ -122,6 +119,7 @@ export default function Page() {
     }
 
     toast.success("Change commissioners succeeded");
+    setIsLoading(false);
   };
 
   return (
@@ -167,6 +165,7 @@ export default function Page() {
               onClick={() =>
                 setCommissionerStrs([...(commissionerStrs || []), ""])
               }
+              disabled={isLoading}
             >
               Add Commissioner
             </button>
@@ -175,7 +174,9 @@ export default function Page() {
               onClick={() =>
                 setCommissionerStrs(commissionerStrs?.slice(0, -1))
               }
-              disabled={!commissionerStrs || commissionerStrs.length === 0}
+              disabled={
+                !commissionerStrs || commissionerStrs.length === 0 || isLoading
+              }
             >
               Remove Commissioner
             </button>
@@ -183,9 +184,9 @@ export default function Page() {
           <button
             className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold"
             onClick={onClickSubmit}
-            disabled={!bountyPda}
+            disabled={!bountyPda || isLoading}
           >
-            Change
+            {isLoading ? "Changing..." : "Change"}
           </button>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mt-6">

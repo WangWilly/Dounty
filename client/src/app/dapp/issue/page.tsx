@@ -26,6 +26,8 @@ export default function Page() {
 
   const [bountyPda, setbountyPda] = useState<PublicKey>();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { publicKey, sendTransaction } = useWallet();
   if (!publicKey) {
     return (
@@ -36,7 +38,7 @@ export default function Page() {
     );
   }
 
-  const onClickAppend = async () => {
+  const onClickIssue = async () => {
     // Resolve
     if (!bountyPda) {
       toast.error("Bounty address is required");
@@ -113,6 +115,12 @@ export default function Page() {
     toast.success("Transaction sent");
   };
 
+  const onClickIssueWrapped = async () => {
+    setIsLoading(true);
+    await onClickIssue();
+    setIsLoading(false);
+  };
+
   return (
     <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen">
       <ToastContainer />
@@ -136,10 +144,10 @@ export default function Page() {
           />
           <button
             className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold"
-            onClick={onClickAppend}
-            disabled={!bountyPda}
+            onClick={onClickIssueWrapped}
+            disabled={!bountyPda || isLoading}
           >
-            Create
+            {isLoading ? "Appending..." : "Append"}
           </button>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mt-6">

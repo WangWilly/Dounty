@@ -18,6 +18,13 @@ import * as userClient from "@/app/dapp/userClient/functions";
 import * as bs58 from "bs58";
 
 import { ToastContainer, toast } from "react-toastify";
+import { useAnchorProvider } from "@/components/solana_provider";
+import {
+  BountyFactory,
+  getBountyFactoryProgram,
+} from "@/components/anchor/bounty_factory";
+import { BountyV1, bountyV1Schema } from "@/components/anchor/dtos/bountyV1";
+import { Program } from "@coral-xyz/anchor";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -25,7 +32,12 @@ export default function Page() {
   // Arrange
   const { connection } = useConnection();
 
+  const provider = useAnchorProvider();
+  const program = getBountyFactoryProgram(provider);
+
   const [bountyPda, setbountyPda] = useState<PublicKey>();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const { publicKey, signTransaction, sendTransaction } = useWallet();
   if (!publicKey || !signTransaction) {
@@ -51,8 +63,17 @@ export default function Page() {
       }
     }
 
+    const bounty = await getBounty(program, bountyPda);
+    if (!bounty) {
+      toast.error("Failed to get the bounty");
+      return;
+    }
+    if (bounty.owner !== publicKey.toBase58()) {
+      toast.error("Only the owner can create a nonce account");
+      return;
+    }
+
     // Resolve
-    // TODO: only owner can create a nonce account for the bounty
     const nonceAccountKp = Keypair.generate();
     const createAccountIx = SystemProgram.createAccount({
       fromPubkey: publicKey,
@@ -104,6 +125,12 @@ export default function Page() {
     toast.success("Nonce account created");
   };
 
+  const onClickCreateWraped = async () => {
+    setIsLoading(true);
+    await onClickCreate();
+    setIsLoading(false);
+  };
+
   return (
     <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen">
       <ToastContainer />
@@ -127,10 +154,10 @@ export default function Page() {
           />
           <button
             className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold"
-            onClick={onClickCreate}
-            disabled={!bountyPda}
+            onClick={onClickCreateWraped}
+            disabled={!bountyPda || isLoading}
           >
-            Create
+            {isLoading ? "Creating..." : "Create"}
           </button>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mt-6">
@@ -145,4 +172,28 @@ export default function Page() {
       </div>
     </div>
   );
+}
+
+async function getBounty(
+  program: Program<BountyFactory>,
+  bountyPda: PublicKey,
+): Promise<BountyV1 | null> {
+  const bountyRes = await safe(
+    program.account.bountyV1.fetch(bountyPda.toBase58()),
+  );
+  if (!bountyRes.success) {
+    toast.error("Bounty not found: " + bountyRes.error);
+    return null;
+  }
+  const bounty = bountyRes.data;
+  if (!bounty) {
+    toast.error("Bounty not found");
+    return null;
+  }
+  if (bounty.assignee === null) {
+    toast.error("Bounty not assigned");
+    return null;
+  }
+
+  return bountyV1Schema.parse({ address: bountyPda, ...bounty });
 }

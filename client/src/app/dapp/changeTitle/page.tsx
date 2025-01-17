@@ -28,6 +28,8 @@ export default function Page() {
   const [bountyPda, setbountyPda] = useState<PublicKey>();
   const [title, setTitle] = useState<string>();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { publicKey, signTransaction, sendTransaction } = useWallet();
   if (!publicKey || !signTransaction) {
     return (
@@ -39,6 +41,7 @@ export default function Page() {
   }
 
   const onClickSubmit = async () => {
+    setIsLoading(true);
     // Resolve
     if (!bountyPda) {
       toast.error("Bounty address is required");
@@ -94,12 +97,6 @@ export default function Page() {
       toast.error("Failed to sign transaction: " + signedTxRes.error);
       return;
     }
-    // const sendRes = await safe(sendTransaction(signedTxRes.data, connection));
-    // if (!sendRes.success) {
-    //   toast.error("Failed to send transaction: " + sendRes.error);
-    //   return;
-    // }
-    // const signature = sendRes.data;
     const signature = await sendTransaction(transaction, connection);
 
     const comfirmRes = await safe(
@@ -114,6 +111,8 @@ export default function Page() {
     }
 
     toast.success("Change title succeeded");
+
+    setIsLoading(false);
   };
 
   return (
@@ -146,9 +145,9 @@ export default function Page() {
           <button
             className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold"
             onClick={onClickSubmit}
-            disabled={!bountyPda || !title}
+            disabled={!bountyPda || !title || isLoading}
           >
-            Change
+            {isLoading ? "Changing..." : "Change"}
           </button>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mt-6">

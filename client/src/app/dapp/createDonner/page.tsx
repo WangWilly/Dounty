@@ -34,6 +34,8 @@ export default function CreateDonneerPage() {
   const [bountyPda, setbountyPda] = useState<PublicKey>();
   const [donation, setDonation] = useState(0);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { publicKey, signTransaction, sendTransaction } = useWallet();
   if (!publicKey || !signTransaction) {
     return (
@@ -103,6 +105,13 @@ export default function CreateDonneerPage() {
     }
   };
 
+  const onClickCreateWraped = async () => {
+    setIsLoading(true);
+    // Resolve
+    await onClickCreate();
+    setIsLoading(false);
+  };
+
   return (
     <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen">
       <ToastContainer />
@@ -131,10 +140,10 @@ export default function CreateDonneerPage() {
           />
           <button
             className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold"
-            onClick={onClickCreate}
-            disabled={!bountyPda?.toString() || !donation}
+            onClick={onClickCreateWraped}
+            disabled={!bountyPda?.toString() || !donation || isLoading}
           >
-            Donate
+            {isLoading ? "Donating..." : "Donate"}
           </button>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mt-6">

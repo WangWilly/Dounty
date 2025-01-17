@@ -13,7 +13,9 @@ export const bountyV1Schema = zod.object({
   timestamp: zod
     .instanceof(anchor.BN)
     .transform((val) => new Date(val.toNumber() * 1000)),
-  donation: zod.instanceof(anchor.BN).transform((val) => val.toNumber()),
+  donation: zod
+    .instanceof(anchor.BN)
+    .transform((val): number => val.toNumber()),
   assignee: zod
     .instanceof(PublicKey)
     .transform((val) => val.toBase58())

@@ -35,6 +35,8 @@ export default function CreatePage() {
   const [bountyTitle, setBountyTitle] = useState("");
   const [bountyUrl, setBountyUrl] = useState("");
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { publicKey, signTransaction, sendTransaction } = useWallet();
   if (!publicKey || !signTransaction) {
     return (
@@ -58,6 +60,7 @@ export default function CreatePage() {
   };
 
   const onClickCreate = async () => {
+    setIsLoading(true);
     // Resolve
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [bountyPda, _bountyPdaBump] = PublicKey.findProgramAddressSync(
@@ -100,6 +103,8 @@ export default function CreatePage() {
       console.error(error);
       toast.error("Create bounty failed: " + error);
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -128,9 +133,9 @@ export default function CreatePage() {
           <button
             className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold"
             onClick={onClickCreate}
-            disabled={!bountyTitle || !bountyUrl}
+            disabled={!bountyTitle || !bountyUrl || isLoading}
           >
-            Create
+            {isLoading ? "Creating..." : "Create"}
           </button>
         </div>
         <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mt-6">
