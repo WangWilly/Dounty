@@ -25,7 +25,7 @@ import {
   createTx,
   getBountyNonceAccountPublicKey,
   createSignature,
-} from "@/app/dapp/userClient/functions";
+} from "@/clients/userClient/functions";
 
 import * as bs58 from "bs58";
 

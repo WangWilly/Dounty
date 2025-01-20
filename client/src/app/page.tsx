@@ -21,6 +21,12 @@ export default function Home() {
       <Button color="default" as={Link} href="/dapp" className="w-full h-full">
         Go to Dapp
       </Button>
+      <Button color="default" as={Link} href="/login" className="w-full h-full">
+        Go to Login
+      </Button>
+      <Button color="default" as={Link} href="/signup" className="w-full h-full">
+        Go to Signup
+      </Button>
     </NextUIProvider>
   );
 }

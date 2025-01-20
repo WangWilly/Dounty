@@ -13,7 +13,7 @@ import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
 import { safe } from "@/utils/exception";
 import NoWallet from "@/components/dapp/noWallet";
-import * as userClient from "@/app/dapp/userClient/functions";
+import * as userClient from "@/clients/userClient/functions";
 
 import * as bs58 from "bs58";
 

@@ -57,7 +57,7 @@ export class SignatureService {
     const signatures = await this.signatureRepoService.listByTxBase64(txBase64);
 
     return SignatureV1ListResp.fromModel(signatures);
-  }  
+  }
 
   async listSignaturesByIxBase64(
     ixBase64: string,

@@ -39,3 +39,9 @@ model Signature {
   signerPublicKeyBase58 String
   signatureBase58       String @id
 }
+
+model Account {
+  id       BigInt @id @default(autoincrement())
+  email    String @unique
+  password String
+}

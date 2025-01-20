@@ -90,3 +90,36 @@ export const SignatureV1ListRespSchema = zod.object({
 });
 
 export type SignatureV1ListResp = zod.infer<typeof SignatureV1ListRespSchema>;
+
+////////////////////////////////////////////////////////////////////////////////
+
+export const AccountV1CreateReqSchema = zod.object({
+  email: zod.string(),
+  password: zod.string(),
+});
+
+export type AccountV1CreateReq = zod.infer<typeof AccountV1CreateReqSchema>;
+
+export const AccountV1CreateRespSchema = zod.object({
+  status: zod.boolean(),
+  message: zod.string(),
+});
+
+export type AccountV1CreateResp = zod.infer<typeof AccountV1CreateRespSchema>;
+
+////////////////////////////////////////////////////////////////////////////////
+
+export const SessionV1CreateReqSchema = zod.object({
+  email: zod.string(),
+  password: zod.string(),
+});
+
+export type SessionV1CreateReq = zod.infer<typeof SessionV1CreateReqSchema>;
+
+export const SessionV1CreateRespSchema = zod.object({
+  token: zod.string(),
+});
+
+export type SessionV1CreateResp = zod.infer<typeof SessionV1CreateRespSchema>;
+
+////////////////////////////////////////////////////////////////////////////////

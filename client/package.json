@@ -22,7 +22,9 @@
     "@solana/web3.js": "^1.98.0",
     "@tanstack/react-table": "^8.20.6",
     "axios": "^1.7.9",
+    "bcryptjs": "^2.4.3",
     "bs58": "^6.0.0",
+    "cookie": "^1.0.2",
     "next": "15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -32,6 +34,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/bcryptjs": "^2.4.6",
     "@types/bs58": "^4.0.4",
     "@types/node": "^20",
     "@types/react": "^19",

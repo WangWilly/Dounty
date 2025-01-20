@@ -61,3 +61,19 @@ export const listSignaturesByIx = async (
   const res = await fetcher.post(`/api/signature/v1/listByIxBase64`, req);
   return dtos.SignatureV1ListRespSchema.parse(res.data);
 };
+
+////////////////////////////////////////////////////////////////////////////////
+
+export const createAccount = async (
+  req: dtos.AccountV1CreateReq,
+): Promise<dtos.AccountV1CreateResp> => {
+  const res = await fetcher.post(`/api/account/v1`, req);
+  return dtos.AccountV1CreateRespSchema.parse(res.data);
+};
+
+export const createSession = async (
+  req: dtos.SessionV1CreateReq,
+): Promise<dtos.SessionV1CreateResp> => {
+  const res = await fetcher.post(`/api/session/v1`, req);
+  return dtos.SessionV1CreateRespSchema.parse(res.data);
+};

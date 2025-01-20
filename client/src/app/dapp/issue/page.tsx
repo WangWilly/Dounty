@@ -9,7 +9,7 @@ import { safe } from "@/utils/exception";
 import NoWallet from "@/components/dapp/noWallet";
 import { useAnchorProvider } from "@/components/solana_provider";
 import { getBountyFactoryProgram } from "@/components/anchor/bounty_factory";
-import { getTx, listSignaturesByTx } from "@/app/dapp/userClient/functions";
+import { getTx, listSignaturesByTx } from "@/clients/userClient/functions";
 
 import { ToastContainer, toast } from "react-toastify";
 
