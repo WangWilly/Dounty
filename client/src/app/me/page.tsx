@@ -31,9 +31,11 @@ export default function MePage() {
   const onClickLogout = async () => {
     logout();
     router.push("/me/signin");
-  }
+  };
 
-  const button = myEmail ? <Button onPress={onClickLogout}>Logout</Button> : null;
+  const button = myEmail ? (
+    <Button onPress={onClickLogout}>Logout</Button>
+  ) : null;
 
   return (
     <div>

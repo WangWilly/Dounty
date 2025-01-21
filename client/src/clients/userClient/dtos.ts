@@ -47,7 +47,7 @@ export type NonceAccountV1CreateReq = zod.infer<
 export const NonceAccountV1CreateRespSchema = zod.object({
   publicKey: zod.string(),
   txPublickey: zod.string(),
-  secretKey: zod.string(),
+  // secretKey: zod.string(),
 });
 
 export type NonceAccountV1CreateResp = zod.infer<

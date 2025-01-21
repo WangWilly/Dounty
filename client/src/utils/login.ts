@@ -1,6 +1,6 @@
-import bcrypt from 'bcryptjs';
-import { setClientSideCookie } from './cookies';
-import { COOKIE_SESSION_NAME } from './const';
+import bcrypt from "bcryptjs";
+import { setClientSideCookie } from "./cookies";
+import { COOKIE_SESSION_NAME } from "./const";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -11,5 +11,5 @@ export const hashPassword = async (password: string) => {
 ////////////////////////////////////////////////////////////////////////////////
 
 export const logout = () => {
-  setClientSideCookie(COOKIE_SESSION_NAME, '', 0);
-}
+  setClientSideCookie(COOKIE_SESSION_NAME, "", 0);
+};

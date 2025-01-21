@@ -22,8 +22,8 @@ export class NonceAccountV1CreateResp {
   @IsString()
   txPublickey!: string;
 
-  @IsString()
-  secretKey!: string;
+  // @IsString()
+  // secretKey!: string;
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -31,7 +31,7 @@ export class NonceAccountV1CreateResp {
     return {
       publicKey: model.publicKey,
       txPublickey: model.txPublicKey,
-      secretKey: model.secretKey,
+      // secretKey: model.secretKey,
     };
   }
 }

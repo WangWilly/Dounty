@@ -2,7 +2,8 @@ import type { NextConfig } from "next";
 
 ////////////////////////////////////////////////////////////////////////////////
 
-export const basePath = process.env.IN_GITHUB_WORKER === "true" ? "/Dounty" : ""
+export const basePath =
+  process.env.IN_GITHUB_WORKER === "true" ? "/Dounty" : "";
 
 const nextConfig: NextConfig = {
   /**
