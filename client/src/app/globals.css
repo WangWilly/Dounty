@@ -19,15 +19,3 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
-
-button.wallet-adapter-button.wallet-adapter-button-trigger {
-  @apply bg-default rounded-md px-4 py-2 text-white hover:bg-gray-300 text-lg font-semibold w-full;
-}
-
-ul.wallet-adapter-dropdown-list {
-  @apply bg-white font-semibold;
-}
-
-ul.wallet-adapter-dropdown-list li.wallet-adapter-dropdown-list-item {
-  @apply py-2 px-4 text-black hover:bg-gray-300;
-}

@@ -4,6 +4,7 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -17,6 +18,7 @@ import {
 } from "@nextui-org/table";
 
 ////////////////////////////////////////////////////////////////////////////////
+// https://tanstack.com/table/v8/docs/framework/react/examples/sorting
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -31,6 +33,7 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
   if (!data.length) {
@@ -42,13 +45,21 @@ export function DataTable<TData, TValue>({
       <Table aria-label="Default Data Table">
         <TableHeader>
           {table.getFlatHeaders().map((header) => (
-            <TableColumn key={header.id}>
+            <TableColumn
+              key={header.id}
+              allowsSorting={header.column.getCanSort()}
+              onClick={header.column.getToggleSortingHandler()}
+            >
               {header.isPlaceholder
                 ? null
                 : flexRender(
                     header.column.columnDef.header,
                     header.getContext(),
                   )}
+              {{
+                asc: ' ▲',
+                desc: ' ▼',
+              }[header.column.getIsSorted() as string] ?? null}
             </TableColumn>
           ))}
         </TableHeader>

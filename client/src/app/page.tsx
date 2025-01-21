@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { NextUIProvider, Button } from "@nextui-org/react";
 import { appConfig } from "@/utils/appConfig";
+import { useState } from "react";
 
 ////////////////////////////////////////////////////////////////////////////////
 // https://readymadeui.com/tailwind/landing-page/responsive-home-page-template
@@ -12,6 +13,16 @@ import { appConfig } from "@/utils/appConfig";
 // https://stackoverflow.com/questions/76122243/the-image-path-is-weird-and-i-cannot-see-any-image-after-deploying-my-next-js-ap
 
 export default function Home() {
+  const [collapseMenuDisplay, setCollapseMenuDisplay] = useState("none");
+
+  const onPressToggle = () => {
+    if (collapseMenuDisplay === "block") {
+      setCollapseMenuDisplay("none");
+    } else {
+      setCollapseMenuDisplay("block");
+    }
+  };
+
   return (
     <NextUIProvider className="max-w-[1920px] mx-auto text-black text-sm">
       <header className="py-4 px-4 sm:px-10 bg-white z-50 relative">
@@ -29,11 +40,13 @@ export default function Home() {
 
           <div
             id="collapseMenu"
-            className="max-lg:hidden lg:!block max-lg:fixed max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-40 max-lg:before:inset-0"
+            className="max-lg:hidden lg:!block max-lg:fixed max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-40 max-lg:before:inset-0 z-50"
+            style={{ display: collapseMenuDisplay }}
           >
             <button
               id="toggleClose"
               className="lg:hidden fixed top-2 right-4 z-[100] rounded-full bg-white p-3"
+              onClick={onPressToggle}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +81,7 @@ export default function Home() {
               </li>
               <li className="max-lg:border-b max-lg:py-2 px-3">
                 <Link
-                  href="javascript:void(0)"
+                  href="/"
                   className="hover:text-red-600 text-red-600 block font-semibold transition-all"
                 >
                   Home
@@ -111,7 +124,11 @@ export default function Home() {
                 />
               </svg>
             </Button>
-            <button id="toggleOpen" className="lg:hidden ml-7">
+            <button
+              id="toggleOpen"
+              className="lg:hidden ml-7"
+              onClick={onPressToggle}
+            >
               <svg
                 className="w-7 h-7"
                 fill="#000"
