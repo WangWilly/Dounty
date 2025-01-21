@@ -4,13 +4,11 @@ import { plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 
 import { GlobalAppConfigService } from '../../../globals/appConfig/appConfig.service';
-import { AccountRepoService } from '../../../repos/account.service';
 
-import {
-  SessionV1CreateReq,
-  SessionV1CreateResp,
-} from './dtos/session.dto';
-import { safe } from '../../../utils/exception';
+import { SessionV1CreateResp } from './dtos/session.dto';
+import { JwtService } from '@nestjs/jwt';
+import { Account } from '@prisma/client';
+import { JwtPayload } from '../../../commons/auth/dto';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -23,7 +21,7 @@ class ConfigSchema {}
 export class SessionService {
   constructor(
     private readonly globalAppConfigService: GlobalAppConfigService,
-    private readonly accountRepoService: AccountRepoService,
+    private readonly jwtService: JwtService,
   ) {
     // setup config
     const cfg = plainToInstance(
@@ -38,32 +36,16 @@ export class SessionService {
 
   //////////////////////////////////////////////////////////////////////////////
 
-  // async createAccount(
-  //   req: SessionV1CreateReq,
-  // ): Promise<SessionV1CreateResp> {
-  //   const getRes = await safe(this.accountRepoService.getByEmail(req.email));
-  //   if (!getRes.success) {
-  //     return {
-  //       status: false,
-  //       message: getRes.error,
-  //       token: '',
-  //     }
-  //   }
+  async createJwt(
+    user: Account,
+  ): Promise<SessionV1CreateResp> {
+    const payload: JwtPayload = { email: user.email, sub: user.id.toString() };
+    const accessToken = this.jwtService.sign(payload);
 
-  //   if (!getRes.data) {
-  //     return {
-  //       status: false,
-  //       message: 'User not found',
-  //       token: '',
-  //     }
-  //   }
-
-  //   if (getRes.data.password !== req.password) {
-  //     return {
-  //       status: false,
-  //       message: 'Password incorrect',
-  //       token: '',
-  //     }
-  //   }
-  // }
+    return {
+      status: true,
+      message: 'success',
+      token: accessToken,
+    }
+  }
 }

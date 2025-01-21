@@ -16,6 +16,7 @@ const envSchema = zod
           throw new Error(`Unexpected NODE_ENV: ${val}`);
       }
     }),
+    ASSET_BASE_PATH: zod.string(),
   })
   .required({
     NODE_ENV: true,
@@ -24,4 +25,5 @@ const envSchema = zod
 export const appConfig = envSchema.parse({
   NODE_ENV: process.env.NODE_ENV,
   IS_DEV: process.env.NODE_ENV,
+  ASSET_BASE_PATH: process.env.NEXT_PUBLIC_ASSET_BASE_PATH,
 });

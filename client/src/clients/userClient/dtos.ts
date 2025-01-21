@@ -109,6 +109,14 @@ export type AccountV1CreateResp = zod.infer<typeof AccountV1CreateRespSchema>;
 
 ////////////////////////////////////////////////////////////////////////////////
 
+export const AccountV1GetRespSchema = zod.object({
+  email: zod.string(),
+});
+
+export type AccountV1GetResp = zod.infer<typeof AccountV1GetRespSchema>;
+
+////////////////////////////////////////////////////////////////////////////////
+
 export const SessionV1CreateReqSchema = zod.object({
   email: zod.string(),
   password: zod.string(),

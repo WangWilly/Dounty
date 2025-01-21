@@ -33,7 +33,7 @@ function SignUpPage() {
       return;
     }
 
-    router.push("/login");
+    router.push("/me/signin");
   };
 
   return (
@@ -98,7 +98,7 @@ function SignUpPage() {
               Create an account
             </Button>
           </div>
-          <p className="text-gray-600 text-sm mt-6 text-center">Already have an account? <Link href="/login" className="text-blue-600 font-semibold hover:underline ml-1">Login here</Link></p>
+          <p className="text-gray-600 text-sm mt-6 text-center">Already have an account? <Link href="/me/signin" className="text-blue-600 font-semibold hover:underline ml-1">Login here</Link></p>
         </form>
       </div>
     </div>

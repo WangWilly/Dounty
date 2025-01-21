@@ -4,9 +4,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { NextUIProvider, Button } from "@nextui-org/react";
+import { appConfig } from "@/utils/appConfig";
 
 ////////////////////////////////////////////////////////////////////////////////
 // https://readymadeui.com/tailwind/landing-page/responsive-home-page-template
+// https://stackoverflow.com/questions/64921521/how-to-change-base-path-for-assets-images-etc
+// https://stackoverflow.com/questions/76122243/the-image-path-is-weird-and-i-cannot-see-any-image-after-deploying-my-next-js-ap
 
 export default function Home() {
   return (
@@ -16,7 +19,7 @@ export default function Home() {
           <a href="javascript:void(0)">
             <Image
               className="w-10"
-              src="./icon/apple-touch-icon.png"
+              src={ appConfig.ASSET_BASE_PATH + "/icon/apple-touch-icon.png" }
               alt="Dounty Logo"
               width={0}
               height={0}
@@ -43,7 +46,7 @@ export default function Home() {
               <a href="javascript:void(0)">
                   <Image
                     className="w-10"
-                    src="./icon/apple-touch-icon.png"
+                    src={ appConfig.ASSET_BASE_PATH + "/icon/apple-touch-icon.png" }
                     alt="Dounty Logo"
                     width={0}
                     height={0}
@@ -68,7 +71,7 @@ export default function Home() {
             <Button
               className='bg-red-100 hover:bg-red-200 flex items-center transition-all font-semibold rounded-md px-5 py-3'
               as={Link}
-              href="/login"
+              href="/me/signin"
             >
               Get started
               <svg xmlns="http://www.w3.org/2000/svg" className="w-[14px] fill-current ml-2" viewBox="0 0 492.004 492.004">
@@ -79,9 +82,9 @@ export default function Home() {
             </Button>
             <button id="toggleOpen" className='lg:hidden ml-7'>
               <svg className="w-7 h-7" fill="#000" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
+                <path fillRule="evenodd"
                   d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clip-rule="evenodd"></path>
+                  clipRule="evenodd"></path>
               </svg>
             </button>
           </div>
@@ -100,7 +103,7 @@ export default function Home() {
                 <Button
                   className='bg-black hover:bg-[#222] text-white flex items-center transition-all font-semibold rounded-md px-5 py-4'
                   as={Link}
-                  href="/login"
+                  href="/me/signin"
                 >
                   Get started
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-[14px] fill-current ml-2"

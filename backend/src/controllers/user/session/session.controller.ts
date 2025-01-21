@@ -1,10 +1,16 @@
-import { Controller, Post, Body, Logger, UseGuards, Request, NotFoundException } from '@nestjs/common';
-
 import {
-  SessionV1CreateReq,
-  SessionV1CreateResp,
-} from './dtos/session.dto';
+  Controller,
+  Post,
+  Logger,
+  UseGuards,
+  Request,
+  NotFoundException,
+} from '@nestjs/common';
+
+import { SessionV1CreateResp } from './dtos/session.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Account } from '@prisma/client';
+import { SessionService } from './session.service';
 
 ////////////////////////////////////////////////////////////////////////////////
 // TODO: use pipe
@@ -13,24 +19,27 @@ import { AuthGuard } from '@nestjs/passport';
 export class SessionController {
   private readonly logger = new Logger('SessionController');
 
-  constructor() {}
+  constructor(private readonly sessionService: SessionService) {}
 
   //////////////////////////////////////////////////////////////////////////////
 
   @UseGuards(AuthGuard('local'))
   @Post('/v1')
-  async createNonceAccount(
+  async createSession(
     @Request() reqCtx: any,
-    @Body() req: SessionV1CreateReq,
+    // TODO: @Body() req: SessionV1CreateReq,
   ): Promise<SessionV1CreateResp> {
     this.logger.log('createSession');
 
-    if (!reqCtx.user) {
+    const validateUser = reqCtx.user as Account;
+    if (!validateUser) {
       this.logger.error('User not found');
 
       throw new NotFoundException('User not found');
     }
 
-    return reqCtx.user;
+    const resp = this.sessionService.createJwt(validateUser);
+    console.log('resp', resp);
+    return resp;
   }
 }

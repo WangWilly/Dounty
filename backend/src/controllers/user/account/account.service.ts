@@ -6,10 +6,7 @@ import { validateSync } from 'class-validator';
 import { GlobalAppConfigService } from '../../../globals/appConfig/appConfig.service';
 import { AccountRepoService } from '../../../repos/account.service';
 
-import {
-  AccountV1CreateReq,
-  AccountV1CreateResp,
-} from './dtos/account.dto';
+import { AccountV1CreateReq, AccountV1CreateResp } from './dtos/account.dto';
 import { safe } from '../../../utils/exception';
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,17 +38,21 @@ export class AccountService {
   async createNonceAccount(
     req: AccountV1CreateReq,
   ): Promise<AccountV1CreateResp> {
-    const createRes = await safe(this.accountRepoService.create({...req}));
+    const createRes = await safe(this.accountRepoService.create({ ...req }));
     if (!createRes.success) {
       return {
         status: false,
         message: createRes.error,
-      }
+      };
     }
 
     return {
       status: true,
       message: '',
     };
+  }
+
+  async getById(id: string) {
+    return await this.accountRepoService.getById(id);
   }
 }

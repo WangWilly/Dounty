@@ -18,4 +18,7 @@ export class AccountV1CreateResp {
   message!: string;
 }
 
-export class AccountV1GetResp extends AccountV1CreateResp {}
+export class AccountV1GetResp {
+  @IsEmail()
+  email!: string;
+}

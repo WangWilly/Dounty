@@ -1,6 +1,14 @@
+"use client";
+
 import { serialize } from "cookie";
 
+////////////////////////////////////////////////////////////////////////////////
+
 export const getClientSideCookie = (name: string): string | undefined => {
+  if (typeof document === "undefined") {
+    return undefined;
+  }
+
   const cookieValue = document.cookie
     .split("; ")
     .find((row) => row.startsWith(`${name}=`))
@@ -18,6 +26,10 @@ export const setClientSideCookie = (
   maxAge: number,
   path: string = "/",
 ) => {
+  if (typeof document === "undefined") {
+    return undefined;
+  }
+
   document.cookie = serialize(name, value, {
     maxAge,
     path,

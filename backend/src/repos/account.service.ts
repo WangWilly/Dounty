@@ -17,13 +17,25 @@ export class AccountRepoService {
     return account;
   }
 
+  async getById(id: string): Promise<Account> {
+    const accountRes = await this.prisma.account.findUnique({
+      where: {
+        id: BigInt(id),
+      },
+    });
+
+    if (!accountRes) {
+      throw new Error('Account not found');
+    }
+    return accountRes;
+  }
+
   async getByEmail(email: string): Promise<Account> {
-    const accountRes = await
-      this.prisma.account.findUnique({
-        where: {
-          email,
-        },
-      });
+    const accountRes = await this.prisma.account.findUnique({
+      where: {
+        email,
+      },
+    });
 
     if (!accountRes) {
       throw new Error('Account not found');

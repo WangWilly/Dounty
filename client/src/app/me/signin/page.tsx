@@ -9,6 +9,8 @@ import { Button } from "@nextui-org/react";
 import { safe } from "@/utils/exception";
 import { createSession } from "@/clients/userClient/functions";
 import { setClientSideCookie } from "@/utils/cookies";
+import { COOKIE_SESSION_MAX_AGE, COOKIE_SESSION_NAME } from "@/utils/const";
+import { appConfig } from "@/utils/appConfig";
 
 ////////////////////////////////////////////////////////////////////////////////
 // https://clerk.com/blog/complete-guide-session-management-nextjs
@@ -29,9 +31,9 @@ function LoginPage() {
     }
 
     setClientSideCookie(
-      "session",
+      COOKIE_SESSION_NAME,
       sessionCreateRes.data.token,
-      60 * 60 * 24 * 7,
+      COOKIE_SESSION_MAX_AGE,
     );
 
     router.push("/dapp");
@@ -43,14 +45,14 @@ function LoginPage() {
         <div className="grid md:grid-cols-2 items-center gap-4 max-md:gap-8 max-w-6xl max-md:max-w-lg w-full p-4 m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md">
           
           <div className="w-full h-full flex items-center bg-[#000842] rounded-xl p-8">
-            <Image src="./login/loginPage.png" className="w-full aspect-[12/12] object-contain" alt="login-image" width={0} height={0} sizes="100vw"/>
+            <Image src={ appConfig.ASSET_BASE_PATH + "/login/loginPage.png" } className="w-full aspect-[12/12] object-contain" alt="login-image" width={0} height={0} sizes="100vw"/>
           </div>
 
           <div className="md:max-w-md w-full px-4 py-4">
             <form onSubmit={handleLogin}>
               <div className="mb-12">
                 <h3 className="text-gray-800 text-3xl font-extrabold">Sign in</h3>
-                <p className="text-sm mt-4 text-gray-800">Don&apos;t have an account <Link href="/signup" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Register here</Link></p>
+                <p className="text-sm mt-4 text-gray-800">Don&apos;t have an account <Link href="/me/signup" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Register here</Link></p>
               </div>
 
               <div>

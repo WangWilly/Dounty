@@ -1,4 +1,10 @@
-import { IsString, IsEmail, IsBoolean, IsObject, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsBoolean,
+  IsObject,
+  IsOptional,
+} from 'class-validator';
 
 ////////////////////////////////////////////////////////////////////////////////
 

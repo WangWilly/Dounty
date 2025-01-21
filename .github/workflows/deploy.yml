@@ -97,6 +97,7 @@ jobs:
           echo NEXT_PUBLIC_DEFAULT_NETWORK_TYPE=custom >> .env
           echo NEXT_PUBLIC_CUSTOM_RPC_URL=https://skilled-white-leaf.solana-devnet.quiknode.pro/f7ffd926eb10ef0b77dcfdf420696bccd649320c >> .env
           echo NEXT_PUBLIC_USER_CLIENT_BASE_URL=https://me.willywangkaa.xyz >> .env
+          echo NEXT_PUBLIC_ASSET_BASE_PATH=/Dounty >> .env
 
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build

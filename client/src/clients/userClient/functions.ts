@@ -1,6 +1,8 @@
 import { getFetcher } from "@/utils/fetcher";
 import { config } from "./config";
 import * as dtos from "./dtos";
+import { getClientSideCookie } from "@/utils/cookies";
+import { COOKIE_SESSION_NAME } from "@/utils/const";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -63,6 +65,11 @@ export const listSignaturesByIx = async (
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+
+export const getMyAccount = async (): Promise<dtos.AccountV1GetResp> => {
+  const res = await fetcher.get(`/api/account/v1`, {headers: {Authorization: `Bearer ${getClientSideCookie(COOKIE_SESSION_NAME)}`}});
+  return dtos.AccountV1GetRespSchema.parse(res.data);
+}
 
 export const createAccount = async (
   req: dtos.AccountV1CreateReq,
