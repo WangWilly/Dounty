@@ -109,16 +109,7 @@ export default function Page() {
             <span className="text-blue-400">{donners.length}</span>
           </p>
         </div>
-        <div className="grid grid-cols-10 gap-4 p-1">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
+        <div className="max-w-full flex justify-end space-x-4">
           <Button
             onPress={changeOnClick}
             className="bg-transparent rounded-lg font-semibold size-lg"
@@ -136,16 +127,10 @@ export default function Page() {
             // className="border border-gray-600 p-4 rounded-lg text-center mb-6"
           />
         </div>
-        <div className="rounded-lg shadow-lg border border-dotted border-gray-800 flex space-x-4 px-4 py-8 overflow-x-scroll">
-          <Button
-            color="default"
-            className="text-black px-6 py-2 rounded-lg font-semibold"
-          >
-            Claim it!
-          </Button>
+        <div className="rounded-lg shadow-lg border border-dotted border-gray-800 flex justify-start space-x-4 px-4 py-8 overflow-x-scroll">
           <Button
             as={Link}
-            href="/dapp/create"
+            href="/dapp/createDountyV1"
             color="default"
             className="text-black px-6 py-2 rounded-lg font-semibold"
           >
@@ -182,14 +167,6 @@ export default function Page() {
             className="text-black px-6 py-2 rounded-lg font-semibold"
           >
             Change Commissioners
-          </Button>
-          <Button
-            as={Link}
-            href="/dapp/durableNonce"
-            color="default"
-            className="text-black px-6 py-2 rounded-lg font-semibold"
-          >
-            Durable Nonce
           </Button>
           <Button
             as={Link}

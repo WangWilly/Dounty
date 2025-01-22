@@ -4,6 +4,7 @@ import { useWallet, Wallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import Link from "next/link";
 import Image from "next/image";
+import { SelectWalletModal } from "./selectWallet";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -75,7 +76,7 @@ export const MyWalletDropdown = () => {
 
   //////////////////////////////////////////////////////////////////////////////
 
-  if (!wallet) return <ModalContent />;
+  if (!wallet) return <SelectWalletModal />;
   if (!base58) return <WalletConnectContent />;
 
   return (
@@ -101,30 +102,6 @@ export const MyWalletDropdown = () => {
       </a>
 
       {dropdown}
-    </li>
-  );
-};
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-export const ModalContent = () => {
-  const { visible, setVisible } = useWalletModal();
-
-  const handleClick = useCallback(
-    () => setVisible(!visible),
-    [setVisible, visible],
-  );
-
-  return (
-    <li className="max-lg:border-b max-lg:py-2 px-3 group relative ">
-      <a
-        href="javascript:void(0)"
-        className="hover:text-blue-600 block font-semibold transition-all"
-        onClick={handleClick}
-      >
-        Select Wallet
-      </a>
     </li>
   );
 };

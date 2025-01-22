@@ -13,7 +13,9 @@ export const donnerV1Schema = zod.object({
     .instanceof(anchor.BN)
     .transform((val) => new Date(val.toNumber() * 1000)),
   bounty: zod.instanceof(PublicKey).transform((val) => val.toBase58()),
-  donation: zod.instanceof(anchor.BN).transform((val) => val.toNumber() as number),
+  donation: zod
+    .instanceof(anchor.BN)
+    .transform((val) => val.toNumber() as number),
   message: zod.string(),
 });
 
@@ -24,7 +26,9 @@ export const donnerV1Columns: ColumnDef<DonnerV1>[] = [
     accessorKey: "doner",
     header: "Doner",
     cell: ({ row }) => {
-      return row.original.doner.slice(0, 3) + "..." + row.original.doner.slice(-3);
+      return (
+        row.original.doner.slice(0, 3) + "..." + row.original.doner.slice(-3)
+      );
     },
   },
   {
@@ -38,7 +42,9 @@ export const donnerV1Columns: ColumnDef<DonnerV1>[] = [
     accessorKey: "bounty",
     header: "Bounty",
     cell: ({ row }) => {
-      return row.original.bounty.slice(0, 3) + "..." + row.original.bounty.slice(-3);
+      return (
+        row.original.bounty.slice(0, 3) + "..." + row.original.bounty.slice(-3)
+      );
     },
   },
   {

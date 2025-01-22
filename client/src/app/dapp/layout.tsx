@@ -214,7 +214,8 @@ export default function DappLayout({
                   </div>
 
                   <div className="flex ml-auto">
-                    <button className="mr-6 font-semibold border-none outline-none">
+                    {/* TODO: */}
+                    {/* <button className="mr-6 font-semibold border-none outline-none">
                       <a
                         href="javascript:void(0)"
                         className="text-red-600 hover:underline"
@@ -224,7 +225,7 @@ export default function DappLayout({
                     </button>
                     <button className="bg-red-600 hover:bg-red-700 transition-all text-white rounded-full px-5 py-2.5">
                       Sign up
-                    </button>
+                    </button> */}
                     <button
                       id="toggleOpen"
                       className="lg:hidden ml-7"
@@ -246,7 +247,7 @@ export default function DappLayout({
                   </div>
                 </div>
               </header>
-              <div className="pt-24 px-4 w-full">{children}</div>
+              <div className="pt-5 pb-4 px-2 w-full">{children}</div>
             </NextUIProvider>
           </WalletModalProvider>
         </WalletProvider>

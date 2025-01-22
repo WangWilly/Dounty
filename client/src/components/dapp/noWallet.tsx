@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Button } from "@nextui-org/react";
+import { SelectWalletButton } from "@/components/ui/selectWallet";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -9,19 +11,25 @@ interface NoWalletProps {
 
 const NoWallet = ({ title, content }: NoWalletProps) => {
   return (
-    <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen">
-      <div className="bg-black p-8 rounded-lg shadow-lg border border-gray-800">
-        <div className="bg-orange-100 border border-orange-500 p-4 rounded-lg text-center mb-6">
-          <h2 className="text-lg font-bold text-orange-600">{title}</h2>
-        </div>
-        <div className="border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6">
-          <p className="text-gray-300">{content}</p>
-        </div>
-        <Link href="/dapp">
-          <div className="bg-gray-100 text-black px-6 py-2 rounded-lg font-semibold">
-            To bounty board
+    <div className="font-sans">
+      <div className="px-8 py-12 text-center bg-gray-800 rounded-lg shadow-xl">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-white text-3xl font-bold mb-8">{title} 🥵</h2>
+          <p className="text-gray-300 text-base mb-4">{content}</p>
+          <p className="text-gray-300 text-base">
+            You have to connect your wallet to continue.
+          </p>
+          <div className="flex justify-center mt-8 gap-2">
+            <SelectWalletButton />
+            <Button
+              as={Link}
+              href="/dapp"
+              className="inline-block mt-8 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-base tracking-wide rounded-md"
+            >
+              To bounty board
+            </Button>
           </div>
-        </Link>
+        </div>
       </div>
     </div>
   );

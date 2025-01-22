@@ -53,7 +53,9 @@ export const bountyV1Columns: ColumnDef<BountyV1>[] = [
     accessorKey: "owner",
     header: "Owner",
     cell: ({ row }) => {
-      return row.original.owner.slice(0, 3) + "..." + row.original.owner.slice(-3);
+      return (
+        row.original.owner.slice(0, 3) + "..." + row.original.owner.slice(-3)
+      );
     },
   },
   {
@@ -64,14 +66,20 @@ export const bountyV1Columns: ColumnDef<BountyV1>[] = [
     accessorKey: "assignee",
     header: "Assignee",
     cell: ({ row }) => {
-      return row.original.assignee ? row.original.assignee.slice(0, 3) + "..." + row.original.assignee.slice(-3) : "";
+      return row.original.assignee
+        ? row.original.assignee.slice(0, 3) +
+            "..." +
+            row.original.assignee.slice(-3)
+        : "";
     },
   },
   {
     accessorKey: "commissioners",
     header: "Commissioners",
     cell: ({ row }) => {
-      return row.original.commissioners.map((c) => c.slice(0, 3) + "..." + c.slice(-3)).join(", ");
+      return row.original.commissioners
+        .map((c) => c.slice(0, 3) + "..." + c.slice(-3))
+        .join(", ");
     },
   },
 ];
