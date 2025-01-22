@@ -124,7 +124,10 @@ export const getBountyV1Columns = (userPubkey: string) => {
         }
         return (
           <Link
-            href={`/dapp/editDountyV1?bountyPda=${row.original.address}`}
+            href={{
+              pathname: `/dapp/editDountyV1`,
+              query: { bountyPda: row.original.address },
+            }}
             className="text-blue-500"
           >
             ✏️
@@ -138,7 +141,10 @@ export const getBountyV1Columns = (userPubkey: string) => {
       cell: ({ row }) => {
         return (
           <Link
-            href={`/dapp/createDonerV1?bountyPda=${row.original.address}`}
+            href={{
+              pathname: `/dapp/createDonerV1`,
+              query: { bountyPda: row.original.address },
+            }}
             className="text-blue-500"
           >
             💰

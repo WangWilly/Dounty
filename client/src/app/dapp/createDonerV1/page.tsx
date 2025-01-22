@@ -4,7 +4,7 @@ import { useAnchorProvider } from "@/components/solana_provider";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { Button } from "@nextui-org/react";
 
@@ -20,7 +20,7 @@ import { getBounty } from "@/app/dapp/utils/getBountyV1";
 // https://readymadeui.com/tailwind-components/form
 // https://readymadeui.com/tailwind-blocks/content-section
 
-export default function EditPage() {
+const CreateDonerPage = () => {
   const searchParams = useSearchParams();
   const bountyPda = searchParams.get("bountyPda");
 
@@ -107,7 +107,7 @@ export default function EditPage() {
   //////////////////////////////////////////////////////////////////////////////
 
   return (
-    <>
+    <Suspense>
       <ToastContainer />
       <div className="font-sans bg-gray-100 px-4 py-12">
         <div className="grid lg:grid-cols-2 gap-12 lg:max-w-6xl max-w-2xl mx-auto">
@@ -206,6 +206,16 @@ export default function EditPage() {
           To bounty board
         </Button>
       </form>
-    </>
+    </Suspense>
   );
-}
+};
+
+const Page = () => {
+  return (
+    <Suspense>
+      <CreateDonerPage />
+    </Suspense>
+  );
+};
+
+export default Page;

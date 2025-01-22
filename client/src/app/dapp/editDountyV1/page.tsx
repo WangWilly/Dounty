@@ -11,7 +11,7 @@ import {
 } from "@solana/web3.js";
 import * as anchor from "@coral-xyz/anchor";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { safe } from "@/utils/exception";
 import { Button } from "@nextui-org/react";
@@ -28,7 +28,7 @@ import { getBounty } from "@/app/dapp/utils/getBountyV1";
 // https://readymadeui.com/tailwind-components/form
 // https://readymadeui.com/tailwind-blocks/content-section
 
-export default function EditPage() {
+const EditPage = () => {
   const searchParams = useSearchParams();
   const bountyPda = searchParams.get("bountyPda");
 
@@ -239,7 +239,17 @@ export default function EditPage() {
       </form>
     </>
   );
-}
+};
+
+const Page = () => {
+  return (
+    <Suspense>
+      <EditPage />
+    </Suspense>
+  );
+};
+
+export default Page;
 
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -210,6 +210,33 @@ export default function DappLayout({
                           </li>
                         </ul>
                       </li>
+
+                      <li className="max-lg:border-b max-lg:py-2 px-3 group relative ">
+                        <a
+                          href="/dapp"
+                          className="hover:text-blue-600 block font-semibold transition-all content-center"
+                        >
+                          Bounties
+                        </a>
+                      </li>
+
+                      <li className="max-lg:border-b max-lg:py-2 px-3 group relative ">
+                        <a
+                          href="/dapp/donations"
+                          className="hover:text-blue-600 block font-semibold transition-all content-center"
+                        >
+                          Donations
+                        </a>
+                      </li>
+
+                      <li className="max-lg:border-b max-lg:py-2 px-3 group relative ">
+                        <a
+                          href="/dapp/createDountyV1"
+                          className="hover:text-blue-600 block font-semibold transition-all content-center"
+                        >
+                          Create a Bounty
+                        </a>
+                      </li>
                     </ul>
                   </div>
 
