@@ -4,6 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 import * as anchor from "@coral-xyz/anchor";
 
 import { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -83,3 +84,93 @@ export const bountyV1Columns: ColumnDef<BountyV1>[] = [
     },
   },
 ];
+
+////////////////////////////////////////////////////////////////////////////////
+
+export const getBountyV1Columns = (userPubkey: string) => {
+  const bountyV1Columns: ColumnDef<BountyV1>[] = [
+    {
+      accessorKey: "address",
+      header: "Address",
+      cell: ({ row }) => {
+        return (
+          row.original.address.slice(0, 3) +
+          "..." +
+          row.original.address.slice(-3)
+        );
+      },
+    },
+    {
+      accessorKey: "timestamp",
+      header: "Timestamp",
+      cell: ({ row }) => {
+        return row.original.timestamp.toLocaleString();
+      },
+    },
+    {
+      accessorKey: "title",
+      header: "Title",
+    },
+    {
+      accessorKey: "url",
+      header: "URL",
+    },
+    {
+      accessorKey: "edit",
+      header: "Edit",
+      cell: ({ row }) => {
+        if (row.original.owner !== userPubkey) {
+          return "";
+        }
+        return (
+          <Link
+            href={`/dapp/editDountyV1?bountyPda=${row.original.address}`}
+            className="text-blue-500"
+          >
+            ✏️
+          </Link>
+        );
+      },
+    },
+    {
+      accessorKey: "donate",
+      header: "Donate",
+      cell: ({ row }) => {
+        return (
+          <Link
+            href={`/dapp/createDonerV1?bountyPda=${row.original.address}`}
+            className="text-blue-500"
+          >
+            💰
+          </Link>
+        );
+      },
+    },
+    {
+      accessorKey: "donation",
+      header: "Donation",
+    },
+    {
+      accessorKey: "assignee",
+      header: "Assignee",
+      cell: ({ row }) => {
+        return row.original.assignee
+          ? row.original.assignee.slice(0, 3) +
+              "..." +
+              row.original.assignee.slice(-3)
+          : "";
+      },
+    },
+    {
+      accessorKey: "commissioners",
+      header: "Commissioners",
+      cell: ({ row }) => {
+        return row.original.commissioners
+          .map((c) => c.slice(0, 3) + "..." + c.slice(-3))
+          .join(", ");
+      },
+    },
+  ];
+
+  return bountyV1Columns;
+};

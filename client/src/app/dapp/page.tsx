@@ -11,7 +11,7 @@ import { getBountyFactoryProgram } from "@/components/anchor/bounty_factory";
 import {
   bountyV1Schema,
   BountyV1,
-  bountyV1Columns,
+  getBountyV1Columns,
 } from "@/components/anchor/dtos/bountyV1";
 import {
   donnerV1Schema,
@@ -21,6 +21,8 @@ import {
 // import log from "@/utils/logging";
 
 import { ToastContainer, toast } from "react-toastify";
+import NoWallet from "@/components/dapp/noWallet";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -31,6 +33,9 @@ export default function Page() {
 
   const [bounties, setBounties] = useState<BountyV1[]>([]);
   const [donners, setDonners] = useState<DonnerV1[]>([]);
+
+  const { publicKey } = useWallet();
+
   const changeOnClick = () => {
     //////////////////////////////////////////////////////////////////////////////
     // Resolve
@@ -89,6 +94,16 @@ export default function Page() {
 
   //////////////////////////////////////////////////////////////////////////////
   // Compose
+
+  if (!publicKey) {
+    return (
+      <NoWallet
+        title="No wallet found"
+        content="Please connect to a wallet to view the bounties"
+      />
+    );
+  }
+
   return (
     <div className="text-white flex-col items-center justify-center w-screen overflow-x-auto">
       <ToastContainer />
@@ -118,7 +133,10 @@ export default function Page() {
           </Button>
         </div>
         <div className="flex-initial border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6 text-black overflow-x-auto">
-          <DataTable columns={bountyV1Columns} data={bounties} />
+          <DataTable
+            columns={getBountyV1Columns(publicKey.toBase58())}
+            data={bounties}
+          />
         </div>
         <div className="flex-initial border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6 text-black overflow-x-auto">
           <DataTable
@@ -135,38 +153,6 @@ export default function Page() {
             className="text-black px-6 py-2 rounded-lg font-semibold"
           >
             Create a Bounty
-          </Button>
-          <Button
-            as={Link}
-            href="/dapp/createDonner"
-            color="default"
-            className="text-black px-6 py-2 rounded-lg font-semibold"
-          >
-            Donate to a Bounty
-          </Button>
-          <Button
-            as={Link}
-            href="/dapp/changeAssignee"
-            color="default"
-            className="text-black px-6 py-2 rounded-lg font-semibold"
-          >
-            Change Assignee
-          </Button>
-          <Button
-            as={Link}
-            href="/dapp/changeTitle"
-            color="default"
-            className="text-black px-6 py-2 rounded-lg font-semibold"
-          >
-            Change Title
-          </Button>
-          <Button
-            as={Link}
-            href="/dapp/changeCommissioners"
-            color="default"
-            className="text-black px-6 py-2 rounded-lg font-semibold"
-          >
-            Change Commissioners
           </Button>
           <Button
             as={Link}
