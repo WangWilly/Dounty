@@ -91,6 +91,7 @@ export const bountyV1Columns: ColumnDef<BountyV1>[] = [
 export const getBountyV1Columns = (
   userPubkey: string,
   setSignBountyPda: Dispatch<SetStateAction<string | null>>,
+  setIssueBountyPda: Dispatch<SetStateAction<string | null>>,
 ) => {
   const bountyV1Columns: ColumnDef<BountyV1>[] = [
     {
@@ -118,6 +119,15 @@ export const getBountyV1Columns = (
     {
       accessorKey: "url",
       header: "URL",
+      cell: ({ row }) => {
+        return (
+          <Link
+            href={row.original.url}
+            >
+              {"🔗 ..." + row.original.url.slice(15, 20) + "..."}
+            </Link>
+        );
+      }  
     },
     {
       accessorKey: "edit",
@@ -190,12 +200,30 @@ export const getBountyV1Columns = (
         return (
           <Link
             href="javascript:void(0)"
-            className="text-blue-500"
             onClick={() => {
               setSignBountyPda(row.original.address);
             }}
           >
             📝
+          </Link>
+        );
+      },
+    },
+    {
+      accessorKey: "issue",
+      header: "🚀",
+      cell: ({ row }) => {
+        if (row.original.owner !==userPubkey ) {
+          return "";
+        }
+        return (
+          <Link
+            href="javascript:void(0)"
+            onClick={() => {
+              setIssueBountyPda(row.original.address);
+            }}
+          >
+            😘
           </Link>
         );
       },

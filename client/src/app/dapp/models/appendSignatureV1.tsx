@@ -30,14 +30,14 @@ import { toast } from "react-toastify";
 ////////////////////////////////////////////////////////////////////////////////
 
 interface Props {
-  bountyPda: string;
+  signBountyPda: string;
   setSignBountyPda: Dispatch<SetStateAction<string | null>>;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 export default function AppendSignatureModel({
-  bountyPda,
+  signBountyPda,
   setSignBountyPda,
 }: Props) {
   const { connection } = useConnection();
@@ -55,7 +55,7 @@ export default function AppendSignatureModel({
 
   let bountyPdaPubkey: PublicKey | null = null;
   try {
-    bountyPdaPubkey = new PublicKey(bountyPda);
+    bountyPdaPubkey = new PublicKey(signBountyPda);
   } catch (e) {
     toast.error("Invalid bounty PDA: " + e);
     return null;
@@ -264,10 +264,10 @@ function buildGetSignatureBase58(
 
 async function getBounty(
   program: Program<BountyFactory>,
-  bountyPda: PublicKey,
+  signBountyPda: PublicKey,
 ): Promise<BountyV1 | null> {
   const bountyRes = await safe(
-    program.account.bountyV1.fetch(bountyPda.toBase58()),
+    program.account.bountyV1.fetch(signBountyPda.toBase58()),
   );
   if (!bountyRes.success) {
     toast.error("Bounty not found: " + bountyRes.error);
@@ -283,18 +283,18 @@ async function getBounty(
     return null;
   }
 
-  return bountyV1Schema.parse({ address: bountyPda, ...bounty });
+  return bountyV1Schema.parse({ address: signBountyPda, ...bounty });
 }
 
 async function getNonceAccount(
   connection: Connection,
-  bountyPda: PublicKey,
+  signBountyPda: PublicKey,
 ): Promise<{
   nonceAdvParam: { noncePubkey: PublicKey; authorizedPubkey: PublicKey };
   nonce: string;
 } | null> {
   const nonceAccountRes = await safe(
-    getBountyNonceAccountPublicKey(bountyPda.toBase58()),
+    getBountyNonceAccountPublicKey(signBountyPda.toBase58()),
   );
   if (!nonceAccountRes.success) {
     toast.error("Failed to get nonce account: " + nonceAccountRes.error);
@@ -330,7 +330,7 @@ async function getNonceAccount(
 
 async function getProgramIx(
   program: Program<BountyFactory>,
-  bountyPda: PublicKey,
+  signBountyPda: PublicKey,
   bounty: BountyV1,
 ): Promise<TransactionInstruction | null> {
   if (bounty.assignee === null) {
@@ -344,7 +344,7 @@ async function getProgramIx(
     commissioner3: bounty.commissioners[2],
     commissioner4: bounty.commissioners[3],
     commissioner5: bounty.commissioners[4],
-    bounty: bountyPda,
+    bounty: signBountyPda,
     assignee: bounty.assignee,
     systemProgram: SystemProgram.programId,
   };

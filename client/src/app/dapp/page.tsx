@@ -17,6 +17,7 @@ import { ToastContainer, toast } from "react-toastify";
 import NoWallet from "@/components/dapp/noWallet";
 import { useWallet } from "@solana/wallet-adapter-react";
 import AppendSignatureModel from "./models/appendSignatureV1";
+import IssueBountyModel from "./models/issueBountyV1";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -27,6 +28,7 @@ export default function Page() {
 
   const [bounties, setBounties] = useState<BountyV1[]>([]);
   const [signBountyPda, setSignBountyPda] = useState<string | null>(null);
+  const [issueBountyPda, setIssueBountyPda] = useState<string | null>(null);
 
   const { publicKey } = useWallet();
 
@@ -86,8 +88,14 @@ export default function Page() {
       <ToastContainer />
       {signBountyPda !== null && signBountyPda !== "" && (
         <AppendSignatureModel
-          bountyPda={signBountyPda}
+          signBountyPda={signBountyPda}
           setSignBountyPda={setSignBountyPda}
+        />
+      )}
+      {issueBountyPda !== null && issueBountyPda !== "" && (
+        <IssueBountyModel
+          issueBountyPda={issueBountyPda}
+          setIssueBountyPda={setIssueBountyPda}
         />
       )}
       <div>
@@ -134,7 +142,7 @@ export default function Page() {
         </div>
         <div className="flex-initial border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6 text-black overflow-x-auto">
           <DataTable
-            columns={getBountyV1Columns(publicKey.toBase58(), setSignBountyPda)}
+            columns={getBountyV1Columns(publicKey.toBase58(), setSignBountyPda, setIssueBountyPda)}
             data={bounties}
           />
         </div>
