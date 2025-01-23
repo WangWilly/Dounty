@@ -5,6 +5,7 @@ import * as anchor from "@coral-xyz/anchor";
 
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+import { Dispatch, SetStateAction } from "react";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -87,7 +88,10 @@ export const bountyV1Columns: ColumnDef<BountyV1>[] = [
 
 ////////////////////////////////////////////////////////////////////////////////
 
-export const getBountyV1Columns = (userPubkey: string) => {
+export const getBountyV1Columns = (
+  userPubkey: string,
+  setSignBountyPda: Dispatch<SetStateAction<string | null>>,
+) => {
   const bountyV1Columns: ColumnDef<BountyV1>[] = [
     {
       accessorKey: "address",
@@ -174,6 +178,26 @@ export const getBountyV1Columns = (userPubkey: string) => {
         return row.original.commissioners
           .map((c) => c.slice(0, 3) + "..." + c.slice(-3))
           .join(", ");
+      },
+    },
+    {
+      accessorKey: "sign",
+      header: "Sign",
+      cell: ({ row }) => {
+        if (!row.original.commissioners.includes(userPubkey)) {
+          return "";
+        }
+        return (
+          <Link
+            href="javascript:void(0)"
+            className="text-blue-500"
+            onClick={() => {
+              setSignBountyPda(row.original.address);
+            }}
+          >
+            📝
+          </Link>
+        );
       },
     },
   ];

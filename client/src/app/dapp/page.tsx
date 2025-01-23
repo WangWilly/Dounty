@@ -16,6 +16,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import NoWallet from "@/components/dapp/noWallet";
 import { useWallet } from "@solana/wallet-adapter-react";
+import AppendSignatureModel from "./models/appendSignatureV1";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -25,6 +26,7 @@ export default function Page() {
   const program = getBountyFactoryProgram(provider);
 
   const [bounties, setBounties] = useState<BountyV1[]>([]);
+  const [signBountyPda, setSignBountyPda] = useState<string | null>(null);
 
   const { publicKey } = useWallet();
 
@@ -82,6 +84,12 @@ export default function Page() {
   return (
     <div className="text-white flex-col items-center justify-center w-screen overflow-x-auto">
       <ToastContainer />
+      {signBountyPda !== null && signBountyPda !== "" && (
+        <AppendSignatureModel
+          bountyPda={signBountyPda}
+          setSignBountyPda={setSignBountyPda}
+        />
+      )}
       <div>
         <div className="flex items-center max-md:flex-col gap-6 bg-gradient-to-tr from-blue-700 to-purple-400 text-white px-6 py-3.5 rounded font-[sans-serif]">
           <p className="text-base flex-1 max-md:text-center">
@@ -126,7 +134,7 @@ export default function Page() {
         </div>
         <div className="flex-initial border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6 text-black overflow-x-auto">
           <DataTable
-            columns={getBountyV1Columns(publicKey.toBase58())}
+            columns={getBountyV1Columns(publicKey.toBase58(), setSignBountyPda)}
             data={bounties}
           />
         </div>
