@@ -19,7 +19,7 @@ const NoWallet = ({ title, content }: NoWalletProps) => {
           <p className="text-gray-300 text-base">
             You have to connect your wallet to continue.
           </p>
-          <div className="flex justify-center mt-8 gap-2">
+          <div className="flex flex-col justify-center mt-8 gap-2">
             <SelectWalletButton />
             <Button
               as={Link}

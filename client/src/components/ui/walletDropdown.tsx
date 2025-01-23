@@ -1,10 +1,9 @@
 import { MouseEventHandler, useCallback, useMemo, useState } from "react";
 
-import { useWallet, Wallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import Link from "next/link";
-import Image from "next/image";
-import { SelectWalletModal } from "./selectWallet";
+import { SelectWalletModalOnNav, WalletImage } from "./selectWallet";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -76,8 +75,8 @@ export const MyWalletDropdown = () => {
 
   //////////////////////////////////////////////////////////////////////////////
 
-  if (!wallet) return <SelectWalletModal />;
-  if (!base58) return <WalletConnectContent />;
+  if (!wallet) return <SelectWalletModalOnNav />;
+  if (!base58) return <WalletConnectContentOnNav />;
 
   return (
     <li className="max-lg:border-b max-lg:py-2 px-3 group relative ">
@@ -109,7 +108,7 @@ export const MyWalletDropdown = () => {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-export const WalletConnectContent = () => {
+export const WalletConnectContentOnNav = () => {
   const { wallet, connect, connecting, connected } = useWallet();
 
   const handleClick: MouseEventHandler<HTMLAnchorElement> = useCallback(
@@ -151,17 +150,3 @@ export const WalletConnectContent = () => {
     </li>
   );
 };
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-const WalletImage = (prop: { wallet: Wallet | null }) =>
-  prop.wallet ? (
-    <Image
-      className="w-5 inline-block m-1"
-      src={prop.wallet.adapter.icon}
-      alt={`${prop.wallet.adapter.name} icon`}
-      width={0}
-      height={0}
-    />
-  ) : null;
