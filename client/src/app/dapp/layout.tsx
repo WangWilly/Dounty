@@ -224,6 +224,7 @@ export default function DappLayout({
                         <Link
                           href="/dapp/donations"
                           className="hover:text-blue-600 block font-semibold transition-all content-center"
+                          // TODO: onClick={onPressToggle}
                         >
                           Donations
                         </Link>
@@ -233,6 +234,7 @@ export default function DappLayout({
                         <Link
                           href="/dapp/createDountyV1"
                           className="hover:text-blue-600 block font-semibold transition-all content-center"
+                          // TODO: onClick={onPressToggle}
                         >
                           Create a Bounty
                         </Link>

@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { Button } from "@nextui-org/react";
-import { SelectWalletButton } from "@/components/ui/selectWallet";
+import {
+  SelectWalletButton,
+  WalletConnectContentButton,
+} from "@/components/ui/selectWallet";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -10,6 +14,8 @@ interface NoWalletProps {
 }
 
 const NoWallet = ({ title, content }: NoWalletProps) => {
+  const { publicKey, wallet } = useWallet();
+
   return (
     <div className="font-sans">
       <div className="px-8 py-12 text-center bg-gray-800 rounded-lg shadow-xl">
@@ -20,7 +26,13 @@ const NoWallet = ({ title, content }: NoWalletProps) => {
             You have to connect your wallet to continue.
           </p>
           <div className="flex flex-col justify-center mt-8 gap-2">
-            <SelectWalletButton />
+            {wallet ? (
+              publicKey ? null : (
+                <WalletConnectContentButton />
+              )
+            ) : (
+              <SelectWalletButton />
+            )}
             <Button
               as={Link}
               href="/dapp"

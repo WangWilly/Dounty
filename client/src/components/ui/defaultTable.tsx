@@ -41,7 +41,7 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className="overflow-x-auto p-4 max-h-dvh overflow-y-scroll">
+    <div className="overflow-x-auto p-2 max-h-dvh overflow-y-scroll">
       <Table aria-label="Default Data Table">
         <TableHeader>
           {table.getFlatHeaders().map((header) => (

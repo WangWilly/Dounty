@@ -1,19 +1,11 @@
-import {
-  getTx,
-  listSignaturesByTx,
-} from "@/clients/userClient/functions";
-import {
-  getBountyFactoryProgram,
-} from "@/components/anchor/bounty_factory";
+import { getTx, listSignaturesByTx } from "@/clients/userClient/functions";
+import { getBountyFactoryProgram } from "@/components/anchor/bounty_factory";
 import { useAnchorProvider } from "@/components/solana_provider";
 import { safe } from "@/utils/exception";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import { Button, Spinner } from "@nextui-org/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import {
-  VersionedTransaction,
-  PublicKey,
-} from "@solana/web3.js";
+import { VersionedTransaction, PublicKey } from "@solana/web3.js";
 import { Dispatch, SetStateAction, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -161,16 +153,19 @@ export default function IssueBountyModel({
 
         <div className="my-6">
           <p className="text-gray-600 text-sm leading-relaxed">
-            😍 Finally, the project is finished. Give the contributer their deserve.
+            😍 Finally, the project is finished. Give the contributer their
+            deserve.
           </p>
           <p className="text-gray-600 text-sm leading-relaxed">
             🎉 Issue the bounty to the contributer.
           </p>
           <p className="text-gray-600 text-sm leading-relaxed">
-            ⚠️ This action is irreversible. The bounty will be sent to the contributer.
+            ⚠️ This action is irreversible. The bounty will be sent to the
+            contributer.
           </p>
           <p className="text-gray-600 text-sm leading-relaxed">
-            ⚠️ More than half of the commissoners must agree to the decision with their signature.
+            ⚠️ More than half of the commissoners must agree to the decision
+            with their signature.
           </p>
         </div>
 

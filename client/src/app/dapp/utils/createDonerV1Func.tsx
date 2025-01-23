@@ -33,7 +33,7 @@ export const createDoner = async (
     options?: SendTransactionOptions,
   ) => Promise<anchor.web3.TransactionSignature>,
 ): Promise<void> => {
-  if (!bountyPda || donation < 0) {
+  if (!bountyPda || donation <= 0) {
     return;
   }
 

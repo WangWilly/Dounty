@@ -50,9 +50,7 @@ export const SelectWalletButton = () => {
 export const WalletConnectContentButton = () => {
   const { wallet, connect, connecting, connected } = useWallet();
 
-  const handleClick = useCallback(() => connect().catch(() => {}),
-    [connect],
-  );
+  const handleClick = useCallback(() => connect().catch(() => {}), [connect]);
 
   const content = useMemo(() => {
     if (connecting) return "Connecting ...";
@@ -74,7 +72,6 @@ export const WalletConnectContentButton = () => {
     </Button>
   );
 };
-
 
 export const WalletImage = (prop: { wallet: Wallet | null }) =>
   prop.wallet ? (

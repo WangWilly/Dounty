@@ -121,13 +121,11 @@ export const getBountyV1Columns = (
       header: "URL",
       cell: ({ row }) => {
         return (
-          <Link
-            href={row.original.url}
-            >
-              {"🔗 ..." + row.original.url.slice(15, 20) + "..."}
-            </Link>
+          <Link href={row.original.url}>
+            {"🔗 ..." + row.original.url.slice(15, 20) + "..."}
+          </Link>
         );
-      }  
+      },
     },
     {
       accessorKey: "edit",
@@ -213,7 +211,7 @@ export const getBountyV1Columns = (
       accessorKey: "issue",
       header: "🚀",
       cell: ({ row }) => {
-        if (row.original.owner !==userPubkey ) {
+        if (row.original.owner !== userPubkey) {
           return "";
         }
         return (

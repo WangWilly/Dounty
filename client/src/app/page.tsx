@@ -151,11 +151,23 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 justify-center items-center gap-10">
             <div>
               <h1 className="md:text-5xl text-4xl font-bold mb-6 md:!leading-[55px]">
-                Dounty = Co<span className="text-red-600">d</span>e B
+                🍭 Dounty =&gt; Co<span className="text-red-600">d</span>e B
                 <span className="text-red-600">ounty</span>
               </h1>
               <p className="text-base leading-relaxed">
-                Advance system to accelerate your project.
+                Advance system to accelerate your project. 🚀
+              </p>
+              <p className="text-base leading-relaxed">
+                Self coding is too slow, let&apos;s speed up.
+              </p>
+              <p className="text-base leading-relaxed">
+                By the nature of human 🐒, we are prompt to pursue things that
+                are rewarding. Dounty is a platform that connects developers
+                with bounties. It is a simple tool to help developers find
+                bounties. 🗺️
+              </p>
+              <p className="text-base leading-relaxed">
+                Get started today and start earning. 💰
               </p>
               <div className="flex flex-wrap gap-y-4 gap-x-8 mt-8">
                 <Button

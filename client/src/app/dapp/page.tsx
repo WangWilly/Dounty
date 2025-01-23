@@ -132,17 +132,21 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="max-w-full flex justify-end space-x-4">
-          <Button
-            onPress={changeOnClick}
-            className="bg-transparent rounded-lg font-semibold size-lg"
-          >
-            🔄
-          </Button>
-        </div>
-        <div className="flex-initial border border-dotted border-gray-600 p-4 rounded-lg text-center mb-6 text-black overflow-x-auto">
+        <div className="flex-initial border border-dotted border-gray-600 px-1 rounded-lg text-center mb-6 text-black overflow-x-auto">
+          <div className="relative top-50 right-4 z-30">
+            <Button
+              onPress={changeOnClick}
+              className="bg-transparent rounded-lg font-semibold size-lg"
+            >
+              🔄
+            </Button>
+          </div>
           <DataTable
-            columns={getBountyV1Columns(publicKey.toBase58(), setSignBountyPda, setIssueBountyPda)}
+            columns={getBountyV1Columns(
+              publicKey.toBase58(),
+              setSignBountyPda,
+              setIssueBountyPda,
+            )}
             data={bounties}
           />
         </div>
