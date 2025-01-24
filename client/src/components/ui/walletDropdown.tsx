@@ -82,7 +82,7 @@ export const MyWalletDropdown = () => {
     <li className="max-lg:border-b max-lg:py-2 px-3 group relative ">
       <a
         href="javascript:void(0)"
-        className="hover:text-blue-600 block font-semibold transition-all content-center"
+        className="hover:text-blue-600 flex font-semibold transition-all items-center"
       >
         <WalletImage wallet={wallet} />
         {content}

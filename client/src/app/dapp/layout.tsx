@@ -141,7 +141,7 @@ export default function DappLayout({
                       </svg>
                     </button>
 
-                    <ul className="lg:ml-12 lg:flex gap-x-6 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
+                    <ul className="lg:ml-12 lg:flex gap-x-6 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50 items-center">
                       <li className="mb-6 hidden max-lg:block">
                         <Link href="/">
                           <Image
@@ -163,7 +163,7 @@ export default function DappLayout({
                       <li className="max-lg:border-b max-lg:py-2 px-3 group relative ">
                         <a
                           href="javascript:void(0)"
-                          className="hover:text-blue-600 block font-semibold transition-all content-center"
+                          className="hover:text-blue-600 block font-semibold transition-all"
                         >
                           Network: {selectedKey}
                           <svg
@@ -214,7 +214,7 @@ export default function DappLayout({
                       <li className="max-lg:border-b max-lg:py-2 px-3 group relative ">
                         <Link
                           href="/dapp"
-                          className="hover:text-blue-600 block font-semibold transition-all content-center"
+                          className="hover:text-blue-600 block font-semibold transition-all"
                         >
                           Bounties
                         </Link>
@@ -223,7 +223,7 @@ export default function DappLayout({
                       <li className="max-lg:border-b max-lg:py-2 px-3 group relative ">
                         <Link
                           href="/dapp/donations"
-                          className="hover:text-blue-600 block font-semibold transition-all content-center"
+                          className="hover:text-blue-600 block font-semibold transition-all"
                           // TODO: onClick={onPressToggle}
                         >
                           Donations
@@ -233,7 +233,7 @@ export default function DappLayout({
                       <li className="max-lg:border-b max-lg:py-2 px-3 group relative ">
                         <Link
                           href="/dapp/createDountyV1"
-                          className="hover:text-blue-600 block font-semibold transition-all content-center"
+                          className="hover:text-blue-600 block font-semibold transition-all"
                           // TODO: onClick={onPressToggle}
                         >
                           Create a Bounty

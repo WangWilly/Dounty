@@ -63,104 +63,96 @@ export default function AppendSignatureModel({
 
   //////////////////////////////////////////////////////////////////////////////
 
-  const onClickAppend = async () => {
-    setIsLoading(true);
+  const onClickAppend = async (): Promise<boolean> => {
     // Resolve
     if (!bountyPdaPubkey) {
       toast.error("Bounty address is required");
-      return;
+      return false;
     }
     const bounty = await getBounty(program, bountyPdaPubkey);
     if (!bounty) {
-      setIsLoading(false);
-      return;
+      toast.error("Failed to get bounty");
+      return false;
     }
     if (!bounty.commissioners.includes(userPublicKey.toBase58())) {
       toast.error("You are not a commissioner");
       toast.error("Commissioners: " + bounty.commissioners.join(", "));
-      return;
+      return false;
     }
 
     const nonceInfo = await getNonceAccount(connection, bountyPdaPubkey);
     if (!nonceInfo) {
-      setIsLoading(false);
-      return;
+      toast.error("Failed to get nonce account");
+      return false;
     }
     const nonceAdvIx = SystemProgram.nonceAdvance(nonceInfo.nonceAdvParam);
     const programIx = await getProgramIx(program, bountyPdaPubkey, bounty);
     if (!programIx) {
-      setIsLoading(false);
-      return;
+      toast.error("Failed to get program instruction");
+      return false;
     }
-    const currTx = await buildTx(
+    const pendingTx = await buildTx(
       bounty,
       nonceInfo.nonce,
       nonceAdvIx,
       programIx,
     );
-    const getSigB58 = buildGetSignatureBase58(signTransaction);
+    const fetchSignatureBase58 = buildGetSignatureBase58(signTransaction);
 
-    const existingTxRes = await safe(getTx(bountyPdaPubkey.toBase58()));
-    if (!existingTxRes.success) {
+    const fetchedTxRes = await safe(getTx(bountyPdaPubkey.toBase58()));
+    if (!fetchedTxRes.success) {
       // There is no existing transaction, create a new one
-      await createTxToDb(
+      const res = await generateTransactionAndSaveSignature(
         bountyPdaPubkey.toBase58(),
-        currTx,
+        pendingTx,
         publicKey.toBase58(),
-        getSigB58,
+        fetchSignatureBase58,
       );
-      setIsLoading(false);
-      return;
+      return res;
     }
 
-    const existingTx = existingTxRes.data;
-    if (!existingTx) {
+    const fetchedTx = fetchedTxRes.data;
+    if (!fetchedTx) {
       // There is no existing transaction, create a new one
-      await createTxToDb(
+      const res = await generateTransactionAndSaveSignature(
         bountyPdaPubkey.toBase58(),
-        currTx,
+        pendingTx,
         publicKey.toBase58(),
-        getSigB58,
+        fetchSignatureBase58,
       );
-      setIsLoading(false);
-      return;
+      return res;
     }
 
-    toast.info("Existing transaction found");
-    if (!existingTx.serializedTxBase64) {
+    if (!fetchedTx.serializedTxBase64) {
       toast.error("SerializedTxBase64 is empty");
-      return;
+      return false;
     }
 
-    const currSerializedTx = Buffer.from(currTx.serialize()).toString("base64");
-    if (existingTx.serializedTxBase64 !== currSerializedTx) {
-      // The current transaction is different from the existing one
-      toast.info("The current transaction is different from the existing one");
-      await createTxToDb(
-        bountyPdaPubkey.toBase58(),
-        currTx,
-        publicKey.toBase58(),
-        getSigB58,
-      );
-      setIsLoading(false);
-      return;
-    }
-
-    const existingSerializedTx = Buffer.from(
-      existingTx.serializedTxBase64,
+    const pendingSerializedTx = Buffer.from(pendingTx.serialize()).toString(
       "base64",
     );
-    const existingPrevTx =
-      VersionedTransaction.deserialize(existingSerializedTx);
-    const signatureBase58Res = await safe(getSigB58(existingPrevTx));
-    if (!signatureBase58Res.success) {
-      toast.error("Failed to get signature: " + signatureBase58Res.error);
-      return;
+    if (fetchedTx.serializedTxBase64 !== pendingSerializedTx) {
+      toast.info("Pending transaction is different from existing transaction");
+      const res = await generateTransactionAndSaveSignature(
+        bountyPdaPubkey.toBase58(),
+        pendingTx,
+        publicKey.toBase58(),
+        fetchSignatureBase58,
+      );
+      return res;
     }
-    const signatureBase58 = signatureBase58Res.data;
+
+    const fetchedTxData = Buffer.from(fetchedTx.serializedTxBase64, "base64");
+    const deserializedTx = VersionedTransaction.deserialize(fetchedTxData);
+    const signatureB58Res = await safe(fetchSignatureBase58(deserializedTx));
+    if (!signatureB58Res.success) {
+      toast.error("Failed to get signature: " + signatureB58Res.error);
+      return false;
+    }
+    const signatureBase58 = signatureB58Res.data;
     const createSigRes = await safe(
       createSignature({
-        serializedTxBase64: existingTx.serializedTxBase64,
+        serializedTxBase64: fetchedTx.serializedTxBase64,
         serializedIxBase64: "",
         signerPublicKeyBase58: publicKey.toBase58(),
         signatureBase58,
@@ -168,14 +160,22 @@ export default function AppendSignatureModel({
     );
     if (!createSigRes.success) {
       toast.error("Failed to create signature: " + createSigRes.error);
-      setIsLoading(false);
-      return;
+      return false;
     }
-    toast.success("Create signature success");
-    setIsLoading(false);
 
-    return;
+    return true;
   };
+
+  const onClickAppendWrapped = async () => {
+    setIsLoading(true);
+    const res = await onClickAppend();
+    if (res) {
+      toast.success("Signature appended");
+    }
+    setIsLoading(false);
+  };
+
+  //////////////////////////////////////////////////////////////////////////////
 
   return (
     <div className="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
@@ -224,7 +224,7 @@ export default function AppendSignatureModel({
           <Button
             type="button"
             className="px-4 py-2 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-blue-600 hover:bg-blue-700 active:bg-blue-600"
-            onPress={onClickAppend}
+            onPress={onClickAppendWrapped}
           >
             {isLoading ? <Spinner /> : "Append Signature"}
           </Button>
@@ -377,11 +377,11 @@ async function buildTx(
   return tx;
 }
 
-async function createTxToDb(
+async function generateTransactionAndSaveSignature(
   bountyPdaBase58: string,
   tx: VersionedTransaction,
   signerPublicKeyBase58: string,
-  getSigB58: (rawTx: VersionedTransaction) => Promise<string>,
+  fetchSignatureB58: (rawTx: VersionedTransaction) => Promise<string>,
 ): Promise<boolean> {
   // There is no existing transaction, create a new one
   const serializedTx = tx.serialize();
@@ -435,7 +435,7 @@ async function createTxToDb(
 
   ////////////////////////////////////////////////////////////////////////////
   // User signature
-  const signatureBase58Res = await safe(getSigB58(tx));
+  const signatureBase58Res = await safe(fetchSignatureB58(tx));
   if (!signatureBase58Res.success) {
     toast.error("Failed to get signature: " + signatureBase58Res.error);
     return false;
