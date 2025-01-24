@@ -90,13 +90,14 @@ jobs:
 
       # ⚠️⚠️⚠️
       # https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables#bundling-environment-variables-for-the-browser
+      # echo NEXT_PUBLIC_USER_CLIENT_BASE_URL=https://me.willywangkaa.xyz >> .env
       - name: create env file
         run: |
           touch .env
           echo IN_GITHUB_WORKER=true >> .env
           echo NEXT_PUBLIC_DEFAULT_NETWORK_TYPE=custom >> .env
           echo NEXT_PUBLIC_CUSTOM_RPC_URL=https://skilled-white-leaf.solana-devnet.quiknode.pro/f7ffd926eb10ef0b77dcfdf420696bccd649320c >> .env
-          echo NEXT_PUBLIC_USER_CLIENT_BASE_URL=https://me.willywangkaa.xyz >> .env
+          echo NEXT_PUBLIC_USER_CLIENT_BASE_URL=https://dountybedev.onrender.com >> .env
           echo NEXT_PUBLIC_ASSET_BASE_PATH=/Dounty >> .env
 
       - name: Build with Next.js
