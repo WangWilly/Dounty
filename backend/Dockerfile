@@ -8,8 +8,13 @@ WORKDIR /app
 FROM base AS builder-deps
 
 COPY package.json package-lock.json ./
+COPY prisma/deploy.prisma ./prisma/schema.prisma
+
+RUN apt update
+RUN apt-get install -y openssl
 
 RUN npm install
+RUN npx prisma generate
 
 ################################################################################
 # Install runner dependencies

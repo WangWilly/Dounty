@@ -17,7 +17,7 @@ env:
   IMAGE_NAME: "dounty-dev"
 
 jobs:
-  push:
+  build-n-push:
     runs-on: ubuntu-latest
 
     defaults:
@@ -44,3 +44,11 @@ jobs:
           [ "$VERSION" == "master" ] && VERSION=latest
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
+
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          echo COMMIT_HASH=$COMMIT_HASH
+          docker tag image $IMAGE_ID:$COMMIT_HASH
+          docker push $IMAGE_ID:$COMMIT_HASH
+
+          docker tag image $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
