@@ -56,6 +56,12 @@ A tool to incentivize developers to contribute to open source projects by reward
 
 ### Browser extension (TBD)
 
+- https://github.com/PlasmoHQ/plasmo
+- https://github.com/GoogleChrome/chrome-extensions-samples
+- https://github.com/turbostarter/extro
+- https://github.com/lxieyang/chrome-extension-boilerplate-react
+- https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite
+
 ### Server side (Backend)
 
 - [Notes for backend](docs/backend/notes.md)
@@ -152,9 +158,13 @@ anchor init [new-workspace-name]
         - [x] https://solana.stackexchange.com/questions/5807/what-does-sbf-as-in-sbf-program-stand-for
         - [x] https://solana.com/docs/core/clusters
     - [x] https://solana.stackexchange.com/questions/2840/best-ways-to-store-long-string-as-pda-seed
+    - [ ] https://www.reddit.com/r/docker/comments/f7eoh0/build_and_push_your_docker_images_using_github/
+    - [ ] https://www.learncloudnative.com/blog/2020-02-20-github-action-build-push-docker-images
+    - [ ] https://github.com/marketplace/actions/build-and-push-docker-images
 - 🙂
     - [ ] [My journey into web3](https://lorisleiva.com/my-journey-into-web-3)
     - [ ] https://www.quicknode.com/guides/solana-development/solidity/solang-get-started
     - [ ] https://www.reddit.com/r/solana/comments/1b1xmtk/sam_bankmanfried_is_telling_prison_guards_to_buy/
+    - [ ] https://docs.docker.com/build/building/multi-platform/
 - 🤨
     - [ ] https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/assigning-issues-and-pull-requests-to-other-github-users

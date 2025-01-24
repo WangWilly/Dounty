@@ -1,0 +1,46 @@
+name: Build docker image and push to DockerHub for DEV
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches:
+      - master
+    paths: # https://stackoverflow.com/questions/63822219/how-to-run-github-actions-workflow-only-if-the-pushed-files-are-in-a-specific-fo
+      - 'backend/**'
+      - '.github/workflows/be-dev-build-push.yml'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  TARGET: "backend"
+  IMAGE_NAME: "dounty-dev"
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ${{ env.TARGET }}
+
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Build image
+        run: docker build . --file Dockerfile --tag image
+
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_ID=willywangka/${{ env.IMAGE_NAME }}
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION

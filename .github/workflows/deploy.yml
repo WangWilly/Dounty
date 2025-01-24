@@ -13,6 +13,7 @@ on:
       - master
     paths: # https://stackoverflow.com/questions/63822219/how-to-run-github-actions-workflow-only-if-the-pushed-files-are-in-a-specific-fo
       - 'client/**'
+      - '.github/workflows/deploy.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -36,9 +37,11 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: ${{ env.TARGET }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
