@@ -1,4 +1,6 @@
-# Dounty (coDe Bounty)
+# Dounty
+
+## Open Source Development Incentivization Platform
 
 <p align="center">
     <a href="https://wangwilly.github.io/Dounty/">
@@ -6,68 +8,83 @@
     </a>
 </p>
 
-A tool to incentivize developers to contribute to open source projects by rewarding them with bounties. Like the ticketing system in JIRA, but with bounties. Users open bounties for issues they want to see fixed on Github, and developers can claim them. Once the issue is fixed, the developer gets the bounty.
+Dounty is a platform designed to incentivize developers to contribute to open source projects through financial rewards. Similar to traditional issue-tracking systems, Dounty enables project owners to create bounties for specific issues that need resolution. Contributors can browse available bounties, claim them, and receive compensation upon successful completion of the work.
 
 <details>
 
-<summary>Case studies</summary>
+<summary>Market Research and Competitive Analysis</summary>
 
-- BountySource
-    - 🤔 https://www.reddit.com/r/opensource/comments/1d5v1uk/bountysource_is_dead/
-    - https://github.com/bountysource
-    - https://github.com/bountysource/core/issues/1586
-- 🥵 Fiver
-    - https://www.fiverr.com/?source=top_navd
-- Liberapay is a platform that allows users to donate money to open source projects. It is similar to Patreon, but for open source projects. (https://www.patreon.com/)
-    - https://en.liberapay.com/
-- Kickstarter
-    - https://www.kickstarter.com/discover/categories/technology/software
-- 🥵 Upwork
-    - https://www.upwork.com/hire/javascript-developers/
-- 🥵 Gitpay
-    - https://gitpay.me/#/
-- Gitcoin
-    - https://gitcoin.co/
-    - https://explorer.gitcoin.co/#/projects
-    - 🏳️ https://x.com/gitcoin/status/1870127565911785924
-- 🥵 https://www.reddit.com/r/github/comments/11bu8p3/how_to_find_issues_with_bounties_on_github/
-- 🥵 https://github.com/disclose/bug-bounty-platforms
+- **BountySource**
+    - Reference: [Reddit Discussion on BountySource Status](https://www.reddit.com/r/opensource/comments/1d5v1uk/bountysource_is_dead/)
+    - Repository: [github.com/bountysource](https://github.com/bountysource)
+    - Issue Reference: [github.com/bountysource/core/issues/1586](https://github.com/bountysource/core/issues/1586)
+
+- **Fiverr**
+    - Platform: [fiverr.com](https://www.fiverr.com/?source=top_navd)
+    - Focus: General freelance services marketplace
+
+- **Liberapay**
+    - Platform: [en.liberapay.com](https://en.liberapay.com/)
+    - Focus: Donation platform for open source projects, similar to Patreon
+
+- **Kickstarter**
+    - Platform: [kickstarter.com](https://www.kickstarter.com/discover/categories/technology/software)
+    - Focus: Crowdfunding platform for creative projects
+
+- **Upwork**
+    - Platform: [upwork.com](https://www.upwork.com/hire/javascript-developers/)
+    - Focus: Freelance services marketplace
+
+- **Gitpay**
+    - Platform: [gitpay.me](https://gitpay.me/#/)
+    - Focus: Task-based payment system for developers
+
+- **Gitcoin**
+    - Platform: [gitcoin.co](https://gitcoin.co/)
+    - Explorer: [explorer.gitcoin.co](https://explorer.gitcoin.co/#/projects)
+    - Reference: [Gitcoin Status](https://x.com/gitcoin/status/1870127565911785924)
+
+- **Reddit Discussion**
+    - Reference: [How to Find Issues with Bounties on GitHub](https://www.reddit.com/r/github/comments/11bu8p3/how_to_find_issues_with_bounties_on_github/)
+
+- **Bug Bounty Platforms**
+    - Repository: [github.com/disclose/bug-bounty-platforms](https://github.com/disclose/bug-bounty-platforms)
 
 </details>
 
 ## Design
 
-### On-chain program
+### On-chain Program
 
-- [Flow chart for the design](docs/contract/flow-chart.md)
-- [Notes for on-chain program](docs/contract/notes.md)
-- [Solana dev faucet](https://faucet.solana.com/)
+- [Flow Chart for the Design](docs/contract/flow-chart.md)
+- [Notes for On-chain Program](docs/contract/notes.md)
+- [Solana Dev Faucet](https://faucet.solana.com/)
 - Issues
-    - https://solana.stackexchange.com/questions/15175/react-app-with-anchor-0-30-1-error-walletsendtransactionerror-unexpected-erro/19112#19112
-    - https://stackoverflow.com/questions/68755285/solana-how-to-get-cluster-versions
-    - https://www.quicknode.com/guides/solana-development/transactions/how-to-get-transaction-logs-on-solana
-    - https://www.rareskills.io/post/solana-logs-transaction-history
-    - https://solana.stackexchange.com/questions/9803/how-can-i-see-what-the-currently-deployed-version-of-solana-is
-    - https://solana.stackexchange.com/questions/7153/how-do-you-change-your-solana-cli-version
+    - [React App with Anchor Error](https://solana.stackexchange.com/questions/15175/react-app-with-anchor-0-30-1-error-walletsendtransactionerror-unexpected-erro/19112#19112)
+    - [Cluster Versions](https://stackoverflow.com/questions/68755285/solana-how-to-get-cluster-versions)
+    - [Transaction Logs on Solana](https://www.quicknode.com/guides/solana-development/transactions/how-to-get-transaction-logs-on-solana)
+    - [Transaction History](https://www.rareskills.io/post/solana-logs-transaction-history)
+    - [Deployed Version of Solana](https://solana.stackexchange.com/questions/9803/how-can-i-see-what-the-currently-deployed-version-of-solana-is)
+    - [Change Solana CLI Version](https://solana.stackexchange.com/questions/7153/how-do-you-change-your-solana-cli-version)
 
-### Client side
+### Client Side
 
-- [Notes for client side](docs/client/notes.md)
+- [Notes for Client Side](docs/client/notes.md)
 
-### Browser extension (TBD)
+### Browser Extension (TBD)
 
-- https://github.com/PlasmoHQ/plasmo
-- https://github.com/GoogleChrome/chrome-extensions-samples
-- https://github.com/turbostarter/extro
-- https://github.com/lxieyang/chrome-extension-boilerplate-react
-- https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite
+- [PlasmoHQ](https://github.com/PlasmoHQ/plasmo)
+- [Chrome Extensions Samples](https://github.com/GoogleChrome/chrome-extensions-samples)
+- [Extro](https://github.com/turbostarter/extro)
+- [Chrome Extension Boilerplate React](https://github.com/lxieyang/chrome-extension-boilerplate-react)
+- [Chrome Extension Boilerplate React Vite](https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite)
 
-### Server side (Backend)
+### Server Side (Backend)
 
-- [Notes for backend](docs/backend/notes.md)
+- [Notes for Backend](docs/backend/notes.md)
     - Multi-signature
 
-#### Run w/ docker-compose
+#### Run with Docker Compose
 
 ```bash
 ./scripts/db-build-migration.sh
@@ -79,15 +96,15 @@ docker compose up -d
 
 ## Setup
 
-### On-chain program
+### On-chain Program
 
-The rust toolchain is required to build the project. The following commands will install the rust toolchain and the required dependencies.
+The Rust toolchain is required to build the project. The following commands will install the Rust toolchain and the required dependencies.
 
 <details>
-<summary>📌 Install instructions</summary>
+<summary>📌 Install Instructions</summary>
 
 ```bash
-# Install the rust toolchain
+# Install the Rust toolchain
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
@@ -112,7 +129,7 @@ anchor --version
 </details>
 
 <details>
-<summary>📌 Common commands</summary>
+<summary>📌 Common Commands</summary>
 
 ```bash
 solana config get # Get the current Solana cluster configuration
@@ -135,36 +152,38 @@ anchor init [new-workspace-name]
 
 </details>
 
-
 ## TODOs
 
-- [ ] Cryptocurrency agnostic payable
-- [ ] Chrome extension to detect issues on Github and open bounties
-- [ ] Mint a contribution/skill NFT for each bounty (can put to resume)
+- [ ] Cryptocurrency-agnostic payment system
+- [ ] Chrome extension to detect issues on GitHub and open bounties
+- [ ] Mint a contribution/skill NFT for each bounty (can be added to resumes)
 - [ ] Mint community impact NFT for each donation
 - [ ] Analyze the impact of bounties on open source projects
 
-## MISC
+## Miscellaneous
 
-### Reading list
+### Reference Documentation
 
-- 😊
-    - [ ] [solana-labs/dapp-scaffold](https://github.com/solana-labs/dapp-scaffold/)
-    - [ ] 🤔 https://solana.stackexchange.com/questions/9352/dynamically-use-pda-with-transfer-hooks
-    - [ ] https://github.com/wormholelabs-xyz/example-queries-solana-pda
-    - [x] https://stackoverflow.com/questions/70150946/systemprogramcreateaccount-data-size-limited-to-10240-in-inner-instructions
-    - [ ] https://solana.stackexchange.com/questions/2715/why-cant-i-close-a-solana-program-and-redeploy-to-the-same-program-id
-    - [x] https://solana.com/docs/programs/deploying
-        - [x] https://solana.stackexchange.com/questions/5807/what-does-sbf-as-in-sbf-program-stand-for
-        - [x] https://solana.com/docs/core/clusters
-    - [x] https://solana.stackexchange.com/questions/2840/best-ways-to-store-long-string-as-pda-seed
-    - [ ] https://www.reddit.com/r/docker/comments/f7eoh0/build_and_push_your_docker_images_using_github/
-    - [ ] https://www.learncloudnative.com/blog/2020-02-20-github-action-build-push-docker-images
-    - [ ] https://github.com/marketplace/actions/build-and-push-docker-images
-- 🙂
-    - [ ] [My journey into web3](https://lorisleiva.com/my-journey-into-web-3)
-    - [ ] https://www.quicknode.com/guides/solana-development/solidity/solang-get-started
-    - [ ] https://www.reddit.com/r/solana/comments/1b1xmtk/sam_bankmanfried_is_telling_prison_guards_to_buy/
-    - [ ] https://docs.docker.com/build/building/multi-platform/
-- 🤨
-    - [ ] https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/assigning-issues-and-pull-requests-to-other-github-users
+#### Solana Development Resources
+- [ ] [Solana dApp Scaffold](https://github.com/solana-labs/dapp-scaffold/) - Official Solana Labs template for developing dApps
+- [ ] [Dynamically Using PDA with Transfer Hooks](https://solana.stackexchange.com/questions/9352/dynamically-use-pda-with-transfer-hooks) - Technical implementation guide
+- [ ] [Example PDA Queries for Solana](https://github.com/wormholelabs-xyz/example-queries-solana-pda) - Wormhole Labs implementation examples
+- [x] [SystemProgram CreateAccount Data Size Limitations](https://stackoverflow.com/questions/70150946/systemprogramcreateaccount-data-size-limited-to-10240-in-inner-instructions) - Memory constraints documentation
+- [ ] [Program Redeployment Constraints](https://solana.stackexchange.com/questions/2715/why-cant-i-close-a-solana-program-and-redeploy-to-the-same-program-id) - Program deployment best practices
+- [x] [Solana Program Deployment Guide](https://solana.com/docs/programs/deploying) - Official deployment documentation
+  - [x] [SBF Program Terminology](https://solana.stackexchange.com/questions/5807/what-does-sbf-as-in-sbf-program-stand-for) - Technical glossary
+  - [x] [Solana Cluster Documentation](https://solana.com/docs/core/clusters) - Network architecture guide
+- [x] [PDA Seed Storage Strategies](https://solana.stackexchange.com/questions/2840/best-ways-to-store-long-string-as-pda-seed) - Data structure optimization
+
+#### Deployment & DevOps
+- [ ] [Docker Image CI/CD with GitHub](https://www.reddit.com/r/docker/comments/f7eoh0/build_and_push_your_docker_images_using_github/) - Integration guide
+- [ ] [GitHub Actions for Docker Deployments](https://www.learncloudnative.com/blog/2020-02-20-github-action-build-push-docker-images) - Automation workflow tutorial
+- [ ] [Docker Build & Push GitHub Action](https://github.com/marketplace/actions/build-and-push-docker-images) - Official action documentation
+- [ ] [Docker Multi-Platform Build Configuration](https://docs.docker.com/build/building/multi-platform/) - Cross-platform deployment guide
+
+#### Web3 & Blockchain
+- [ ] [Web3 Development Journey](https://lorisleiva.com/my-journey-into-web-3) - Technical progression overview
+- [ ] [Solang Development Guide](https://www.quicknode.com/guides/solana-development/solidity/solang-get-started) - Solidity for Solana implementation
+
+#### Project Management
+- [ ] [GitHub Issue Assignment Documentation](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/assigning-issues-and-pull-requests-to-other-github-users) - Workflow optimization guide
